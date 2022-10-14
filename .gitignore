@@ -1,3 +1,7 @@
+# IDEs
 .idea/
 .vscode/
+.devcontainer/
 
+# Python venv (probably will be removed after Docker setup)
+venv/
