@@ -5,3 +5,5 @@
 
 # Python venv (probably will be removed after Docker setup)
 venv/
+
+__pycache__/
