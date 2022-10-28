@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>
+    Zavod {{ event_data.name }} se bude konat dne {{ event_data.date }}.
+</h1>
+<p>
+    {{ event_data }}
+</p>
+{% endblock %}

@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 
+from src.event import Event
+
 app = Flask(__name__)
 
 
@@ -22,10 +24,14 @@ def results(season: str):
     return render_template("results.html", season=season)
 
 
-# Race
-@app.route("/<string:season>/races/<int:race_id>/")
-def race(season: str, race_id: int):
-    return render_template("race.html")
+# Event
+@app.route("/<string:season>/event/<string:event_id>/")
+def event(season: str, event_id: str):
+    ev: Event = Event.create_from_config(season, event_id)
+    if ev:
+        return render_template("event.html", event_data=ev.to_dict())
+    else:
+        return render_template("home.html")  # TODO: handle this better
 
 
 def main():

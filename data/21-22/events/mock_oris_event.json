@@ -1,0 +1,8 @@
+{
+    "name": "Mock Event",
+    "oris_id": 3312,
+    "date": "2022-11-01",
+    "difficuly": "hard",
+    "description": "Mock event for debug purposes",
+    "place": "Rosnicka"
+}
