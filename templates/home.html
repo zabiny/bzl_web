@@ -10,10 +10,9 @@
 <div class="w-75 ms-5 mt-4">
     <p>
     Brněnská zimní liga je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno Žabovřesky.
-    Částečně
-    je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však i popularizace
-    orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku, fyzické výkonnosti či
-        mapových schopností.
+    Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
+    i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
+    fyzické výkonnosti či mapových schopností.
     </p>
 </div>
 <div class="w-75 ms-5">
@@ -22,15 +21,17 @@
     Orientace v tomto prostředí není tak náročná jako v lese, a proto je vhodná i pro účastníky bez zkušeností s
     orientačním během. Více o orientačním běhu se můžete dozvědět na webu
     <a href="https://zacitorientak.cz/brno/co-to-je/190" target="_blank">zacitorientak.cz</a>
-    , či můžete zhlédnout video výše.
+    , či můžete zhlédnout krátké video zde:
+    <a href="https://youtu.be/D767m2DVVkc" target="_blank">Orienační běh - zelený sport</a>
 </p>
 </div>
-<h2>Dostupné kategorie</h2>
+<h2>Kategorie</h2>
 <div class="w-75 ms-5 mt-4">
     <p>
         Na každý závod je nutné si vybrat správnou kategorii. U většiny závodů jsou kategorie následující. Muži běhají
         kategorii H. Ženy bojují v kategorii D. Děti do 10 let mohou absolvovat svoji trať HDD v doprovodu rodičů. Žáci
-        ročníku 2007 a mladší se hlásí do kategorie HD14 a veteráni mají vlastní kategorii HD45+.
+        ročníku <span id="zak">XXXXXXXXXX</span> a mladší se hlásí do kategorie ZV, do této kategorie patří také veteráni
+        (<span id="veteran"></span>).
     </p>
 </div>
 <h2>Startovné</h2>
@@ -52,4 +53,12 @@
         celý rok.
     </p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    var date = new Date();
+    document.getElementById("zak").innerHTML = date.getFullYear() - 13;
+    document.getElementById("veteran").innerHTML = date.getFullYear() - 45;
+</script>
 {% endblock %}
