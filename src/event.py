@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Dict, Optional
 from urllib.error import HTTPError
 
+import requests
+
 
 def get_info_from_oris(oris_id: int) -> Dict:
     """Get info about an event from ORIS API.
@@ -22,8 +24,26 @@ def get_info_from_oris(oris_id: int) -> Dict:
     Dict
         Info about the event in ORIS.
     """
-    # TODO: implement communicaiton with ORIS API
-    raise NotImplementedError("Communication with ORIS API is not implemented yet.")
+    api_url = (
+        "https://oris.orientacnisporty.cz/API/?format=json&method=getEvent&"
+        f"id={oris_id}"
+    )
+    try:
+        response = requests.get(api_url)
+        print(response.status_code)
+        oris_json = response.json()["Data"]
+    except (ConnectionError, HTTPError, TimeoutError) as e:
+        logging.error(f"Communicatoin with ORIS (race {oris_id}) failed!\n{e}")
+
+    result = {
+        "name": oris_json["Name"],
+        "date": oris_json["Date"],
+        "entry_date": oris_json["EntryDate1"],
+        "place_desc": oris_json["Place"],
+        "gps_lat": oris_json["GPSLat"],
+        "gps_lon": oris_json["GPSLon"],
+    }
+    return result
 
 
 def add_oris_info(manual_info: Dict, oris_info: Dict) -> Dict:
@@ -57,17 +77,27 @@ class Event:
         self,
         name: str,
         date: str,  # TODO: change to datetime
-        difficulty: str,  # TODO: change to enum
-        place: str,  # TODO: change to GPS? and find better name (location?)
+        difficulty: Optional[str] = None,  # TODO: change to enum
+        bzl_order: Optional[int] = None,
+        place_desc: Optional[str] = None,
         description: Optional[str] = None,
         oris_id: Optional[int] = None,
+        entry_date: Optional[str] = None,
+        gps_lat: Optional[float] = None,
+        gps_lon: Optional[float] = None,
+        web: Optional[str] = None,
     ) -> None:
         self.name = name
         self.date = date
         self.difficulty = difficulty
-        self.place = place
+        self.bzl_order = bzl_order
+        self.place_desc = place_desc
         self.description = description
         self.oris_id = oris_id
+        self.entry_date = entry_date
+        self.gps_lat = gps_lat
+        self.gps_lon = gps_lon
+        self.web = web
 
     def to_dict(self) -> Dict:
         return self.__dict__
@@ -106,11 +136,14 @@ class Event:
                 config = add_oris_info(config, oris_info)
             except HTTPError as e:  # TODO: specify errors better
                 logging.error(f"Communication with ORIS failed!\n{e}")
-            except NotImplementedError as e:
-                logging.error(str(e))
                 return None
+            if "web" not in config:
+                config[
+                    "web"
+                ] = f"https://oris.orientacnisporty.cz/Zavod?id={config['oris_id']}"
 
         # Construct the Event instance
+
         try:
             event = cls(**config)
         except TypeError as e:

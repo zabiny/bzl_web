@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, url_for
 
 from src.event import Event
 
@@ -31,7 +31,7 @@ def event(season: str, event_id: str):
     if ev:
         return render_template("event.html", event_data=ev.to_dict())
     else:
-        return render_template("home.html")  # TODO: handle this better
+        return redirect(url_for("home"))
 
 
 def main():
