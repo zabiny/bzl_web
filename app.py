@@ -15,7 +15,8 @@ def home():
 # Calendar
 @app.route("/<string:season>/calendar")
 def calendar(season: str):
-    return render_template("calendar.html", season=season)
+    events = Event.get_all_events(season, as_dicts=True)
+    return render_template("calendar.html", season=season, events=events)
 
 
 # Results
