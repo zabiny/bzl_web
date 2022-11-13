@@ -18,28 +18,33 @@
     <div class="container">
 
         <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-        id="hidden-menu" aria-labelledby="hidden-menu">
-        <div class="offcanvas-header">
-            <button type="button" class="btn-close mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="d-grid gap-5 mt-5 fs-3">
-                <div class="p-2">
-                    <a href="{{ url_for('home') }}">home</a>
-                </div>
-                <div class="p-2">
-                    <a href="{{ url_for('calendar', season='2022  2023') }}">calendar</a>
-                </div>
-                <div class="p-2">
-                    <a href="{{ url_for('results', season='2022  2023') }}">results</a>
+            id="hidden-menu" aria-labelledby="hidden-menu">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close mt-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="d-grid gap-5 mt-5 fs-3">
+                    <div class="p-2  position-relative d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='home_icon.png') }}" width="30" height="30" alt="home_icon">
+                        <a class="nav-link stretched-link" href="{{ url_for('home') }}">home</a>
+                    </div>
+                    <div class="p-2  position-relative d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='calendar_icon.png') }}" width="30" height="30" alt="calendar_icon">
+                        <a class="nav-link stretched-link" href="{{ url_for('calendar', season='2022  2023') }}">calendar</a>
+                    </div>
+                    <div class="p-2  position-relative d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='results_icon.png') }}" width="30" height="30" alt="results_icon">
+                        <a class="nav-link stretched-link" href="{{ url_for('results', season='2022  2023') }}">results</a>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-        
-        <button class="btn btn-primary position-absolute top-0 start-0 ms-3 mt-3" type="button"
-        data-bs-toggle="offcanvas" data-bs-target="#hidden-menu" aria-controls="hidden-menu">Menu</button>
+    </div>
 
+        <button class="btn btn-primary" type="button" id="menu-button"
+            data-bs-toggle="offcanvas" data-bs-target="#hidden-menu" aria-controls="hidden-menu">Menu</button>
+    
+    <div class="container">
         {% block body %}{% endblock %}
     </div>
     <!-- Bootstrap JS -->

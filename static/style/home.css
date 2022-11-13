@@ -1,6 +1,26 @@
+h1, h2 {
+    font-weight: bold;
+}
+
+p {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+}
+
 #hidden-menu {
     transition: transform ease-out 0.25s;
     max-width: 300px;
+}
+@media (min-width: 300px) {
+    #hiddne-menu {
+        max-width: 100%;
+    }
+}
+
+#menu-button {
+    position: sticky;
+    top: 15px;
+    left: 15px;
 }
 
 #open-menu {
@@ -9,12 +29,11 @@
 
 .content {
     margin-top: 20px;
-    margin-inline: 250px;
+    margin: auto;
     line-height: 1.75;
 }
-
-@media only screen and (max-width: 600px) {
+@media (min-width: 800px) {
     .content {
-        margin-left: 0;
+        max-width: 65%;
     }
 }
