@@ -2,9 +2,14 @@
 
 {% block body %}
 <h1>
-    Kalendar zavodu
+    Kalendář na sezónu {{season}}
 </h1>
-<p>
-    Tady bude kalendar zavodu na danou sezonu ({{ season }}).
-</p>
+<table>
+    {% for event_id, event in events.items() %}
+        <tr>
+            <td>{{event['date']}}:</td>
+            <td><a href="{{url_for('event', season=season, event_id=event_id)}}">{{event['name']}}</a></td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}
