@@ -11,7 +11,8 @@ p {
     transition: transform ease-out 0.25s;
     max-width: 300px;
 }
-@media (min-width: 300px) {
+
+@media (min-width: 350px) {
     #hiddne-menu {
         max-width: 100%;
     }
@@ -32,8 +33,17 @@ p {
     margin: auto;
     line-height: 1.75;
 }
+
 @media (min-width: 800px) {
+
     .content {
         max-width: 65%;
+    }
+        
+    #grad-top {
+        background-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(255, 0, 0, 0.3));
+        width: 100%;
+        min-height: 20%;
+        z-index: -1;
     }
 }
