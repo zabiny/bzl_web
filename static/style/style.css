@@ -1,7 +1,13 @@
 /*
 For better looks of the whole page
 */
-h1, h2 {
+
+body {
+    background-color: rgb(38, 196, 38);
+}
+
+h1,
+h2 {
     font-weight: bold;
 }
 
@@ -14,33 +20,38 @@ a {
     text-decoration: none;
 }
 
+#border {
+    background-color: white;
+    border: green;
+    border-width: 5px;
+    border-radius: 30px;
+    padding-top: 1px;
+    margin-top: 70px;
+    margin-inline: auto;
+    max-width: 80%;
+}
+
 .content {
     margin-top: 20px;
     margin: auto;
     line-height: 1.75;
+    width: 80%;
 }
 
 @media (min-width: 800px) {
-
-    .content {
-        max-width: 65%;
-    }
-        
-    #grad-top {
-        background-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
-        width: 100%;
-        min-height: 20%;
-        z-index: -1;
+    #border {
+        max-width: 90%;
     }
 }
 
 /*
 About the hidden menu
 */
+
 #hidden-menu {
     transition: transform ease-out 0.25s;
     max-width: 300px;
-    background-color: rgb(125, 125, 125);
+    background-color: rgb(12, 54, 7);
 }
 
 @media (min-width: 350px) {
@@ -53,8 +64,13 @@ About the hidden menu
     width: 100%;
 }
 
+#menu-image {
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
 .secondary {
-    background-color: rgb(100, 100, 100);
+    background-color: white;
     border-radius: 25vmin;
     height: 60px;
     margin-top: 15px;
@@ -63,16 +79,16 @@ About the hidden menu
 
 .secondary:hover {
     transform: scale(1.1, 1.1);
-    background-color: rgb(90, 90, 90);
+    background-color: rgb(175, 175, 175);
 }
 
 .menu-link {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 .menu-link:hover {
-    color: white;
+    color: black;
 }
 
 /*
@@ -94,8 +110,34 @@ About the sandwich button opening the menu
     display: block;
 }
 
-.menu-button {
+
+#button-color {
     position: sticky;
-    left: 20px;
-    top: 20px
+    left: 30px;
+    top: 30px;
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
+/*
+Dark mode testing (testing meaning: seeing if i like it)
+
+
+
+#hidden-menu {
+    background-color: rgb(70, 70, 70);
+}
+
+.secondary {
+    background-color: rgb(50, 50, 50);
+}
+
+.secondary:hover {
+    background-color: rgb(40, 40, 40);
+}
+
+*/
