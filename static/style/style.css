@@ -3,7 +3,7 @@ For better looks of the whole page
 */
 
 body {
-    background-color: rgb(38, 196, 38);
+    background: linear-gradient(to top, rgb(0, 75, 0), rgb(60, 200, 40));
 }
 
 h1,
@@ -22,13 +22,11 @@ a {
 
 #border {
     background-color: white;
-    border: green;
-    border-width: 5px;
-    border-radius: 30px;
+    border-radius: 30px 30px 0px 0px;
     padding-top: 1px;
     margin-top: 70px;
     margin-inline: auto;
-    max-width: 80%;
+    width: 80%;
 }
 
 .content {
@@ -38,12 +36,6 @@ a {
     width: 80%;
 }
 
-@media (min-width: 800px) {
-    #border {
-        max-width: 90%;
-    }
-}
-
 /*
 About the hidden menu
 */
@@ -51,17 +43,7 @@ About the hidden menu
 #hidden-menu {
     transition: transform ease-out 0.25s;
     max-width: 300px;
-    background-color: rgb(12, 54, 7);
-}
-
-@media (min-width: 350px) {
-    #hiddne-menu {
-        max-width: 100%;
-    }
-}
-
-#inmenu-buttons {
-    width: 100%;
+    background: linear-gradient(to bottom, rgb(0, 125, 0), rgb(0, 51, 0));
 }
 
 #menu-image {
@@ -69,15 +51,17 @@ About the hidden menu
     margin-right: 15px;
 }
 
-.secondary {
+.inmenu-button {
     background-color: white;
     border-radius: 25vmin;
     height: 60px;
     margin-top: 15px;
     transition: 0.3s;
+    display: flex;
+    align-items: center;
 }
 
-.secondary:hover {
+.inmenu-button:hover {
     transform: scale(1.1, 1.1);
     background-color: rgb(175, 175, 175);
 }
@@ -94,6 +78,7 @@ About the hidden menu
 /*
 About the sandwich button opening the menu
 */
+
 #menu-button-light {
     display: block;
 }
@@ -110,8 +95,7 @@ About the sandwich button opening the menu
     display: block;
 }
 
-
-#button-color {
+#open-menu-button {
     position: sticky;
     left: 30px;
     top: 30px;
@@ -123,21 +107,3 @@ About the sandwich button opening the menu
     align-items: center;
     border-radius: 10px;
 }
-/*
-Dark mode testing (testing meaning: seeing if i like it)
-
-
-
-#hidden-menu {
-    background-color: rgb(70, 70, 70);
-}
-
-.secondary {
-    background-color: rgb(50, 50, 50);
-}
-
-.secondary:hover {
-    background-color: rgb(40, 40, 40);
-}
-
-*/
