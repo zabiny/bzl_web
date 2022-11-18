@@ -23,10 +23,20 @@ a {
 #border {
     background-color: white;
     border-radius: 30px 30px 0px 0px;
-    padding-top: 1px;
+    padding-top: 15px;
     margin-top: 70px;
+    padding-bottom: 50px;
     margin-inline: auto;
-    width: 80%;
+    width: 55vw;
+}
+
+.runner-image {
+    width: 8vw;
+    min-width: 100px;
+    height: auto;
+    z-index: -1;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .content {
@@ -43,7 +53,7 @@ About the hidden menu
 #hidden-menu {
     transition: transform ease-out 0.25s;
     max-width: 300px;
-    background: linear-gradient(to bottom, rgb(0, 125, 0), rgb(0, 51, 0));
+    background: linear-gradient(to bottom, rgb(30, 100, 20), rgb(6, 25, 4));
 }
 
 #menu-image {

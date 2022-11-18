@@ -1,52 +1,62 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<!--<div class="position-absolute top-0 end-0" id="grad-top"></div>-->
+<div style="position:absolute; left: 0; top: 216px; width: 22vw; min-height: 1000px;">
+    <img src="{{ url_for('static', filename='runner4.png') }}" class="position-absolute runner-image" style="top: 20%; right: min(65%, 100px);" alt="runner1">
+    <img src="{{ url_for('static', filename='runner3.png') }}" class="position-absolute runner-image" style="top: 55%; right: min(15%, 100px);" alt="runner2">
+    <img src="{{ url_for('static', filename='runner5.png') }}" class="position-absolute runner-image" style="top: 100%; right: min(40%, 100px);" alt="runner3" id="easter-egg">
+</div>
+<div style="position:absolute; right: 0; top: 216px; bottom: 0; width: 22vw; height: 100%;">
+    <img src="{{ url_for('static', filename='runner1.png') }}" class="position-absolute runner-image" style="top: 5%; left: min(30%, 100px);" alt="runner4">
+    <img src="{{ url_for('static', filename='runner2.png') }}" class="position-absolute runner-image" style="top: 40%; left: min(5%, 100px);" alt="runner5">
+    <img src="{{ url_for('static', filename='runner6.png') }}" class="position-absolute runner-image" style="top: 70%; left: min(10%, 100px);" alt="runner6">
+    <img src="{{ url_for('static', filename='runner7.png') }}" class="position-absolute runner-image" style="top: 100%; left: min(45%, 100px);" alt="runner7">
+</div>
 <h1 class="d-flex justify-content-center mt-5">Brněnská Zimní Liga</h1>
 <div id="border">
-    <h2 class="content mb-3 mt-5">Co je to BZL?</h2>
+        <h2 class="content mb-3 mt-5">Co je to BZL?</h2>
+        <p class="content">
+        Brněnská zimní liga je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno Žabovřesky.
+        Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
+        i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
+        fyzické výkonnosti či mapových schopností.<br>
+        Součástí BZL jsou závody konané v městských lokalitách Brna a Blanska - například sídliště, lesoparky a
+        parky.
+        Orientace v tomto prostředí není tak náročná jako v lese, a proto je vhodná i pro účastníky bez zkušeností s
+        orientačním během. Více o orientačním běhu se můžete dozvědět na webu
+        <a href="https://zacitorientak.cz/brno/co-to-je/190" target="_blank">zacitorientak.cz</a>
+        , či můžete zhlédnout krátké video zde:
+        <a href="https://youtu.be/D767m2DVVkc" target="_blank">Orienační běh - zelený sport</a>
+    </p>
+    <h2 class="content mb-3 mt-3">Kategorie</h2>
     <p class="content">
-    Brněnská zimní liga je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno Žabovřesky.
-    Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
-    i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
-    fyzické výkonnosti či mapových schopností.<br>
-    Součástí BZL jsou závody konané v městských lokalitách Brna a Blanska - například sídliště, lesoparky a
-    parky.
-    Orientace v tomto prostředí není tak náročná jako v lese, a proto je vhodná i pro účastníky bez zkušeností s
-    orientačním během. Více o orientačním běhu se můžete dozvědět na webu
-    <a href="https://zacitorientak.cz/brno/co-to-je/190" target="_blank">zacitorientak.cz</a>
-    , či můžete zhlédnout krátké video zde:
-    <a href="https://youtu.be/D767m2DVVkc" target="_blank">Orienační běh - zelený sport</a>
-</p>
-<h2 class="content mb-3 mt-3">Kategorie</h2>
-<p class="content">
-    Na každý závod je nutné si vybrat správnou kategorii. U většiny závodů jsou kategorie následující. Muži
-    běhají
-    kategorii H. Ženy bojují v kategorii D. Děti do 10 let mohou absolvovat svoji trať HDD v doprovodu rodičů.
-    Žáci
-    ročníku <span id="zak"></span> a mladší se hlásí do kategorie ZV, do této kategorie patří také veteráni
-    (<span id="veteran"></span> a starší).
-</p>
-<h2 class="content mb-3 mt-3">Startovné</h2>
-<p class="content">
-    Startovné v termínu pomocí internetové přihlášky stojí 80 Kč, v případě dohlášení až na místě závodu je
-    startovné
-    zvýšeno na 100 Kč. Pokud nemáte vlastní elektronický SI čip, bez kterého nelze závod absolvovat, lze si jej
-    zapůjčit na
-    prezentaci. Před cestou na start je nutné dostavit se na prezentaci v centru závodu a zaplatit startovné.
-</p>
-<h2 class="content mb-3 mt-3">Přihlášky</h2>
-<p class="content">
-    Pokud není určeno pořadetelem konkrétního závodu jinak, je pro přihlašování použit informační systém
-    orientačního
-    běhu - <a href="https://oris.orientacnisporty.cz" target="_blank">ORIS</a>. Členy registrovaných klubů
-    prosíme,
-    aby i tak platili startovné na místě každý zvlášť. Pokud nejste
-    členem žádného orientačního klubu, můžete využít jednorázové přihlášky po rozkliknutí závodu v systému ORIS.
-    Přihlášky probíhají na každý závod zvlášť, termíny přihlášek a odkaz na přilhlášení naleznete po rozkliknutí
-    konrétního závodu ze seznamu v záložce kalendář. Pokud Vás BZL zaujala, v ORISu vždy najdete aktuální seznam
-    všech OB závodů na
-    celý rok.
-</p>
+        Na každý závod je nutné si vybrat správnou kategorii. U většiny závodů jsou kategorie následující. Muži
+        běhají
+        kategorii H. Ženy bojují v kategorii D. Děti do 10 let mohou absolvovat svoji trať HDD v doprovodu rodičů.
+        Žáci
+        ročníku <span id="zak"></span> a mladší se hlásí do kategorie ZV, do této kategorie patří také veteráni
+        (<span id="veteran"></span> a starší).
+    </p>
+    <h2 class="content mb-3 mt-3">Startovné</h2>
+    <p class="content">
+        Startovné v termínu pomocí internetové přihlášky stojí 80 Kč, v případě dohlášení až na místě závodu je
+        startovné
+        zvýšeno na 100 Kč. Pokud nemáte vlastní elektronický SI čip, bez kterého nelze závod absolvovat, lze si jej
+        zapůjčit na
+        prezentaci. Před cestou na start je nutné dostavit se na prezentaci v centru závodu a zaplatit startovné.
+    </p>
+    <h2 class="content mb-3 mt-3">Přihlášky</h2>
+    <p class="content">
+        Pokud není určeno pořadetelem konkrétního závodu jinak, je pro přihlašování použit informační systém
+        orientačního
+        běhu - <a href="https://oris.orientacnisporty.cz" target="_blank">ORIS</a>. Členy registrovaných klubů
+        prosíme,
+        aby i tak platili startovné na místě každý zvlášť. Pokud nejste
+        členem žádného orientačního klubu, můžete využít jednorázové přihlášky po rozkliknutí závodu v systému ORIS.
+        Přihlášky probíhají na každý závod zvlášť, termíny přihlášek a odkaz na přilhlášení naleznete po rozkliknutí
+        konrétního závodu ze seznamu v záložce kalendář. Pokud Vás BZL zaujala, v ORISu vždy najdete aktuální seznam
+        všech OB závodů na
+        celý rok.
+    </p>
 </div>
 {% endblock %}
