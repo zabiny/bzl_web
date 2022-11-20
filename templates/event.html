@@ -36,7 +36,7 @@
             <a href="{{event_data['web']}}">
                 {% if event_data['oris_id'] %}
                     ORIS
-                {% else %}
+                {% elif event_data['web'] %}
                     {{event_data['web']}}
                 {% endif %}
             </a>

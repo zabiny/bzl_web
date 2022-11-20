@@ -67,8 +67,8 @@ class Event:
             "date": oris_json["Date"],
             "entry_date": oris_json["EntryDate1"],
             "place_desc": oris_json["Place"],
-            "gps_lat": oris_json["GPSLat"],
-            "gps_lon": oris_json["GPSLon"],
+            "gps_lat": oris_json["GPSLat"] if oris_json["GPSLat"] != "0" else None,
+            "gps_lon": oris_json["GPSLon"] if oris_json["GPSLon"] != "0" else None,
         }
         return result
 
