@@ -1,0 +1,57 @@
+/*
+For better looks of the whole page
+*/
+
+body {
+    background: linear-gradient(to top, rgb(0, 75, 0), rgb(90, 185, 78));
+    min-height: 100vh;
+}
+
+h1,
+h2 {
+    font-weight: bold !important;
+}
+
+p {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+#border {
+    background-color: white;
+    border-radius: 30px 30px 0px 0px;
+    padding-top: 15px;
+    margin-top: 70px;
+    padding-bottom: 50px;
+    margin-inline: auto;
+    width: 55vw;
+    min-width: 720px;
+    min-height: 100%;
+}
+
+@media (max-width: 720px) {
+    #border {
+        min-width: 100vw;
+    }
+}
+
+.runner-image {
+    width: 8vw;
+    min-width: 100px;
+    height: auto;
+    z-index: -1;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.content {
+    margin-top: 20px;
+    margin: auto;
+    line-height: 1.75;
+    width: 80%;
+}
+
