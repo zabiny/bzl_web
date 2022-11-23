@@ -3,5 +3,6 @@
     "date": "2023-03-12",
     "place_desc": "Adamov",
     "description": "Sprint s kouskem lesa",
-    "bzl_order": 5
+    "bzl_order": 5,
+    "difficulty": "easy"
 }

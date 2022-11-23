@@ -1,14 +1,57 @@
 import json
 import logging  # TODO: setup logger properly
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 from urllib.error import HTTPError
 
 from src.event import Event
 
 
 class EventManager:
-    def create_event_from_config(self, season: str, event_id: str) -> Event:
+    def __init__(self) -> None:
+        seasons = [f.stem for f in Path("data").glob("*-*")]
+        self._events = {season: self._load_all_events(season) for season in seasons}
+
+    def _load_all_events(self, season: str):
+        """Create a dict with all events of a season.
+
+        Parameters
+        ----------
+        season
+            season string (e.g. "22-23")
+
+        Returns
+        -------
+        Dict
+            All events in a season. 'event_id' (NOT oris_id) as keys, events as values.
+            Sorted by event date.
+        """
+        season_dir = Path(f"data/{season}/events/")
+        events = {}
+
+        for event_file in season_dir.glob("*.json"):
+            event = self._create_event_from_config(season, event_file.stem)
+            if event:
+                events[event_file.stem] = event
+
+        # Sort by date
+        def _event_date(event_tuple):
+            # Helper function for sorting by date - class version
+            return event_tuple[1].date
+
+        events = dict(sorted(events.items(), key=_event_date))
+
+        return events
+
+    def update(self) -> None:
+        """Update EventManager.
+
+        Check for changes in 'data' folder + fetch data from ORIS API.
+        """
+        seasons = [f.stem for f in Path("data").glob("*-*")]
+        self._events = {season: self._load_all_events(season) for season in seasons}
+
+    def _create_event_from_config(self, season: str, event_id: str) -> Event:
         """Load a json config with event's definition, fetch info from ORIS if there is
         an 'oris_id' in the config and create an instance of an Event class.
 
@@ -61,10 +104,33 @@ class EventManager:
             return None
         return event
 
+    def get_event(self, season: str, event_id: str) -> Optional[Event]:
+        """Get event from loaded events by season and event_id.
+
+        Parameters
+        ----------
+        season
+            Season to which the event belongs (e.g. '21-22')
+        event_id : str
+            Event identifier in the season (e.g. 'nopb'). It must be unique within
+            the season. Config for the event must be stored in
+            'data/{season}/events/{event_id}.json' file.
+
+        Returns
+        -------
+        Optional[Event]
+            _description_
+        """
+        events = self._events.get(season, None)
+        if events:
+            event = events.get(event_id, None)
+            return event
+        return None
+
     def get_all_events(
         self, season: str, as_dicts: bool = False
     ) -> Dict[str, Union[Event, Dict[str, str]]]:
-        """Create a dict with all events of a season.
+        """Get all events of a season.
 
         Parameters
         ----------
@@ -79,23 +145,11 @@ class EventManager:
             All events in a season. 'event_id' (NOT oris_id) as keys, events as values.
             Sorted by event date.
         """
-        season_dir = Path(f"data/{season}/events/")
-        events = {}
+        events = self._events.get(season, None)
 
-        for event_file in season_dir.glob("*.json"):
-            event = self.create_event_from_config(season, event_file.stem)
-            if event:
-                events[event_file.stem] = event
-
-        # Sort by date
-        def _event_date(event_tuple):
-            # Helper function for sorting by date - class version
-            return event_tuple[1].date
-
-        events = dict(sorted(events.items(), key=_event_date))
-
-        # Convert classes to dicts
-        if as_dicts:
-            events = {e_id: e.to_dict() for e_id, e in events.items()}
+        if events:
+            # Convert classes to dicts
+            if as_dicts:
+                events = {e_id: e.to_dict() for e_id, e in events.items()}
 
         return events

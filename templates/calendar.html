@@ -1,15 +1,41 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}"> <!-- aby jsem nic neposral přejmenovím css souborů -->
+{% endblock %}
+
 {% block body %}
-<h1>
-    Kalendář na sezónu {{season}}
-</h1>
-<table>
-    {% for event_id, event in events.items() %}
-        <tr>
-            <td>{{event['date']}}:</td>
-            <td><a href="{{url_for('event', season=season, event_id=event_id)}}">{{event['name']}}</a></td>
-        </tr>
-    {% endfor %}
-</table>
+<div style="max-width: 80em; margin: 5em auto; background-color: white; border-radius: 2em; padding: 4em">
+
+    <h1 style="text-align: center; margin-bottom: 1em">
+        Kalendář na sezónu {{season}}
+    </h1>
+
+    <div style="display: flex; flex-direction: column;">
+        {% for event_id, event in events.items() %}
+        <div style="display: flex">
+            <div style="display: flex; flex-direction: column; flex-basis: 5em; text-align: center">
+                <div>{{event['date']}}</div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; margin: 0 2em; flex: 1 1 auto">
+                <div><a href="{{url_for('event', season=season, event_id=event_id)}}"><h3>{{event['name']}}</h3></a></div>
+                <div>{{event['description']}}</div>
+            </div>
+
+            <div style="display: flex; flex: 0 0 8em">
+                {% if event['difficulty'] == "easy" %}
+                    <img style="max-width: 100%;max-height: 100%;" src="{{ url_for('static', filename='images/easy.png') }}">
+                {% elif event['difficulty'] == "hard" %}
+                    <img style="max-width: 100%;max-height: 100%;" src="{{ url_for('static', filename='images/hard.png') }}">
+                {% else %}
+                    <img style="max-width: 100%;max-height: 100%;" src="{{ url_for('static', filename='images/medium.png') }}">
+                {% endif %}
+            </div>
+        </div>
+        <hr />
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock %}

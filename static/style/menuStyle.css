@@ -1,0 +1,89 @@
+/*
+About the hidden menu
+*/
+
+#hidden-menu {
+    transition: transform ease-out 0.25s;
+    max-width: 20vw;
+    min-width: 292px;
+    background: linear-gradient(to bottom, rgb(30, 100, 20), rgb(6, 25, 4));
+}
+
+#menu-image {
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+#inmenu-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    justify-content: center;
+    align-items: center;
+}
+
+@media only screen and (max-width: 800px) {
+    #inmenu-buttons {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+}
+
+.inmenu-button {
+    background-color: white;
+    border-radius: 25vmin;
+    height: 60px;
+    width: 260px;
+    margin-top: 15px;
+    margin-inline: auto;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.inmenu-button:hover {
+    transform: scale(1.1, 1.1);
+    background-color: rgb(175, 175, 175);
+}
+
+.menu-link {
+    color: black;
+    text-decoration: none;
+}
+
+.menu-link:hover {
+    color: black;
+}
+
+/*
+About the sandwich button opening the menu
+*/
+
+#menu-button-light {
+    display: block;
+}
+
+#menu-button-dark {
+    display: none;
+}
+
+#menu-button-light:hover {
+    display: none;
+}
+
+.menu-button:hover~#menu-button-dark {
+    display: block;
+}
+
+#open-menu-button {
+    position: fixed;
+    left: 30px;
+    top: 30px;
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
