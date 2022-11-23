@@ -1,9 +1,20 @@
+import atexit
+
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 
 from src.event_manager import EventManager
 
 app = Flask(__name__)
 em = EventManager()
+
+# Update the EventManager every 10 mins
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=em.update, trigger="interval", seconds=600)
+scheduler.start()
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 
 
 # Home
@@ -29,7 +40,7 @@ def results(season: str):
 # Event
 @app.route("/<string:season>/event/<string:event_id>/")
 def event(season: str, event_id: str):
-    ev = em.create_event_from_config(season, event_id)
+    ev = em.get_event(season, event_id)
     if ev:
         return render_template("event.html", event_data=ev.to_dict())
     else:
