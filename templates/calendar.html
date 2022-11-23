@@ -1,37 +1,47 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}"> <!-- aby jsem nic neposral přejmenovím css souborů -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/calendarStyle.css') }}">
 {% endblock %}
 
 {% block body %}
-<div style="max-width: 80em; margin: 5em auto; background-color: white; border-radius: 2em; padding: 4em">
 
-    <h1 style="text-align: center; margin-bottom: 1em">
-        Kalendář na sezónu {{season}}
-    </h1>
+<h1 id="name">
+    Kalendář na sezónu {{season}}
+</h1>
 
-    <div style="display: flex; flex-direction: column;">
+<div id="border">
+
+    <div id="calendar">
+
         {% for event_id, event in events.items() %}
+
         <div style="display: flex">
-            <div style="display: flex; flex-direction: column; flex-basis: 5em; text-align: center">
+
+            <div id="date">
                 <div>{{event['date']}}</div>
             </div>
 
-            <div style="display: flex; flex-direction: column; margin: 0 2em; flex: 1 1 auto">
-                <div><a href="{{url_for('event', season=season, event_id=event_id)}}"><h3>{{event['name']}}</h3></a></div>
+            <div id="description">
+                <div>
+                    <a href="{{url_for('event', season=season, event_id=event_id)}}">
+                        <h3>{{event['name']}}</h3>
+                    </a>
+                </div>
                 <div>{{event['description']}}</div>
             </div>
 
-            <div style="display: flex; flex: 0 0 8em">
+            <div id="difficulty">
                 {% if event['difficulty'] == "easy" %}
-                    <img style="max-width: 100%;max-height: 100%;" src="{{ url_for('static', filename='images/easy.png') }}">
+                    <img src="{{ url_for('static', filename='images/easy.png') }}" class="difficutly-image">
                 {% elif event['difficulty'] == "hard" %}
-                    <img style="max-width: 100%;max-height: 100%;" src="{{ url_for('static', filename='images/hard.png') }}">
+                    <img src="{{ url_for('static', filename='images/hard.png') }}" class="difficutly-image">
                 {% else %}
-                    <img style="max-width: 100%;max-height: 100%;" src="{{ url_for('static', filename='images/medium.png') }}">
+                    <img src="{{ url_for('static', filename='images/medium.png') }}" class="difficutly-image">
                 {% endif %}
+
             </div>
+
         </div>
         <hr />
         {% endfor %}
