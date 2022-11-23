@@ -3,7 +3,8 @@ For better looks of the whole page
 */
 
 body {
-    background: linear-gradient(to top, rgb(0, 75, 0), rgb(60, 200, 40));
+    background: linear-gradient(to top, rgb(0, 75, 0), rgb(90, 185, 78));
+    min-height: 100vh;
 }
 
 h1,
@@ -52,7 +53,8 @@ About the hidden menu
 
 #hidden-menu {
     transition: transform ease-out 0.25s;
-    max-width: 300px;
+    max-width: 20vw;
+    min-width: 292px;
     background: linear-gradient(to bottom, rgb(30, 100, 20), rgb(6, 25, 4));
 }
 
@@ -61,11 +63,17 @@ About the hidden menu
     margin-right: 15px;
 }
 
+#inmenu-buttons {
+    justify-content: end;
+}
+
 .inmenu-button {
     background-color: white;
     border-radius: 25vmin;
     height: 60px;
+    width: 260px;
     margin-top: 15px;
+    margin-inline: auto;
     transition: 0.3s;
     display: flex;
     align-items: center;
@@ -106,7 +114,7 @@ About the sandwich button opening the menu
 }
 
 #open-menu-button {
-    position: sticky;
+    position: fixed;
     left: 30px;
     top: 30px;
     background-color: white;

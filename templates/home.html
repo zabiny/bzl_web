@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div style="position:absolute; left: 0; top: 216px; width: 22vw; min-height: 1000px;">
-    <img src="{{ url_for('static', filename='runner4.png') }}" class="position-absolute runner-image" style="top: 20%; right: min(65%, 100px);" alt="runner1">
-    <img src="{{ url_for('static', filename='runner3.png') }}" class="position-absolute runner-image" style="top: 55%; right: min(15%, 100px);" alt="runner2">
-    <img src="{{ url_for('static', filename='runner5.png') }}" class="position-absolute runner-image" style="top: 100%; right: min(40%, 100px);" alt="runner3" id="easter-egg">
+<div style="position:absolute; left: 0; top: 216px; width: 22vw; min-height: 100%; z-index: -1;">
+    <img src="{{ url_for('static', filename='images/runner4.svg') }}" class="position-absolute runner-image" style="bottom: 80%; right: min(65%, 100px);" alt="runner4">
+    <img src="{{ url_for('static', filename='images/runner3.svg') }}" class="position-absolute runner-image" style="bottom: 45%; right: min(15%, 100px);" alt="runner3">
+    <img src="{{ url_for('static', filename='images/runner5.svg') }}" class="position-absolute runner-image" style="bottom: 0; right: min(40%, 100px);" alt="runner5">
 </div>
-<div style="position:absolute; right: 0; top: 216px; bottom: 0; width: 22vw; height: 100%;">
-    <img src="{{ url_for('static', filename='runner1.png') }}" class="position-absolute runner-image" style="top: 5%; left: min(30%, 100px);" alt="runner4">
-    <img src="{{ url_for('static', filename='runner2.png') }}" class="position-absolute runner-image" style="top: 40%; left: min(5%, 100px);" alt="runner5">
-    <img src="{{ url_for('static', filename='runner6.png') }}" class="position-absolute runner-image" style="top: 70%; left: min(10%, 100px);" alt="runner6">
-    <img src="{{ url_for('static', filename='runner7.png') }}" class="position-absolute runner-image" style="top: 100%; left: min(45%, 100px);" alt="runner7">
+<div style="position:absolute; right: 0; top: 216px; bottom: 0; width: 22vw; height: 100%; z-index: -1;">
+    <img src="{{ url_for('static', filename='images/runner1.svg') }}" class="position-absolute runner-image" style="bottom: 95%; left: min(30%, 100px);" alt="runner1">
+    <img src="{{ url_for('static', filename='images/runner2.svg') }}" class="position-absolute runner-image" style="bottom: 60%; left: min(5%, 100px);" alt="runner2">
+    <img src="{{ url_for('static', filename='images/runner6.svg') }}" class="position-absolute runner-image" style="bottom: 30%; left: min(10%, 100px);" alt="runner6">
+    <img src="{{ url_for('static', filename='images/runner7.svg') }}" class="position-absolute runner-image" style="bottom: 0; left: min(45%, 100px);" alt="runner7">
 </div>
 <h1 class="d-flex justify-content-center mt-5">Brněnská Zimní Liga</h1>
 <div id="border">
