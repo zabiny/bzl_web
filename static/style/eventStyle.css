@@ -38,6 +38,10 @@ tr {
     margin-top: 3rem;
 }
 
+#description {
+    max-width: 70%;
+}
+
 @media (max-width: 500px) {
     #name {
         margin-top: 6rem;
