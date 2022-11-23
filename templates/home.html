@@ -1,16 +1,20 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}">
+{% endblock %}
+
 {% block body %}
 <div style="position:absolute; left: 0; top: 216px; width: 22vw; min-height: 100%; z-index: -1;">
-    <img src="{{ url_for('static', filename='images/runner4.svg') }}" class="position-absolute runner-image" style="bottom: 80%; right: min(65%, 100px);" alt="runner4">
-    <img src="{{ url_for('static', filename='images/runner3.svg') }}" class="position-absolute runner-image" style="bottom: 45%; right: min(15%, 100px);" alt="runner3">
-    <img src="{{ url_for('static', filename='images/runner5.svg') }}" class="position-absolute runner-image" style="bottom: 0; right: min(40%, 100px);" alt="runner5">
+    <img src="{{ url_for('static', filename='images/runner4.svg') }}" class="position-absolute runner-image" style="bottom: 80%; left: 65%;" alt="runner4">
+    <img src="{{ url_for('static', filename='images/runner3.svg') }}" class="position-absolute runner-image" style="bottom: 45%; left: min(15%, 100px);" alt="runner3">
+    <img src="{{ url_for('static', filename='images/runner5.svg') }}" class="position-absolute runner-image" style="bottom: 0; left: min(40%, 100px);" alt="runner5">
 </div>
 <div style="position:absolute; right: 0; top: 216px; bottom: 0; width: 22vw; height: 100%; z-index: -1;">
-    <img src="{{ url_for('static', filename='images/runner1.svg') }}" class="position-absolute runner-image" style="bottom: 95%; left: min(30%, 100px);" alt="runner1">
-    <img src="{{ url_for('static', filename='images/runner2.svg') }}" class="position-absolute runner-image" style="bottom: 60%; left: min(5%, 100px);" alt="runner2">
-    <img src="{{ url_for('static', filename='images/runner6.svg') }}" class="position-absolute runner-image" style="bottom: 30%; left: min(10%, 100px);" alt="runner6">
-    <img src="{{ url_for('static', filename='images/runner7.svg') }}" class="position-absolute runner-image" style="bottom: 0; left: min(45%, 100px);" alt="runner7">
+    <img src="{{ url_for('static', filename='images/runner1.svg') }}" class="position-absolute runner-image" style="bottom: 95%; right: min(30%, calc(30% + 100px));" alt="runner1">
+    <img src="{{ url_for('static', filename='images/runner2.svg') }}" class="position-absolute runner-image" style="bottom: 60%; right: min(5%, 100px);" alt="runner2">
+    <img src="{{ url_for('static', filename='images/runner6.svg') }}" class="position-absolute runner-image" style="bottom: 30%; right: min(10%, 100px);" alt="runner6">
+    <img src="{{ url_for('static', filename='images/runner7.svg') }}" class="position-absolute runner-image" style="bottom: 0; right: min(45%, 100px);" alt="runner7">
 </div>
 <h1 class="d-flex justify-content-center mt-5">Brněnská Zimní Liga</h1>
 <div id="border">
@@ -59,4 +63,8 @@
         celý rok.
     </p>
 </div>
+{% endblock %}
+
+{% block footer %}
+<script src="{{ url_for('static', filename='script/yearGenerator.js') }}" type="text/javascript"></script>
 {% endblock %}

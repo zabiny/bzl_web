@@ -1,5 +1,9 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}"> <!-- aby jsem nic neposral přejmenovím css souborů -->
+{% endblock %}
+
 {% block body %}
 <h1>
     Kalendář na sezónu {{season}}
