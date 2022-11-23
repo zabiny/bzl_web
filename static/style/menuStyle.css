@@ -15,7 +15,18 @@ About the hidden menu
 }
 
 #inmenu-buttons {
-    justify-content: end;
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    justify-content: center;
+    align-items: center;
+}
+
+@media only screen and (max-width: 800px) {
+    #inmenu-buttons {
+        flex-direction: column;
+        gap: 0.5em;
+    }
 }
 
 .inmenu-button {
