@@ -1,5 +1,6 @@
 import atexit
-
+from datetime import date
+import locale
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 
@@ -46,6 +47,23 @@ def event(season: str, event_id: str):
     else:
         return redirect(url_for("home"))
 
+locale.setlocale(locale.LC_ALL, 'cs_CZ.utf8')
+# jinja filters
+@app.template_filter('str_to_day')
+def _filter_day(string):
+    if not string:
+        return ""
+    d = date.fromisoformat(string)
+    ftm='%d'
+    return d.strftime(ftm)
+
+@app.template_filter('str_to_month_and_year')
+def _filter_month_and_year(string):
+    if not string:
+        return ""
+    d = date.fromisoformat(string)
+    ftm='%b %Y'
+    return d.strftime(ftm)
 
 def main():
     app.run(port=5000, debug=True)

@@ -16,10 +16,22 @@
 
         {% for event_id, event in events.items() %}
 
-        <div style="display: flex">
+        <div class="calendar-row">
 
-            <div class="date">
-                <div>{{event['date']}}</div>
+            <div class="first-col">
+                <div class="date">
+                    <div><h2 style="margin-bottom: 0">{{event['date']|str_to_day}}</h2></div>
+                    <div>{{event['date']|str_to_month_and_year|upper}}</div>
+                </div>
+                <div class="difficulty difficulty--mobile">
+                    {% if event['difficulty'] == "easy" %}
+                    <img src="{{ url_for('static', filename='images/easy.png') }}" class="difficulty-image">
+                    {% elif event['difficulty'] == "hard" %}
+                    <img src="{{ url_for('static', filename='images/hard.png') }}" class="difficulty-image">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/medium.png') }}" class="difficulty-image">
+                    {% endif %}
+                </div>
             </div>
 
             <div class="description">
@@ -31,15 +43,14 @@
                 <div>{{event['description']}}</div>
             </div>
 
-            <div class="difficulty">
+            <div class="difficulty difficulty--desktop">
                 {% if event['difficulty'] == "easy" %}
-                    <img src="{{ url_for('static', filename='images/easy.png') }}" class="difficutly-image">
+                    <img src="{{ url_for('static', filename='images/easy.png') }}" class="difficulty-image">
                 {% elif event['difficulty'] == "hard" %}
-                    <img src="{{ url_for('static', filename='images/hard.png') }}" class="difficutly-image">
+                    <img src="{{ url_for('static', filename='images/hard.png') }}" class="difficulty-image">
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/medium.png') }}" class="difficutly-image">
+                    <img src="{{ url_for('static', filename='images/medium.png') }}" class="difficulty-image">
                 {% endif %}
-
             </div>
 
         </div>
