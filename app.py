@@ -1,7 +1,8 @@
-import atexit
+import atexit, math
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
+from datetime import date
 
 from src.event_manager import EventManager
 
@@ -16,12 +17,13 @@ scheduler.start()
 # Shut down the scheduler when exiting the app
 atexit.register(lambda: scheduler.shutdown())
 
-
 # Home
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    zakYear = date.today().year - (14 - math.floor(date.today().month / 6))
+    vetYear = date.today().year - (46 - math.floor(date.today().month / 6))
+    return render_template("home.html", zakYear=zakYear, vetYear=vetYear)
 
 
 # Calendar
