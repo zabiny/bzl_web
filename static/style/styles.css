@@ -52,6 +52,12 @@ a {
     margin-right: 0;
 }
 
+@media (max-width: 720px) {
+    .runner-image {
+        display: none;
+    }
+}
+
 .content {
     margin-top: 20px;
     margin: auto;
