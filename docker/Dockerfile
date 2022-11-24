@@ -10,9 +10,9 @@ RUN apt-get update \
     && pip install --no-cache-dir -r requirements.txt \
     && apt-get purge -y --auto-remove gcc libc-dev
 
-ENV LC_ALL cs_CZ
-ENV LANG cs_CZ
-ENV LANGUAGE cs_CZ
+ENV LC_ALL cs_CZ.utf8
+ENV LANG cs_CZ.utf8
+ENV LANGUAGE cs_CZ.utf8
 
 COPY . .
 
