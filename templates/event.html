@@ -4,25 +4,26 @@
     <title>{{ event_data.name }}</title>
     <script src="https://api.mapy.cz/loader.js"></script>
 	<script>Loader.load()</script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/eventStyle.css') }}">
+    <link rel="stylesheet" href="/static/style/eventStyle.css">
 {% endblock %}
 
 {% block body %}
 
 {% if event_data['name'] %}
-    <h1 id="name">
+    <h1 class="page-header">
         {{event_data['name']}}
     </h1>
 {% endif %}
 
 <div class="position-relative" id="border">
+    <div id="event-detail">
 
     {% if event_data['difficulty'] == 'easy' %}
-    <img src="{{ url_for('static', filename='images/easy.png') }}" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
+    <img src="/static/images/easy.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
     {% elif event_data['difficulty'] == 'medium' %}
-    <img src="{{ url_for('static', filename='images/medium.png') }}" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
+    <img src="/static/images/medium.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
     {% elif event_data['difficulty'] == 'hard' %}
-    <img src="{{ url_for('static', filename='images/hard.png') }}" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
+    <img src="/static/images/hard.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
     {% endif %}
 
 
@@ -82,6 +83,7 @@
             marker.decorate(SMap.Marker.Feature.Card, card);
             layer.addMarker(marker);
         </script>
+    </div>
 </div>
 {% endif %}
 {% endblock %}
