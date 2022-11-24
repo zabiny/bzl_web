@@ -5,28 +5,40 @@
     {% block head %}{% endblock %}
     <meta charset="UTF-8">
     <title>BZL - Brěnská zimní liga v orientačním běhu</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='images/frog.svg') }}">
+    <link rel="shortcut icon" href="/static/images/frog.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/menuStyle.css') }}">
+    <link rel="stylesheet" href="/static/style/styles.css">
+    <link rel="stylesheet" href="/static/style/menuStyle.css">
 
 </head>
 
 <body>
+    <div style="position:absolute; left: 0; top: 216px; width: 22vw; min-height: 100%; z-index: -1;">
+        <img src="/static/images/runner4.svg" class="position-absolute runner-image" style="bottom: 80%; left: 65%;" alt="runner4">
+        <img src="/static/images/runner3.svg" class="position-absolute runner-image" style="bottom: 45%; left: min(15%, 100px);" alt="runner3">
+        <img src="/static/images/runner5.svg" class="position-absolute runner-image" style="bottom: 0; left: min(40%, 100px);" alt="runner5">
+    </div>
+    <div style="position:absolute; right: 0; top: 216px; bottom: 0; width: 22vw; height: 100%; z-index: -1;">
+        <img src="/static/images/runner1.svg" class="position-absolute runner-image" style="bottom: 95%; right: min(30%, calc(30% + 100px));" alt="runner1">
+        <img src="/static/images/runner2.svg" class="position-absolute runner-image" style="bottom: 60%; right: min(5%, 100px);" alt="runner2">
+        <img src="/static/images/runner6.svg" class="position-absolute runner-image" style="bottom: 30%; right: min(10%, 100px);" alt="runner6">
+        <img src="/static/images/runner7.svg" class="position-absolute runner-image" style="bottom: 0; right: min(45%, 100px);" alt="runner7">
+    </div>
     <header>
         <div class="mt-5 fs-5" id="inmenu-buttons">
             <div class="position-relative ps-4 inmenu-button" style="margin: 0">
-                <img src="{{ url_for('static', filename='images/home_icon.svg') }}" width="30" height="30" alt="home_icon">
+                <img src="/static/images/home_icon.svg" width="30" height="30" alt="home_icon">
                 <a class="ms-3 stretched-link menu-link" href="{{ url_for('home') }}">Hlavní stránka</a>
             </div>
             <div class="position-relative ps-4 inmenu-button" style="margin: 0">
-                <img src="{{ url_for('static', filename='images/calendar_icon.svg') }}" width="30" height="30" alt="calendar_icon">
+                <img src="/static/images/calendar_icon.svg" width="30" height="30" alt="calendar_icon">
                 <a class="ms-3 stretched-link menu-link" href="{{ url_for('calendar', season='22-23') }}">Kalendář závodů</a>
             </div>
             <div class="position-relative ps-4 inmenu-button" style="margin: 0">
-                <img src="{{ url_for('static', filename='images/results_icon.svg') }}" width="30" height="30" alt="results_icon">
+                <img src="/static/images/results_icon.svg" width="30" height="30" alt="results_icon">
                 <a class="ms-3 stretched-link menu-link" href="{{ url_for('results', season='22-23') }}">Průběžné výsledky</a>
             </div>
         </div>
@@ -38,7 +50,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <script>
+        if (Math.random() < 0.005)
+        {
+            const images = document.getElementsByClassName("runner-image");
+            Array.from(images).forEach(im => {
+                im.src = "/static/images/runner8.svg"
+            });
+        }
+    </script>
     {% block footer %}{% endblock %}
+
 </body>
 
 </html>
