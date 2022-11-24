@@ -28,7 +28,7 @@ For better looks of the whole page
 }
 
 .first-col {
-    flex: 0 0 4em;
+    flex: 0 0 5em;
 }
 
 .description {
@@ -44,7 +44,8 @@ For better looks of the whole page
 
 .difficulty--mobile {
     display: flex;
-    margin-top: 1em;
+    max-width: 3em;
+    margin: 0.5em auto 0;
 }
 
 .difficulty--desktop {
