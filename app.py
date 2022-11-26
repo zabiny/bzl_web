@@ -1,6 +1,7 @@
 import atexit
 from datetime import date
 import locale
+locale.setlocale(locale.LC_ALL, 'cs_CZ')
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 
