@@ -1,7 +1,6 @@
 import atexit
 from datetime import date
 import locale
-locale.setlocale(locale.LC_ALL, 'cs_CZ')
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 
@@ -54,19 +53,20 @@ def _filter_day(string):
     if not string:
         return ""
     d = date.fromisoformat(string)
-    ftm='%d'
-    return d.strftime(ftm)
+    return d.strftime('%d')
 
 @app.template_filter('str_to_month_and_year')
 def _filter_month_and_year(string):
     if not string:
         return ""
     d = date.fromisoformat(string)
-    ftm='%b %Y'
-    return d.strftime(ftm)
+    locale.setlocale(locale.LC_ALL, 'cs_CZ')
+    month_and_year = d.strftime('%b %Y')
+    locale.resetlocale()
+    return month_and_year
+
 
 def main():
-    locale.setlocale(locale.LC_ALL, 'cs_CZ')
     app.run(port=5000, debug=True)
 
 
