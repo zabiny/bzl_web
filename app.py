@@ -47,7 +47,6 @@ def event(season: str, event_id: str):
     else:
         return redirect(url_for("home"))
 
-locale.setlocale(locale.LC_ALL, 'cs_CZ')
 # jinja filters
 @app.template_filter('str_to_day')
 def _filter_day(string):
@@ -66,6 +65,7 @@ def _filter_month_and_year(string):
     return d.strftime(ftm)
 
 def main():
+    locale.setlocale(locale.LC_ALL, 'cs_CZ')
     app.run(port=5000, debug=True)
 
 
