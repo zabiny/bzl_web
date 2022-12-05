@@ -27,20 +27,20 @@
     {% endif %}
 
 
-    {% if event_data['description'] %}
+    {% if event_data['desc_short'] %}
         <h2 id="description">
-            {{event_data['description']}}
+            {{event_data['desc_short']}}
         </h2>
     {% endif %}
 
     <!-- Table with basic info -->
     <table class="table mt-4">
         <tr>
-            <td>Datum:</td><td>{{event_data['date']}}</td>
+            <td>Datum:</td><td>{{event_data['date'] | str_to_date}}</td>
         </tr>
         {% if event_data['entry_date'] %}
             <tr>
-                <td>Přihlášky do:</td><td>{{event_data['entry_date']}}</td>
+                <td>Přihlášky do:</td><td>{{event_data['entry_date'] | str_to_datetime}}</td>
             </tr>
         {% endif %}
         <tr>
@@ -61,6 +61,13 @@
             </tr>
         {% endif %}
     </table>
+
+    <!-- Long description if presented -->
+    {% if event_data['desc_long'] %}
+        <div id="description">
+            {{event_data['desc_long']}}
+        </div>
+    {% endif %}
 
     <!-- Map -->
     {% if event_data['gps_lat'] and event_data['gps_lon'] %}
