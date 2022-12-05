@@ -1,6 +1,7 @@
 import atexit
-from datetime import date
 import locale
+from datetime import date
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 
@@ -47,23 +48,48 @@ def event(season: str, event_id: str):
     else:
         return redirect(url_for("home"))
 
+
 # jinja filters
-@app.template_filter('str_to_day')
+@app.template_filter("str_to_day")
 def _filter_day(string):
     if not string:
         return ""
     d = date.fromisoformat(string)
-    return d.strftime('%d')
+    return d.strftime("%d")
 
-@app.template_filter('str_to_month_and_year')
+
+@app.template_filter("str_to_month_and_year")
 def _filter_month_and_year(string):
     if not string:
         return ""
     d = date.fromisoformat(string)
-    locale.setlocale(locale.LC_ALL, 'cs_CZ')
-    month_and_year = d.strftime('%b %Y')
+    locale.setlocale(locale.LC_ALL, "cs_CZ")
+    month_and_year = d.strftime("%b %Y")
     locale.resetlocale()
     return month_and_year
+
+
+@app.template_filter("str_to_date")
+def _filter_date(string):
+    if not string:
+        return ""
+    d = date.fromisoformat(string)
+    locale.setlocale(locale.LC_ALL, "cs_CZ")
+    czech_date = d.strftime("%d. %m. %Y")
+    locale.resetlocale()
+    return czech_date
+
+
+@app.template_filter("str_to_datetime")
+def _filter_datetime(string):
+    if not string:
+        return ""
+    string_date, string_time = string.split()  # TODO: use time too
+    d = date.fromisoformat(string_date)
+    locale.setlocale(locale.LC_ALL, "cs_CZ")
+    czech_datetime = d.strftime("%d. %m. %Y")
+    locale.resetlocale()
+    return czech_datetime
 
 
 def main():

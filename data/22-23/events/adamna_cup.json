@@ -4,5 +4,6 @@
     "web": "http://cup.adamna.net",
     "bzl_order": 4,
     "difficulty": "medium",
-    "description": "Jubilejní dvacátý ročník tradičního zimního sprintového závodu okořeněného Self-choice."
+    "desc_long": "Jubilejní dvacátý ročník tradičního zimního sprintového závodu okořeněného self-choice.",
+    "desc_short": "Sprint se self-choice"
 }
