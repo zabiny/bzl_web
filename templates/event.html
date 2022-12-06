@@ -36,11 +36,12 @@
     <!-- Table with basic info -->
     <table class="table mt-4">
         <tr>
-            <td>Datum:</td><td>{{event_data['date'] | str_to_date}}</td>
+            <td>Datum:</td><td>{{event_data['date'] | czech_date_from_date }}</td>
         </tr>
         {% if event_data['entry_date'] %}
             <tr>
-                <td>Přihlášky do:</td><td>{{event_data['entry_date'] | str_to_datetime}}</td>
+                <td>Přihlášky do:</td>
+                <td>{{event_data['entry_date'] | czech_date_from_datetime }}</td>
             </tr>
         {% endif %}
         <tr>

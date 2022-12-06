@@ -17,11 +17,15 @@
         {% for event_id, event in events.items() %}
 
         <div class="calendar-row">
-
+            <!-- Date and dificulty (on mobile) -->
             <div class="first-col">
                 <div class="date">
-                    <div><h2 style="margin-bottom: 0">{{event['date']|str_to_day}}</h2></div>
-                    <div>{{event['date']|str_to_month_and_year|upper}}</div>
+                    <div>
+                        <h2 class="{{'past-event' if event['is_past']}}" style="margin-bottom: 0">
+                            {{event['date'] | day_from_date}}
+                        </h2>
+                    </div>
+                    <div>{{event['date'] | month_and_year_from_date | upper}}</div>
                 </div>
                 <div class="difficulty difficulty--mobile">
                     {% if event['difficulty'] == "easy" %}
@@ -33,16 +37,23 @@
                     {% endif %}
                 </div>
             </div>
-
+            
+            <!-- Name and short description -->
             <div class="description">
                 <div>
                     <a href="{{url_for('event', season=season, event_id=event_id)}}">
-                        <h3>{{event['name']}}</h3>
+                        <h3 class="{{'past-event' if event['is_past']}}">
+                            {% if event['is_bzl'] %}
+                            {{event['bzl_order']}}.  
+                            {% endif %}
+                            {{event['name']}}
+                        </h3>
                     </a>
                 </div>
                 <div>{{event['desc_short']}}</div>
             </div>
-
+            
+            <!-- Difficulty (on desktop) -->
             <div class="difficulty difficulty--desktop">
                 {% if event['difficulty'] == "easy" %}
                     <img src="{{ url_for('static', filename='images/easy.png') }}" class="difficulty-image">

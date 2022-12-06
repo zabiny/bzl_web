@@ -50,46 +50,43 @@ def event(season: str, event_id: str):
 
 
 # jinja filters
-@app.template_filter("str_to_day")
-def _filter_day(string):
-    if not string:
+@app.template_filter("day_from_date")
+def _filter_day(input_date: date):
+    if not input_date:
         return ""
-    d = date.fromisoformat(string)
-    return d.strftime("%d")
+    return input_date.strftime("%d")
 
 
-@app.template_filter("str_to_month_and_year")
-def _filter_month_and_year(string):
-    if not string:
+@app.template_filter("month_and_year_from_date")
+def _filter_month_and_year(input_date: date):
+    if not input_date:
         return ""
-    d = date.fromisoformat(string)
     locale.setlocale(locale.LC_ALL, "cs_CZ")
-    month_and_year = d.strftime("%b %Y")
+    month_and_year = input_date.strftime("%b %Y")
     locale.resetlocale()
     return month_and_year
 
 
-@app.template_filter("str_to_date")
-def _filter_date(string):
-    if not string:
+@app.template_filter("czech_date_from_date")
+def _filter_czech_date(input_date: date):
+    if not input_date:
         return ""
-    d = date.fromisoformat(string)
     locale.setlocale(locale.LC_ALL, "cs_CZ")
-    czech_date = d.strftime("%d. %m. %Y")
+    czech_date = input_date.strftime("%d. %m. %Y")
     locale.resetlocale()
     return czech_date
 
 
-@app.template_filter("str_to_datetime")
-def _filter_datetime(string):
-    if not string:
+@app.template_filter("czech_date_from_datetime")
+def _filter_date_from_datetime(input_datetime: str):
+    if not input_datetime:
         return ""
-    string_date, string_time = string.split()  # TODO: use time too
+    string_date, string_time = input_datetime.split()  # TODO: use time too
     d = date.fromisoformat(string_date)
     locale.setlocale(locale.LC_ALL, "cs_CZ")
-    czech_datetime = d.strftime("%d. %m. %Y")
+    czech_date = d.strftime("%d. %m. %Y")
     locale.resetlocale()
-    return czech_datetime
+    return czech_date
 
 
 def main():

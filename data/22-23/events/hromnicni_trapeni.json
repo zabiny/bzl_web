@@ -1,8 +1,8 @@
 {
-    "name": "Hromniční trápení",
+    "name": "BZL: Hromniční trápení",
     "desc_short": "Delší sprint",
     "date": "2023-01-28",
     "place_desc": "Blansko",
-    "bzl_order": 3,
+    "is_bzl": true,
     "difficulty": "easy"
 }

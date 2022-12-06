@@ -1,5 +1,6 @@
 {
     "oris_id": 7324,
     "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "is_bzl": false
 }
