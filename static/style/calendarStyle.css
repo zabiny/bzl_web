@@ -67,3 +67,7 @@ For better looks of the whole page
     max-width: 100%;
     object-fit: contain;
 }
+
+.past-event {
+    color: lightslategray;
+}
