@@ -1,6 +1,7 @@
 {
     "oris_id": 7347,
-    "bzl_order": 1,
-    "description": "Sprint s kouskem lesa.",
-    "difficulty": "easy"
+    "is_bzl": true,
+    "desc_short": "Sprint s kouskem lesa",
+    "difficulty": "easy",
+    "desc_long": "Poprvé zmapovaný prostor pro sprint. Členitý terén vyzkouší nejen mapovou, ale i fyzickou připravenost závodníků."
 }

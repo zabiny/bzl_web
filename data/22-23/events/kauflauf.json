@@ -1,6 +1,8 @@
 {
     "name": "Kauflauf",
     "date": "2023-02-26",
-    "description": "Městská klasika na vylepšených Mapy.cz. Zvolte si trať podle aktuální formy a podle toho, jak moc si to chcete užít ;-)",
-    "difficulty": "medium"
+    "desc_long": "Zvolte si trať podle aktuální formy a podle toho, jak moc si to chcete užít ;-)",
+    "difficulty": "medium",
+    "desc_short": "Městská klasika na vylepšených Mapy.cz",
+    "is_bzl": false
 }

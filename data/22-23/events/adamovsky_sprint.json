@@ -1,8 +1,8 @@
 {
-    "name": "Adamovský sprint",
-    "date": "2023-03-12",
+    "oris_id": 7479,
     "place_desc": "Adamov",
-    "description": "Sprint s kouskem lesa",
-    "bzl_order": 5,
-    "difficulty": "easy"
+    "desc_short": "Sprint s kouskem lesa",
+    "is_bzl": true,
+    "difficulty": "easy",
+    "desc_long": "Krátký závod na sídlišti a v přilehlém lese. Schodiště, volby postupů. Neplést s Adamna Cupem :)"
 }

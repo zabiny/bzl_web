@@ -1,6 +1,7 @@
 import atexit
-from datetime import date
 import locale
+from datetime import date
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 
@@ -47,23 +48,41 @@ def event(season: str, event_id: str):
     else:
         return redirect(url_for("home"))
 
-# jinja filters
-@app.template_filter('str_to_day')
-def _filter_day(string):
-    if not string:
-        return ""
-    d = date.fromisoformat(string)
-    return d.strftime('%d')
 
-@app.template_filter('str_to_month_and_year')
-def _filter_month_and_year(string):
-    if not string:
+# jinja filters
+@app.template_filter("day_from_date")
+def _filter_day(input_date: date):
+    if not input_date:
         return ""
-    d = date.fromisoformat(string)
-    locale.setlocale(locale.LC_ALL, 'cs_CZ')
-    month_and_year = d.strftime('%b %Y')
+    return input_date.strftime("%d")
+
+
+@app.template_filter("month_and_year_from_date")
+def _filter_month_and_year(input_date: date):
+    if not input_date:
+        return ""
+    locale.setlocale(locale.LC_ALL, "cs_CZ")
+    month_and_year = input_date.strftime("%b %Y")
     locale.resetlocale()
     return month_and_year
+
+
+@app.template_filter("czech_date_from_date")
+def _filter_czech_date(input_date: date):
+    if not input_date:
+        return ""
+    czech_date = input_date.strftime("%d. %m. %Y")
+    return czech_date
+
+
+@app.template_filter("czech_date_from_datetime")
+def _filter_date_from_datetime(input_datetime: str):
+    if not input_datetime:
+        return ""
+    string_date, string_time = input_datetime.split()  # TODO: use time too
+    d = date.fromisoformat(string_date)
+    czech_date = d.strftime("%d. %m. %Y")
+    return czech_date
 
 
 def main():
