@@ -71,9 +71,7 @@ def _filter_month_and_year(input_date: date):
 def _filter_czech_date(input_date: date):
     if not input_date:
         return ""
-    locale.setlocale(locale.LC_ALL, "cs_CZ")
     czech_date = input_date.strftime("%d. %m. %Y")
-    locale.resetlocale()
     return czech_date
 
 
@@ -83,9 +81,7 @@ def _filter_date_from_datetime(input_datetime: str):
         return ""
     string_date, string_time = input_datetime.split()  # TODO: use time too
     d = date.fromisoformat(string_date)
-    locale.setlocale(locale.LC_ALL, "cs_CZ")
     czech_date = d.strftime("%d. %m. %Y")
-    locale.resetlocale()
     return czech_date
 
 
