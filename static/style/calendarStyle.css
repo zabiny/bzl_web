@@ -1,74 +1,73 @@
 /*
 For better looks of the whole page
 */
-
-body {
-    background: linear-gradient(to top, rgb(0, 75, 0), rgb(90, 185, 78));
-    min-height: 100vh;
-}
-
-h1,
-h2 {
-    font-weight: bold !important;
-}
-
-p {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: large;
-}
-
-a {
-    text-decoration: none !important;
-}
-
 #name {
     text-align: center;
     margin-top: 3rem;
 }
 
 #calendar {
-    display: flex;
-    flex-direction: column;
+    margin: 2em 1em;
+}
+@media (min-width: 600px) {
+    #calendar {
+        margin: 3em 5em;
+    }
 }
 
-#date {
+.calendar-row {
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}
+
+.date {
     display: flex;
     flex-direction: column;
-    flex-basis: 5em;
     text-align: center;
 }
 
-#description {
+.first-col {
+    flex: 0 0 5em;
+}
+
+.description {
     display: flex;
     flex-direction: column;
-    margin: 0 2em;
     flex: 1 1 auto;
 }
 
-#difficulty {
+.difficulty {
     display: flex;
-    flex: 0 0 8em;
+    flex: 0 0 6em;
 }
 
-.difficutly-image {
+.difficulty--mobile {
+    display: flex;
+    max-width: 3em;
+    margin: 0.5em auto 0;
+}
+
+.difficulty--desktop {
+    display: none;
+}
+
+@media (min-width: 600px) {
+    .difficulty--mobile {
+        display: none;
+    }
+
+    .difficulty--desktop {
+        display: flex;
+    }
+}
+
+.difficulty-image {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
 }
 
-#border {
-    background-color: white;
-    border-radius: 30px 30px 0px 0px;
-    padding: 40px 60px 50px;
-    margin-top: 70px;
-    margin-inline: auto;
-    width: 70vw;
-    min-width: 720px;
-    min-height: 100%;
-}
-
-@media (max-width: 720px) {
-    #border {
-        min-width: 100vw;
-    }
+.past-event {
+    color: lightslategray;
 }

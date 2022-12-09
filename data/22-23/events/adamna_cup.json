@@ -1,7 +1,9 @@
 {
-    "name": "Adamna cup",
+    "name": "BZL: Adamna cup",
     "date": "2023-02-19",
     "web": "http://cup.adamna.net",
-    "bzl_order": 4,
-    "difficulty": "medium"
+    "is_bzl": true,
+    "difficulty": "medium",
+    "desc_long": "Jubilejní dvacátý ročník tradičního zimního sprintového závodu okořeněného self-choice.",
+    "desc_short": "Sprint se self-choice"
 }

@@ -1,7 +1,9 @@
 {
     "name": "Návrat ke kořenům",
-    "description": "Klasika na staré mapě",
+    "desc_short": "Klasika na staré mapě",
     "date": "2023-01-15",
     "web": "http://hroudokaps.foxklub.cz/navrat23.htm",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "is_bzl": false,
+    "desc_long": "Závod na staré OB mapě (20-50 let), délkou odpovídající klasické trati (hodina pro vítěze, někdy i víc).\nRažení do papírových průkazů, kam si sami napíšete popisy, zkrátka závan pravěku. :o)\nVíce informací naleznete na webu závodu. Přihlašovat se můžete pomocí přihlašovací/příjezdové tabulky."
 }

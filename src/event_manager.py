@@ -40,7 +40,7 @@ class EventManager:
             return event_tuple[1].date
 
         events = dict(sorted(events.items(), key=_event_date))
-
+        events = self._assign_bzl_order(events)
         return events
 
     def update(self) -> None:
@@ -89,7 +89,7 @@ class EventManager:
             try:
                 event.add_oris_data()
             except AttributeError as e:
-                logging.error(f"Event should have oris is, but hasn't!\n{e}")
+                logging.error(f"Event should have oris_id, but hasn't!\n{e}")
                 return event
             except HTTPError as e:  # TODO: specify errors better
                 logging.error(f"Communication with ORIS failed!\n{e}")
@@ -152,4 +152,12 @@ class EventManager:
             if as_dicts:
                 events = {e_id: e.to_dict() for e_id, e in events.items()}
 
+        return events
+
+    def _assign_bzl_order(self, events: Dict[str, Event]) -> Dict[str, Event]:
+        bzl_count = 0
+        for event in events.values():
+            if event.is_bzl:
+                bzl_count += 1
+                event.bzl_order = bzl_count
         return events

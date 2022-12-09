@@ -1,7 +1,6 @@
 {
-    "name": "Pohár Legendy",
     "oris_id": 7348,
-    "bzl_order": 2,
-    "description": "Městský sprint",
+    "is_bzl": true,
+    "desc_short": "Městský sprint",
     "difficulty": "easy"
 }
