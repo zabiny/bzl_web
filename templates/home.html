@@ -27,8 +27,8 @@
         běhají
         kategorii H. Ženy bojují v kategorii D. Děti do 10 let mohou absolvovat svoji trať HDD v doprovodu rodičů.
         Žáci
-        ročníku <span id="zak"></span> a mladší se hlásí do kategorie ZV, do této kategorie patří také veteráni
-        (<span id="veteran"></span> a starší).
+        ročníku {{ kid_year }} a mladší se hlásí do kategorie ZV, do této kategorie patří také veteráni
+        ({{ vet_year }} a starší).
     </p>
     <h2 class="content mb-3 mt-3">Startovné</h2>
     <p class="content">
@@ -52,8 +52,4 @@
         celý rok.
     </p>
 </div>
-{% endblock %}
-
-{% block footer %}
-<script src="/static/script/yearGenerator.js" type="text/javascript"></script>
 {% endblock %}

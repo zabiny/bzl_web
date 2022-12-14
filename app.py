@@ -1,4 +1,4 @@
-import atexit
+import atexit, math
 import locale
 from datetime import date
 
@@ -23,7 +23,9 @@ atexit.register(lambda: scheduler.shutdown())
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    kid_year = date.today().year - 14 + (date.today().month > 6)
+    vet_year = date.today().year - 45 + (date.today().month > 6)
+    return render_template("home.html", kid_year=kid_year, vet_year=vet_year)
 
 
 # Calendar
