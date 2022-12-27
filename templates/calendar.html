@@ -7,7 +7,7 @@
 {% block body %}
 
 <h1 class="page-header">
-    Kalendář na sezónu {{season}}
+    Kalendář na sezónu {{ season | full_season }}
 </h1>
 
 <div id="border">
@@ -37,14 +37,14 @@
                     {% endif %}
                 </div>
             </div>
-            
+
             <!-- Name and short description -->
             <div class="description">
                 <div>
                     <a href="{{url_for('event', season=season, event_id=event_id)}}">
                         <h3 class="{{'past-event' if event['is_past']}}">
                             {% if event['is_bzl'] %}
-                            {{event['bzl_order']}}.  
+                            {{event['bzl_order']}}.
                             {% endif %}
                             {{event['name']}}
                         </h3>
@@ -52,7 +52,7 @@
                 </div>
                 <div>{{event['desc_short']}}</div>
             </div>
-            
+
             <!-- Difficulty (on desktop) -->
             <div class="difficulty difficulty--desktop">
                 {% if event['difficulty'] == "easy" %}
