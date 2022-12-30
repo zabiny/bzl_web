@@ -48,10 +48,10 @@
             <td>Web:</td>
             <td>
                 <a href="{{ event_data['web'] }}">
-                    {% if event_data['oris_id'] %}
-                        ORIS
-                    {% elif event_data['web'] %}
+                    {% if event_data['web'] %}
                         {{event_data['web']}}
+                    {% elif event_data['oris_id'] %}
+                        ORIS
                     {% endif %}
                 </a>
             </td>
