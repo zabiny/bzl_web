@@ -70,6 +70,13 @@
         </div>
     {% endif %}
 
+    <!-- Image and logos if presented -->
+    {% if event_data['logo'] %}
+        <div>
+            <img id="logo" src="/static/images/{{event_data['logo']}}" alt="logo">
+        </div>
+    {% endif %}
+
     <!-- Map -->
     {% if event_data['gps_lat'] and event_data['gps_lon'] %}
         <div id="map"></div>
