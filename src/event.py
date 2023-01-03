@@ -22,6 +22,7 @@ class Event:
         gps_lat: Optional[float] = None,
         gps_lon: Optional[float] = None,
         web: Optional[str] = None,
+        logo: Optional[str] = None,
     ) -> None:
         self.name = name
         self.difficulty = difficulty
@@ -33,6 +34,7 @@ class Event:
         self.gps_lat = gps_lat
         self.gps_lon = gps_lon
         self.web = web
+        self.logo = logo
         self.is_bzl = is_bzl
 
         self.bzl_order = None  # will be set by event manager
