@@ -13,6 +13,7 @@
     <table class="table table-striped table-sm">
       <thead>
         <tr>
+          <th></th>
           {% for column in df.columns %}
             <th>{{ column }}</th>
           {% endfor %}
@@ -21,6 +22,7 @@
       <tbody>
         {% for index, row in df.iterrows() %}
           <tr>
+            <td>{{ index }}</td>
             {% for cell in row %}
               <td>{{ cell }}</td>
             {% endfor %}
