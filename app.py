@@ -44,9 +44,20 @@ def results(season: str):
     for category in ["H", "D", "ZV", "HDD"]:
         df = pd.read_csv(f"data/{season}/results/overall_{category}.csv", index_col=0)
         df["category"] = category
+        # Assign overall place
+        best_n_col = df.filter(regex=r"Best.*").columns[0]
+        df["place"] = df[best_n_col].apply(
+            lambda points: df[best_n_col].tolist().index(points) + 1
+        )
+        # Fix formatting
         for place_col in df.filter(regex=r".*-Place"):
             if df[place_col].dtype == float:
                 df[place_col] = df[place_col].apply(lambda x: f"{x:.0f}.")
+        for points_col in df.filter(regex=r".*-Points"):
+            if df[points_col].dtype == float:
+                df[points_col] = df[points_col].apply(
+                    lambda x: f"{x:.0f}"
+                )  # contains nans -> can't be casted to int
         category_dfs.append(df)
     df = pd.concat(category_dfs)
 
@@ -72,17 +83,22 @@ def results(season: str):
 
     best_n_col = df.filter(regex=r"Best.*").columns[0]
     n = best_n_col.split("-")[0][4:]
-    df = df.rename(
-        columns={
-            best_n_col: f"Součet ({n} z {len(oris_ids_in_results)})",
-            "Name": "Jméno",
-        }
-    ).drop(columns=cols_to_drop)
+    df = (
+        df.rename(
+            columns={
+                best_n_col: f"Součet ({n} z {len(oris_ids_in_results)})",
+                "Name": "Jméno",
+            }
+        )
+        .replace(["nan (nan.)", "nan (nan)"], "---")
+        .drop(columns=cols_to_drop)
+    )
 
     # Split DataFrame per category
     results = {}
     for category, group in df.groupby("category"):
-        results[category] = group.drop(columns=["category"])
+        group_df = group.set_index("place", drop=True)
+        results[category] = group_df.drop(columns=["category"])
 
     return render_template("results.html", season=season, results=results)
 
