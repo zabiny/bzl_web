@@ -7,9 +7,27 @@
 
 <h1 class="page-header">Průběžné výsledky {{ season | full_season }}</h1>
 <div id="border">
+  <!-- Table of content -->
+  <div id="results-summary" class="row">
+    {% for category in results.keys() %}
+    <div class="col-sm-1">
+      <a href="#{{category}}"class="link-primary">{{ category }}</a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Results table -->
   <div id="results-table">
   {% for category, df in results.items() %}
-    <h2>{{ category }}</h2>
+    <div class="row">
+      <div class="col-sm-1">
+        <h2 id="{{category}}">{{ category }}</h2>
+      </div>
+      <div class="col-sm-10"></div>
+      <div class="col-sm-1">
+        <a href="#results-summary" class="link-secondary">Nahoru</a>
+      </div>
+    </div>
     <table class="table table-striped table-sm">
       <thead>
         <tr>
