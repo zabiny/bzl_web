@@ -72,14 +72,15 @@ def results(season: str):
     )
 
     cols_to_drop = []
-    for oris_id in oris_ids_in_results:
-        df[oris_id_to_name_mapping[oris_id]] = (
-            df[f"{oris_id}-Points"].astype(str)
-            + " ("
-            + df[f"{oris_id}-Place"].astype(str)
-            + ")"
-        )
-        cols_to_drop.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
+    for oris_id in oris_id_to_name_mapping.keys():
+        if oris_id in oris_ids_in_results:
+            df[oris_id_to_name_mapping[oris_id]] = (
+                df[f"{oris_id}-Points"].astype(str)
+                + " ("
+                + df[f"{oris_id}-Place"].astype(str)
+                + ")"
+            )
+            cols_to_drop.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
 
     best_n_col = df.filter(regex=r"Best.*").columns[0]
     n = best_n_col.split("-")[0][4:]
