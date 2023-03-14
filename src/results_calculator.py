@@ -91,7 +91,7 @@ def race_mode(race_id: str):
     """
     # Select race by it's ORIS-id
     try:
-        race_id = int(race_id)
+        race_id = int(race_id)  # type: ignore
     except ValueError:
         print(f"'{race_id}' can't be converted to an integer.")
         return
@@ -152,7 +152,7 @@ def race_mode(race_id: str):
         print("Communication with ORIS failed. Check your internet connection please.")
 
 
-def get_filenames_and_ids(season: str) -> Tuple[List[str], List[int]]:
+def get_filenames_and_ids(season: str) -> Tuple[List[Path], List[int]]:
     season_dir = Path(f"data/{season}/results")
     filenames = [f for f in season_dir.glob("points_*.csv")]
     race_ids = [int(f.stem[7:]) for f in filenames]
@@ -317,6 +317,7 @@ def solve_duplicities(
     input_results: Dict[str, pd.DataFrame]
 ) -> Dict[str, pd.DataFrame]:
     output_results = {}
+    columns = []
     for class_desc in ["H", "D", "ZV", "HDD"]:
         columns = input_results[class_desc].columns
         output_results[class_desc] = {}
@@ -331,12 +332,12 @@ def solve_duplicities(
                 duplicity_solved = False
                 # Iterate through all other runners that could possible be duplicates
                 # of this one
-                for i_other in range(i_actual + 1, input_results[class_desc].shape[0]):
+                for i_other in range(i_actual + 1, input_results[class_desc].shape[0]):  # type: ignore # noqa E501
                     # Lowercase names without diacritics matches => duplicity to solve
                     if (
                         udc.unidecode(runner["Name"]).lower()
                         == udc.unidecode(
-                            input_results[class_desc].loc[i_other, "Name"]
+                            str(input_results[class_desc].loc[i_other, "Name"])
                         ).lower()
                     ):
                         print(70 * "=")
@@ -435,7 +436,7 @@ def best_n_races(results: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
             for descriptor in columns:
                 if "Points" in descriptor:
                     if not np.isnan(runner[descriptor]):
-                        points.append(int(runner[descriptor]))
+                        points.append(int(runner[descriptor]))  # type: ignore
                     else:
                         points.append(0)
             for race_points in sorted(points, reverse=True)[:num_of_races_to_count]:
@@ -449,8 +450,10 @@ def best_n_races(results: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
     return results
 
 
-def overall_mode(season: str):
+def overall_mode(season: str) -> None:
     ovr_results = get_overall_results(season)
+    if ovr_results is None:
+        return
     ovr_res_wout_dupl = solve_duplicities(ovr_results)
     final_results = best_n_races(ovr_res_wout_dupl)
 
