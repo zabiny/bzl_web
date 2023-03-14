@@ -1,7 +1,7 @@
 import datetime
 import logging  # TODO: setup logger properly
 from collections import defaultdict
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 from urllib.error import HTTPError
 
 import requests
@@ -37,13 +37,13 @@ class Event:
         self.logo = logo
         self.is_bzl = is_bzl
 
-        self.bzl_order = None  # will be set by event manager
+        self.bzl_order: Optional[int] = None  # will be set by event manager
 
         # Did the event already happened?
         self.date = datetime.date.fromisoformat(date) if date else None
         self.is_past = datetime.date.today() > self.date if self.date else None
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> Dict[str, Any]:
         return self.__dict__
 
     def _fetch_oris_data(self, oris_id: int) -> Dict:

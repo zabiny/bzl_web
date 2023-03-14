@@ -63,6 +63,8 @@ def results(season: str):
 
     # Process DataFrame (rename and drop columns etc.)
     events = em.get_all_events(season)
+    if events is None:
+        return render_template("results.html", season=season, results={})
     oris_id_to_name_mapping = {
         ev.oris_id: ev.name for ev in events.values() if ev.oris_id
     }
@@ -82,7 +84,7 @@ def results(season: str):
             )
             cols_to_drop.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
 
-    best_n_col = df.filter(regex=r"Best.*").columns[0]
+    best_n_col = str(df.filter(regex=r"Best.*").columns[0])
     n = best_n_col.split("-")[0][4:]
     df = (
         df.rename(
