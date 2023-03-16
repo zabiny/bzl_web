@@ -39,7 +39,15 @@
       </thead>
       <tbody>
         {% for index, row in df.iterrows() %}
+          {% if index == 1 %}
+          <tr class="gold">
+          {% elif index == 2 %}
+          <tr class="silver">
+          {% elif index == 3 %}
+          <tr class="bronze">
+          {% else %}
           <tr>
+          {% endif %}
             <td>{{ index }}</td>
             {% for cell in row %}
               <td>{{ cell }}</td>
