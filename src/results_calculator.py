@@ -313,114 +313,65 @@ def get_overall_results(season: str) -> Optional[Dict[str, pd.DataFrame]]:
     return ovr_results
 
 
-def solve_duplicities(
-    input_results: Dict[str, pd.DataFrame]
-) -> Dict[str, pd.DataFrame]:
+def _solve_duplicates_category(class_results: pd.DataFrame) -> pd.DataFrame:
+    # Unify name (Lowercase names without diacritics matches and trailing spaces)
+    class_results["Name"] = class_results["Name"].str.strip()
+    class_results["name_unified"] = class_results["Name"].apply(
+        lambda x: udc.unidecode(x).lower()
+    )
+    dfs = []
+    for _, group in class_results.groupby("name_unified"):
+        if len(group) == 1:
+            dfs.append(group.drop(columns=["name_unified"]))
+            continue
+
+        print(70 * "=")
+        print("DUPLICITY")
+        print(group.T.to_markdown())
+
+        decision = input(
+            "Merge all runners and keep selected Name and RegNo (<id>) / "
+            "Keep all runners separated (s) / "
+            "Merge selected runners (write comma-separated ids - main first)? > "
+        )
+        if decision == "s":
+            dfs.append(group.drop(columns=["name_unified"]))
+            continue
+        elif "," in decision:
+            ids_2_merge = pd.Index([int(x) for x in decision.split(",")])
+            separate_ids = group.index.difference(ids_2_merge)
+            main_id = ids_2_merge.to_numpy(dtype=int)[0]
+            dfs.append(group[separate_ids])
+        else:
+            ids_2_merge = group.index
+            main_id = int(decision)
+
+        df_tmp = {}
+        df_tmp["Name"] = group.loc[main_id, "Name"]
+        df_tmp["RegNo"] = group.loc[main_id, "RegNo"]
+        for col in group.columns[2:-1]:  # without Name, RegNo and name_unified
+            notna = group.loc[ids_2_merge, col].dropna()
+            if notna.empty:
+                df_tmp[col] = np.nan
+            elif (len(notna) == 1) or ((notna == notna.iloc[0]).all()):
+                df_tmp[col] = notna.iloc[0]
+            else:
+                raise ValueError("You are probably merging people that you shouldn't.")
+        df_tmp = pd.DataFrame(df_tmp, index=[0])
+        print(df_tmp.T.to_markdown())
+        dfs.append(df_tmp)
+    df = pd.concat(dfs)
+    return df
+
+
+def solve_duplicates(input_results: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
     output_results = {}
-    columns = []
-    for class_desc in ["H", "D", "ZV", "HDD"]:
-        columns = input_results[class_desc].columns
-        output_results[class_desc] = {}
-        for column in columns:
-            output_results[class_desc][column] = []
     # Iterate through all categories and try to merge probable duplicities
-    deleted_ids = []  # list of all runners that were merged into another ones
     for class_desc in ["H", "D", "ZV", "HDD"]:
-        for i_actual, runner in input_results[class_desc].iterrows():
-            # i_actual runner wasn't merged with a previous one yet
-            if i_actual not in deleted_ids:
-                duplicity_solved = False
-                # Iterate through all other runners that could possible be duplicates
-                # of this one
-                for i_other in range(i_actual + 1, input_results[class_desc].shape[0]):  # type: ignore # noqa E501
-                    # Lowercase names without diacritics matches => duplicity to solve
-                    if (
-                        udc.unidecode(runner["Name"]).lower()
-                        == udc.unidecode(
-                            str(input_results[class_desc].loc[i_other, "Name"])
-                        ).lower()
-                    ):
-                        print(70 * "=")
-                        print("DUPLICITY\t|\tLeft:\t\t\t|\tRight:")
-                        print(70 * "-")
-                        print(
-                            f"Name:\t\t|\t{runner['Name']}\t|\t"
-                            f"{input_results[class_desc].loc[i_other, 'Name']}"
-                        )
-                        print(
-                            f"RegNo:\t\t|\t{runner['RegNo']}\t\t\t|\t"
-                            f"{input_results[class_desc].loc[i_other, 'RegNo']}"
-                        )
-                        for descriptor in runner.index[2:]:
-                            print(
-                                f"{descriptor}:\t|\t{runner[descriptor]}\t\t\t|\t"
-                                f"{input_results[class_desc].loc[i_other, descriptor]}"
-                            )
-                        merge = input(
-                            "Merge and keep left (l) / Merge and keep right (r) / "
-                            "Keep separate (s)? "
-                        )
-                        while merge not in ["l", "r", "s"]:
-                            merge = input(
-                                "Merge and keep left (l) / Merge and keep right (r) / "
-                                "Keep separate (s)? "
-                            )
-                        # Merge and keep left values primarily
-                        if merge == "l":
-                            for descriptor in columns:
-                                if runner[descriptor] is not np.nan:
-                                    output_results[class_desc][descriptor].append(
-                                        runner[descriptor]
-                                    )
-                                elif (
-                                    input_results[class_desc].loc[i_other, descriptor]
-                                    is not np.nan
-                                ):
-                                    output_results[class_desc][descriptor].append(
-                                        input_results[class_desc].loc[
-                                            i_other, descriptor
-                                        ]
-                                    )
-                                else:
-                                    output_results[class_desc][descriptor].append(
-                                        np.nan
-                                    )
-                            deleted_ids.append(i_other)
-                            duplicity_solved = True
-                        # Merge and keep right values primarily
-                        elif merge == "r":
-                            for descriptor in columns:
-                                if (
-                                    input_results[class_desc].loc[i_other, descriptor]
-                                    is not np.nan
-                                ):
-                                    output_results[class_desc][descriptor].append(
-                                        input_results[class_desc].loc[
-                                            i_other, descriptor
-                                        ]
-                                    )
-                                elif runner[descriptor] is not np.nan:
-                                    output_results[class_desc][descriptor].append(
-                                        runner[descriptor]
-                                    )
-                                else:
-                                    output_results[class_desc][descriptor].append(
-                                        np.nan
-                                    )
-                            deleted_ids.append(i_other)
-                            duplicity_solved = True
-                        # Keep both runners separately
-                        elif merge == "s":
-                            pass
-                # This runner was not written to the output_results during duplicity
-                # solving (writing standard cases)
-                if not duplicity_solved:
-                    for descriptor in columns:
-                        output_results[class_desc][descriptor].append(
-                            runner[descriptor]
-                        )
-    for class_desc in ["H", "D", "ZV", "HDD"]:
-        output_results[class_desc] = pd.DataFrame.from_dict(output_results[class_desc])
+        output_results[class_desc] = _solve_duplicates_category(
+            input_results[class_desc]
+        )
+
     return output_results
 
 
@@ -454,7 +405,7 @@ def overall_mode(season: str) -> None:
     ovr_results = get_overall_results(season)
     if ovr_results is None:
         return
-    ovr_res_wout_dupl = solve_duplicities(ovr_results)
+    ovr_res_wout_dupl = solve_duplicates(ovr_results)
     final_results = best_n_races(ovr_res_wout_dupl)
 
     for class_desc in ["H", "D", "ZV", "HDD"]:
