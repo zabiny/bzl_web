@@ -39,71 +39,72 @@ def calendar(season: str):
 # Results
 @app.route("/<string:season>/results")
 def results(season: str):
-    # Load results per category
-    category_dfs = []
-    for category in ["H", "D", "ZV", "HDD"]:
-        df = pd.read_csv(f"data/{season}/results/overall_{category}.csv", index_col=0)
-        df["category"] = category
-        # Assign overall place
-        best_n_col = df.filter(regex=r"Best.*").columns[0]
-        df["place"] = df[best_n_col].apply(
-            lambda points: df[best_n_col].tolist().index(points) + 1
-        )
-        # Fix formatting
-        for place_col in df.filter(regex=r".*-Place"):
-            if df[place_col].dtype == float:
-                df[place_col] = df[place_col].apply(lambda x: f"{x:.0f}.")
-        for points_col in df.filter(regex=r".*-Points"):
-            if df[points_col].dtype == float:
-                df[points_col] = df[points_col].apply(
-                    lambda x: f"{x:.0f}"
-                )  # contains nans -> can't be casted to int
-        category_dfs.append(df)
-    df = pd.concat(category_dfs)
-
-    # Process DataFrame (rename and drop columns etc.)
-    events = em.get_all_events(season)
-    if events is None:
-        return render_template("results.html", season=season, results={})
-    oris_id_to_name_mapping = {
-        ev.oris_id: ev.name for ev in events.values() if ev.oris_id
-    }
-
-    oris_ids_in_results = set(
-        [int(x.split("-")[0]) for x in df.columns if x[0].isdigit()]
-    )
-
-    cols_to_drop = []
-    for oris_id in oris_id_to_name_mapping.keys():
-        if oris_id in oris_ids_in_results:
-            df[oris_id_to_name_mapping[oris_id]] = (
-                df[f"{oris_id}-Points"].astype(str)
-                + " ("
-                + df[f"{oris_id}-Place"].astype(str)
-                + ")"
-            )
-            cols_to_drop.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
-
-    best_n_col = str(df.filter(regex=r"Best.*").columns[0])
-    n = best_n_col.split("-")[0][4:]
-    df = (
-        df.rename(
-            columns={
-                best_n_col: f"Součet ({n} z {len(oris_ids_in_results)})",
-                "Name": "Jméno",
-            }
-        )
-        .replace(["nan (nan.)", "nan (nan)"], "---")
-        .drop(columns=cols_to_drop)
-    )
-
-    # Split DataFrame per category
     results = {}
-    for category, group in df.groupby("category"):
-        group_df = group.set_index("place", drop=True)
-        results[category] = group_df.drop(columns=["category"])
+    seasons = em.get_all_seasons()
+    try:
+        # Load results per category
+        category_dfs = []
+        for category in ["H", "D", "ZV", "HDD"]:
+            df = pd.read_csv(f"data/{season}/results/overall_{category}.csv", index_col=0)
+            df["category"] = category
+            # Assign overall place
+            best_n_col = df.filter(regex=r"Best.*").columns[0]
+            df["place"] = df[best_n_col].apply(
+                lambda points: df[best_n_col].tolist().index(points) + 1
+            )
+            # Fix formatting
+            for place_col in df.filter(regex=r".*-Place"):
+                if df[place_col].dtype == float:
+                    df[place_col] = df[place_col].apply(lambda x: f"{x:.0f}.")
+            for points_col in df.filter(regex=r".*-Points"):
+                if df[points_col].dtype == float:
+                    df[points_col] = df[points_col].apply(
+                        lambda x: f"{x:.0f}"
+                    )  # contains nans -> can't be casted to int
+            category_dfs.append(df)
+        df = pd.concat(category_dfs)
 
-    return render_template("results.html", season=season, results=results)
+        # Process DataFrame (rename and drop columns etc.)
+        events = em.get_all_events(season)
+        if events is None:
+            return render_template("results.html", season=season, results={})
+        oris_id_to_name_mapping = {
+            ev.oris_id: ev.name for ev in events.values() if ev.oris_id
+        }
+
+        oris_ids_in_results = set(
+            [int(x.split("-")[0]) for x in df.columns if x[0].isdigit()]
+        )
+
+        cols_to_drop = []
+        for oris_id in oris_id_to_name_mapping.keys():
+            if oris_id in oris_ids_in_results:
+                df[oris_id_to_name_mapping[oris_id]] = (
+                    df[f"{oris_id}-Points"].astype(str)
+                    + " ("
+                    + df[f"{oris_id}-Place"].astype(str)
+                    + ")"
+                )
+                cols_to_drop.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
+
+        best_n_col = str(df.filter(regex=r"Best.*").columns[0])
+        n = best_n_col.split("-")[0][4:]
+        df = (
+            df.rename(
+                columns={
+                    best_n_col: f"Součet ({n} z {len(oris_ids_in_results)})",
+                    "Name": "Jméno",
+                }
+            )
+            .replace(["nan (nan.)", "nan (nan)"], "---")
+            .drop(columns=cols_to_drop)
+        )
+        # Split DataFrame per category
+        for category, group in df.groupby("category"):
+            group_df = group.set_index("place", drop=True)
+            results[category] = group_df.drop(columns=["category"])
+    finally:
+        return render_template("results.html", seasons=seasons, season=season, results=results)
 
 
 # Event

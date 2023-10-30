@@ -1,7 +1,7 @@
 import json
 import logging  # TODO: setup logger properly
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, overload
+from typing import Any, Dict, Optional, Union, overload, List
 from urllib.error import HTTPError
 
 from src.event import Event
@@ -9,7 +9,7 @@ from src.event import Event
 
 class EventManager:
     def __init__(self) -> None:
-        seasons = [f.stem for f in Path("data").glob("*-*")]
+        seasons = self.get_all_seasons()
         self._events = {season: self._load_all_events(season) for season in seasons}
 
     def _load_all_events(self, season: str):
@@ -48,7 +48,7 @@ class EventManager:
 
         Check for changes in 'data' folder + fetch data from ORIS API.
         """
-        seasons = [f.stem for f in Path("data").glob("*-*")]
+        seasons = self.get_all_seasons()
         self._events = {season: self._load_all_events(season) for season in seasons}
 
     def _create_event_from_config(self, season: str, event_id: str) -> Optional[Event]:
@@ -171,3 +171,6 @@ class EventManager:
                 bzl_count += 1
                 event.bzl_order = bzl_count
         return events
+    
+    def get_all_seasons(self) -> List[str]:
+        return [f.stem for f in Path("data").glob("*-*")]
