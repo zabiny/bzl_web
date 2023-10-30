@@ -40,7 +40,7 @@
               <a class="nav-link nav-link--left {% if "/calendar" in request.path %}active{% endif %}" href="{{ url_for('calendar', season='23-24') }}">Kalendář závodů</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if "/home" in request.path %}active{% endif %}" href="{{ url_for('home') }}">Informace</a>
+              <a class="nav-link {% if request.path == "/" or "/home" in request.path %}active{% endif %}" href="{{ url_for('home') }}">Informace</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link--right {% if "/results" in request.path %}active{% endif %}" href="{{ url_for('results', season='23-24') }}">Výsledky</a>
