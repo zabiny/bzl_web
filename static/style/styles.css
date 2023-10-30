@@ -3,7 +3,6 @@ For better looks of the whole page
 */
 body {
     background: linear-gradient(to top, rgb(0, 75, 0), rgb(90, 185, 78));
-    min-height: 100vh;
 }
 
 h1,
@@ -36,7 +35,6 @@ main {
     margin-top: 70px;
     margin-inline: auto;
     max-width: 70em;
-    min-height: 100%;
 }
 
 #body {
@@ -54,7 +52,7 @@ main {
 }
 
 html, body, main, #body {
-    height: 100%;
+    min-height: 100%;
 }
 
 .nav-item {
