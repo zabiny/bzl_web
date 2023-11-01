@@ -5,8 +5,21 @@
 
 {% block body %}
 
-<h1 class="page-header">Celkové výsledky {{ season | full_season }}</h1>
 <div id="border">
+  <h2 class="page-header">
+    Celkové výsledky {{ season | full_season }}
+  </h2>
+  <select id="season-selector" aria-label="select season" onchange="   console.log(this);
+    window.location.href = '/' + this.value + '/results';
+  ">
+    {% for s in seasons %}
+    <option value="{{ s }}" {% if s == season %} selected {% endif %}>{{ s | full_season }}</option>
+    {% endfor %}
+  </select>
+
+  {% if not results %}
+  <p class="text-center mt-5">Výsledky pro tuto sezónu nejsou k dispozici.</p>
+  {% endif %}
   <!-- Table of content -->
   <div id="results-summary" class="row">
     {% for category in results.keys() %}
@@ -21,7 +34,7 @@
   {% for category, df in results.items() %}
     <div class="row">
       <div class="col-sm-1">
-        <h2 id="{{category}}">{{ category }}</h2>
+        <h3 id="{{category}}">{{ category }}</h3>
       </div>
       <div class="col-sm-10"></div>
       <div class="col-sm-1">

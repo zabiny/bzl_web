@@ -6,12 +6,12 @@
 
 {% block body %}
 
-<h1 class="page-header">
-    Kalendář na sezónu {{ season | full_season }}
-</h1>
+
 
 <div id="border">
-
+    <h2 class="page-header">
+        sezóna {{ season | full_season }}
+    </h2>
     <div id="calendar">
 
         {% for event_id, event in events.items() %}
@@ -21,9 +21,9 @@
             <div class="first-col">
                 <div class="date">
                     <div>
-                        <h2 class="{{'past-event' if event['is_past']}}" style="margin-bottom: 0">
+                        <h3 class="{{'past-event' if event['is_past']}}" style="margin-bottom: 0">
                             {{event['date'] | day_from_date}}
-                        </h2>
+                        </h3>
                     </div>
                     <div>{{event['date'] | month_and_year_from_date | upper}}</div>
                 </div>
@@ -42,12 +42,12 @@
             <div class="description">
                 <div>
                     <a href="{{url_for('event', season=season, event_id=event_id)}}">
-                        <h3 class="{{'past-event' if event['is_past']}}">
+                        <h4 class="{{'past-event' if event['is_past']}}">
                             {% if event['is_bzl'] %}
                             {{event['bzl_order']}}.
                             {% endif %}
                             {{event['name']}}
-                        </h3>
+                        </h4>
                     </a>
                 </div>
                 <div>{{event['desc_short']}}</div>

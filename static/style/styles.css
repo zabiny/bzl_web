@@ -3,7 +3,6 @@ For better looks of the whole page
 */
 body {
     background: linear-gradient(to top, rgb(0, 75, 0), rgb(90, 185, 78));
-    min-height: 100vh;
 }
 
 h1,
@@ -20,27 +19,67 @@ a {
     text-decoration: none !important;
 }
 
-.page-header {
+header {
     text-align: center;
     margin-top: 3rem;
 }
 
-#border {
-    background-color: white;
-    border-radius: 30px 30px 0px 0px;
-    padding-top: 15px;
+.page-header {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+main {
+    background-color: gainsboro;
+    border-radius: 2em 2em 0px 0px;
     margin-top: 70px;
-    padding-bottom: 50px;
     margin-inline: auto;
-    width: 55vw;
-    min-width: 720px;
+    max-width: 70em;
+}
+
+#body {
+    padding-top: 15px;
+    padding-bottom: 50px;
+    padding-left: 5em;
+    padding-right: 5em;
+    background-color: white;
+}
+@media (max-width: 720px) {
+    #body {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+}
+
+html, body, main, #body {
     min-height: 100%;
 }
 
-@media (max-width: 720px) {
-    #border {
-        min-width: 100vw;
-    }
+.nav-item {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    border-radius: 0;
+    color: black;
+    font-weight: bold;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-link {
+    padding: 0.7rem 1rem;
+}
+
+.active.nav-link--left {
+    border-top-left-radius: 2em;
+}
+.active.nav-link--right {
+    border-top-right-radius: 2em;
 }
 
 .runner-image {
@@ -56,12 +95,5 @@ a {
     .runner-image {
         display: none;
     }
-}
-
-.content {
-    margin-top: 20px;
-    margin: auto;
-    line-height: 1.75;
-    width: 80%;
 }
 
