@@ -1,8 +1,8 @@
 {
-    "name": "Hromniční trápení",
+    "oris_id": 8092,
+    "name": "BZL: Hromniční trápení",
     "desc_short": "Delší sprint",
     "place_desc": "Blansko",
     "is_bzl": true,
-    "difficulty": "easy",
-    "date": "2024-01-27"
+    "difficulty": "easy"
 }
