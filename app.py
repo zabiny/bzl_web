@@ -24,9 +24,10 @@ atexit.register(lambda: scheduler.shutdown())
 @app.route("/")
 @app.route("/home")
 def home():
-    kid_year = date.today().year - 14 + (date.today().month > 6)
-    vet_year = date.today().year - 45 + (date.today().month > 6)
-    return render_template("home.html", kid_year=kid_year, vet_year=vet_year)
+    hdd_max_year = date.today().year - 10 + (date.today().month > 6)
+    zv_kid_year = date.today().year - 14 + (date.today().month > 6)
+    zv_vet_year = date.today().year - 45 + (date.today().month > 6)
+    return render_template("home.html", zv_kid_year=zv_kid_year, zv_vet_year=zv_vet_year, hdd_max_year=hdd_max_year)
 
 
 # Calendar
