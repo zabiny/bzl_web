@@ -1,18 +1,20 @@
 /*
 For better looks of the whole page
 */
-body {
-    background: linear-gradient(to top, rgb(0, 75, 0), rgb(90, 185, 78));
-}
 
 h1,
 h2 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold !important;
 }
 
+h2 {
+    font-size: 1.7rem;
+}
+
 p {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2rem;
 }
 
 a {
@@ -21,7 +23,11 @@ a {
 
 header {
     text-align: center;
-    margin-top: 3rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid black;
+    margin-inline: auto;
+    max-width: 70em;
 }
 
 .page-header {
@@ -30,11 +36,11 @@ header {
 }
 
 main {
-    background-color: gainsboro;
-    border-radius: 2em 2em 0px 0px;
-    margin-top: 70px;
     margin-inline: auto;
     max-width: 70em;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    background-color: white;
 }
 
 #body {
@@ -42,7 +48,7 @@ main {
     padding-bottom: 50px;
     padding-left: 5em;
     padding-right: 5em;
-    background-color: white;
+    position: relative;
 }
 @media (max-width: 720px) {
     #body {
@@ -58,6 +64,14 @@ html, body, main, #body {
 .nav-item {
     flex: 1 1 auto;
     text-align: center;
+    border: 1px solid black;
+    border-top: none;
+    font-size: 1.2rem;
+}
+
+.nav-item:first-child, .nav-item:last-child {
+    border-left:none;
+    border-right: none;
 }
 
 .nav-tabs .nav-link {
@@ -72,7 +86,7 @@ html, body, main, #body {
 }
 
 .nav-link {
-    padding: 0.7rem 1rem;
+    padding: 1.5rem 1rem;
 }
 
 .active.nav-link--left {
@@ -97,3 +111,11 @@ html, body, main, #body {
     }
 }
 
+#particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+}
