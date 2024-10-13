@@ -1,0 +1,7 @@
+pandas
+flask
+gunicorn
+requests
+apscheduler
+unidecode
+tabulate
