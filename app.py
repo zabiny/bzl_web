@@ -5,6 +5,7 @@ from datetime import date
 import pandas as pd
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
+from werkzeug import Response
 
 from src.event_manager import EventManager
 
@@ -23,30 +24,37 @@ atexit.register(lambda: scheduler.shutdown())
 # Home
 @app.route("/")
 @app.route("/home")
-def home():
+def home() -> str:
     hdd_max_year = date.today().year - 10 + (date.today().month > 6)
     zv_kid_year = date.today().year - 14 + (date.today().month > 6)
     zv_vet_year = date.today().year - 45 + (date.today().month > 6)
-    return render_template("home.html", zv_kid_year=zv_kid_year, zv_vet_year=zv_vet_year, hdd_max_year=hdd_max_year)
+    return render_template(
+        "home.html",
+        zv_kid_year=zv_kid_year,
+        zv_vet_year=zv_vet_year,
+        hdd_max_year=hdd_max_year,
+    )
 
 
 # Calendar
 @app.route("/<string:season>/calendar")
-def calendar(season: str):
+def calendar(season: str) -> str:
     events = em.get_all_events(season, as_dicts=True)
     return render_template("calendar.html", season=season, events=events)
 
 
 # Results
 @app.route("/<string:season>/results")
-def results(season: str):
+def results(season: str) -> str:
     results = {}
     seasons = em.get_all_seasons()
     try:
         # Load results per category
         category_dfs = []
         for category in ["H", "D", "ZV", "HDD"]:
-            df = pd.read_csv(f"data/{season}/results/overall_{category}.csv", index_col=0)
+            df = pd.read_csv(
+                f"data/{season}/results/overall_{category}.csv", index_col=0
+            )
             df["category"] = category
             # Assign overall place
             best_n_col = df.filter(regex=r"Best.*").columns[0]
@@ -105,12 +113,14 @@ def results(season: str):
             group_df = group.set_index("place", drop=True)
             results[category] = group_df.drop(columns=["category"])
     finally:
-        return render_template("results.html", seasons=seasons, season=season, results=results)
+        return render_template(
+            "results.html", seasons=seasons, season=season, results=results
+        )
 
 
 # Event
 @app.route("/<string:season>/event/<string:event_id>/")
-def event(season: str, event_id: str):
+def event(season: str, event_id: str) -> str | Response:
     ev = em.get_event(season, event_id)
     if ev:
         return render_template("event.html", event_data=ev.to_dict())
@@ -120,14 +130,14 @@ def event(season: str, event_id: str):
 
 # jinja filters
 @app.template_filter("day_from_date")
-def _filter_day(input_date: date):
+def _filter_day(input_date: date) -> str:
     if not input_date:
         return ""
     return input_date.strftime("%d")
 
 
 @app.template_filter("month_and_year_from_date")
-def _filter_month_and_year(input_date: date):
+def _filter_month_and_year(input_date: date) -> str:
     if not input_date:
         return ""
     locale.setlocale(locale.LC_ALL, "cs_CZ")
@@ -137,7 +147,7 @@ def _filter_month_and_year(input_date: date):
 
 
 @app.template_filter("czech_date_from_date")
-def _filter_czech_date(input_date: date):
+def _filter_czech_date(input_date: date) -> str:
     if not input_date:
         return ""
     czech_date = input_date.strftime("%d. %m. %Y")
@@ -145,7 +155,7 @@ def _filter_czech_date(input_date: date):
 
 
 @app.template_filter("czech_date_from_datetime")
-def _filter_date_from_datetime(input_datetime: str):
+def _filter_date_from_datetime(input_datetime: str) -> str:
     if not input_datetime:
         return ""
     string_date, string_time = input_datetime.split()  # TODO: use time too
@@ -155,12 +165,12 @@ def _filter_date_from_datetime(input_datetime: str):
 
 
 @app.template_filter("full_season")
-def _filter_full_season(season_short: str):
+def _filter_full_season(season_short: str) -> str:
     year_from, year_to = season_short.split("-")
     return f"20{year_from} - 20{year_to}"
 
 
-def main():
+def main() -> None:
     app.run(port=5000, debug=True)
 
 
