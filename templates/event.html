@@ -1,99 +1,109 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-    <title>{{ event_data.name }}</title>
-    <script src="https://api.mapy.cz/loader.js"></script>
-	<script>Loader.load()</script>
-    <link rel="stylesheet" href="/static/style/eventStyle.css">
+<title>{{ event_data.name }}</title>
+<!-- Load Mapy.cz API -->
+<script src="https://api.mapy.cz/loader.js"></script>
+<script>Loader.load()</script>
+<!-- Custom CSS for event page -->
+<link rel="stylesheet" href="/static/style/eventStyle.css">
 {% endblock %}
 
 {% block body %}
 
+<!-- Event Name -->
 {% if event_data['name'] %}
-    <h1 class="page-header">
-        {{event_data['name']}}
-    </h1>
+<h1 class="page-header">
+    {{event_data['name']}}
+</h1>
 {% endif %}
 
 <div class="position-relative" id="border">
     <div id="event-detail">
 
-    {% if event_data['difficulty'] == 'easy' %}
-    <img src="/static/images/easy.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
-    {% elif event_data['difficulty'] == 'medium' %}
-    <img src="/static/images/medium.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
-    {% elif event_data['difficulty'] == 'hard' %}
-    <img src="/static/images/hard.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
-    {% endif %}
+        <!-- Difficulty Icon -->
+        {% if event_data['difficulty'] == 'easy' %}
+        <img src="/static/images/easy.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
+        {% elif event_data['difficulty'] == 'medium' %}
+        <img src="/static/images/medium.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_medium">
+        {% elif event_data['difficulty'] == 'hard' %}
+        <img src="/static/images/hard.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_hard">
+        {% endif %}
 
-
-    {% if event_data['desc_short'] %}
+        <!-- Short Description -->
+        {% if event_data['desc_short'] %}
         <h2 id="description">
             {{event_data['desc_short']}}
         </h2>
-    {% endif %}
+        {% endif %}
 
-    <!-- Table with basic info -->
-    <table class="table mt-4">
-        <tr>
-            <td>Datum:</td><td>{{event_data['date'] | czech_date_from_date }}</td>
-        </tr>
-        {% if event_data['entry_date'] %}
+        <!-- Table with basic info -->
+        <table class="table mt-4">
+            <tr>
+                <td>Datum:</td>
+                <td>{{event_data['date'] | czech_date_from_date }}</td>
+            </tr>
+            {% if event_data['entry_date'] %}
             <tr>
                 <td>Přihlášky do:</td>
                 <td>{{event_data['entry_date'] | czech_date_from_datetime }}</td>
             </tr>
-        {% endif %}
-        <tr>
-            <td>Web:</td>
-            <td>
-                <a href="{{ event_data['web'] }}">
-                    {% if event_data['web'] %}
-                        {{event_data['web']}}
-                    {% elif event_data['oris_id'] %}
-                        ORIS
-                    {% endif %}
-                </a>
-            </td>
-        </tr>
-        {% if event_data['place_desc'] %}
+            {% endif %}
             <tr>
-                <td>Místo:</td><td>{{event_data['place_desc']}}</td>
+                <td>Web:</td>
+                <td>
+                    <a href="{{ event_data['web'] }}">
+                        {% if event_data['web'] %}
+                        {{event_data['web']}}
+                        {% elif event_data['oris_id'] %}
+                        ORIS
+                        {% endif %}
+                    </a>
+                </td>
             </tr>
-        {% endif %}
-    </table>
+            {% if event_data['place_desc'] %}
+            <tr>
+                <td>Místo:</td>
+                <td>{{event_data['place_desc']}}</td>
+            </tr>
+            {% endif %}
+        </table>
 
-    <!-- Long description if presented -->
-    {% if event_data['desc_long'] %}
+        <!-- Long description if present -->
+        {% if event_data['desc_long'] %}
         <div id="description">
             {{event_data['desc_long']}}
         </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- Image and logos if presented -->
-    {% if event_data['logo'] %}
+        <!-- Image and logos if present -->
+        {% if event_data['logo'] %}
         <div>
             <img id="logo" src="/static/images/{{event_data['logo']}}" alt="logo">
         </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- Map -->
-    {% if event_data['gps_lat'] and event_data['gps_lon'] %}
+        <!-- Map -->
+        {% if event_data['gps_lat'] and event_data['gps_lon'] %}
         <div id="map"></div>
         <script type="text/javascript">
+            // Initialize map
             var center = SMap.Coords.fromWGS84("{{event_data['gps_lon']}}", "{{event_data['gps_lat']}}");
             var map = new SMap(JAK.gel("map"), center, 14);
             map.addDefaultLayer(SMap.DEF_BASE).enable();
             map.addDefaultControls();
 
+            // Add marker layer
             var layer = new SMap.Layer.Marker();
             map.addLayer(layer);
             layer.enable();
 
+            // Create info card
             var card = new SMap.Card();
             card.getHeader().innerHTML = "<strong>{{event_data['name']}} - centrum</strong>";
             card.getBody().innerHTML = "{{event_data['place_desc']}}";
 
+            // Add marker with info card
             var marker = new SMap.Marker(center, "myMarker");
             marker.decorate(SMap.Marker.Feature.Card, card);
             layer.addMarker(marker);

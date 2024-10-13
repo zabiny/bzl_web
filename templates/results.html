@@ -1,37 +1,46 @@
 {% extends 'layout.html' %}
+
 {% block head %}
-  <link rel="stylesheet" href="/static/style/resultsStyle.css">
+<!-- Custom CSS for results page -->
+<link rel="stylesheet" href="/static/style/resultsStyle.css">
 {% endblock %}
 
 {% block body %}
 
 <div id="border">
+  <!-- Page header -->
   <h2 class="page-header">
     Celkové výsledky {{ season | full_season }}
   </h2>
-  <select id="season-selector" aria-label="select season" onchange="   console.log(this);
+
+  <!-- Season selector dropdown -->
+  <select id="season-selector" aria-label="select season" onchange="
+    console.log(this);
     window.location.href = '/' + this.value + '/results';
   ">
-    {% for s in seasons %}
-    <option value="{{ s }}" {% if s == season %} selected {% endif %}>{{ s | full_season }}</option>
+    {% for s in seasons|sort(reverse=True) %}
+    <option value="{{ s }}" {% if s==season %} selected {% endif %}>{{ s | full_season }}</option>
     {% endfor %}
   </select>
 
+  <!-- Display message if no results are available -->
   {% if not results %}
   <p class="text-center mt-5">Výsledky pro tuto sezónu nejsou k dispozici.</p>
   {% endif %}
-  <!-- Table of content -->
+
+  <!-- Table of contents -->
   <div id="results-summary" class="row">
     {% for category in results.keys() %}
     <div class="col-sm-1">
-      <a href="#{{category}}"class="link-primary">{{ category }}</a>
+      <a href="#{{category}}" class="link-primary">{{ category }}</a>
     </div>
     {% endfor %}
   </div>
 
-  <!-- Results table -->
+  <!-- Results tables -->
   <div id="results-table" class="table-responsive">
-  {% for category, df in results.items() %}
+    {% for category, df in results.items() %}
+    <!-- Category header and back to top link -->
     <div class="row">
       <div class="col-sm-1">
         <h3 id="{{category}}">{{ category }}</h3>
@@ -41,35 +50,39 @@
         <a href="#results-summary" class="link-secondary">TOP</a>
       </div>
     </div>
+
+    <!-- Results table for each category -->
     <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th></th>
           {% for column in df.columns %}
-            <th>{{ column }}</th>
+          <th>{{ column }}</th>
           {% endfor %}
         </tr>
       </thead>
       <tbody>
         {% for index, row in df.iterrows() %}
-          {% if index == 1 %}
-          <tr class="gold">
+        <!-- Apply special classes for top 3 positions -->
+        {% if index == 1 %}
+        <tr class="gold">
           {% elif index == 2 %}
-          <tr class="silver">
+        <tr class="silver">
           {% elif index == 3 %}
-          <tr class="bronze">
+        <tr class="bronze">
           {% else %}
-          <tr>
+        <tr>
           {% endif %}
-            <td>{{ index }}</td>
-            {% for cell in row %}
-              <td>{{ cell }}</td>
-            {% endfor %}
-          </tr>
+          <td>{{ index }}</td>
+          {% for cell in row %}
+          <td>{{ cell }}</td>
+          {% endfor %}
+        </tr>
         {% endfor %}
       </tbody>
     </table>
-  {% endfor %}
+    {% endfor %}
   </div>
 </div>
+
 {% endblock %}
