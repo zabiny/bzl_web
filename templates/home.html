@@ -1,11 +1,19 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}">
 {% endblock %}
 
 {% block body %}
 <div id="border">
+    <h2 class="mb-3 mt-5">Sezóna 2024-2025</h2>
+    <p>
+        Podzimní oficiální orienťácká sezóna pomalu končí, což znamená, že se blíží další ročník Brněnské zimní ligy
+        (BZL). Stejně jako minulé roky, i letos pro Vás pořadatelé připravují spoustu závodů. To, které z nich se
+        budou počítat do celkového hodnocení ligy stejně tak jako podrobné informace k nim, naleznete v záložce <a
+            href="{{ url_for('calendar', season='24-25') }}">Kalendář závodů</a>.
+        U většiny závodů budou informace postupně přibývat.
+    </p>
     <h2 class="mb-3 mt-5">Sezóna 2023-2024</h2>
     <p>
         Letošní ročník 2023/24 je za námi. Sláva vítězům, čest poraženým! Doufáme,
@@ -17,7 +25,8 @@
     </p>
     <h2 class="mb-3 mt-5">Co je to BZL?</h2>
     <p>
-        Brněnská zimní liga (BZL) je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno Žabovřesky.
+        Brněnská zimní liga (BZL) je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno
+        Žabovřesky.
         Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
         i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
         fyzické výkonnosti či mapových schopností.<br>
@@ -32,7 +41,8 @@
     <h2 class="mb-3 mt-5" id="kategorie">Kategorie</h2>
     <p>
         Na každý závod je nutné si vybrat správnou kategorii. Až na výjimky jsou kategorie následující.
-        Muži běhají kategorii H. Ženy bojují v kategorii D. Děti do 10 let, ročník {{ hdd_max_year }} a mladší, mohou absolvovat svoji trať HDD v doprovodu rodičů.
+        Muži běhají kategorii H. Ženy bojují v kategorii D. Děti do 10 let, ročník {{ hdd_max_year }} a mladší, mohou
+        absolvovat svoji trať HDD v doprovodu rodičů.
         Žáci ročníku {{ zv_kid_year }} a mladší se hlásí do kategorie ZV, do této kategorie patří také veteráni
         ({{ zv_vet_year }} a starší). Pokud si jdete vyzkoušel orientační běh úplně poprvé a nevěříte si zatím na
         kategorie D a H, je kategorie ZV i pro vás. Stejně tak i starší děti mohou stále absolvovat kategorii HDD.
@@ -40,10 +50,10 @@
     </p>
     <table>
         <thead>
-        <tr>
-            <th style="min-width: 7em;">Kategorie</th>
-            <th>Ročník</th>
-        </tr>
+            <tr>
+                <th style="min-width: 7em;">Kategorie</th>
+                <th>Ročník</th>
+            </tr>
         </thead>
         <tbody>
             <tr>
@@ -70,9 +80,11 @@
     <p>
         Startovné v termínu pomocí internetové přihlášky stojí 100 Kč, v případě dohlášení až na místě závodu je
         startovné
-        zvýšeno na 200 Kč (navýšení neplatí pro kategorii HDD). Pokud nemáte vlastní elektronický SI čip, bez kterého nelze závod absolvovat, lze si jej
+        zvýšeno na 200 Kč (navýšení neplatí pro kategorii HDD). Pokud nemáte vlastní elektronický SI čip, bez kterého
+        nelze závod absolvovat, lze si jej
         zapůjčit na
-        prezentaci (20 Kč). Před cestou na start je nutné dostavit se na prezentaci v centru závodu a zaplatit startovné. </br>
+        prezentaci (20 Kč). Před cestou na start je nutné dostavit se na prezentaci v centru závodu a zaplatit
+        startovné. </br>
         Uvedené ceny jsou pouze orientační, sledujte prosím pokyny jednotlivých pořadatelů.
     </p>
     <h2 class="mb-3 mt-5">Přihlášky</h2>
@@ -82,7 +94,8 @@
         běhu - <a href="https://oris.orientacnisporty.cz" target="_blank">ORIS</a>. Členy registrovaných klubů
         prosíme,
         aby i tak platili startovné na místě každý zvlášť. Pokud nejste
-        členem žádného orientačního klubu, můžete využít jednorázové přihlášky po rozkliknutí závodu v systému ORIS (<a href="https://oris.orientacnisporty.cz/files/help/Jednorazove-prihlasky-ucastnik.pdf">návod</a>).
+        členem žádného orientačního klubu, můžete využít jednorázové přihlášky po rozkliknutí závodu v systému ORIS (<a
+            href="https://oris.orientacnisporty.cz/files/help/Jednorazove-prihlasky-ucastnik.pdf">návod</a>).
         Přihlášky probíhají na každý závod zvlášť, termíny přihlášek a odkaz na přihlášení naleznete po rozkliknutí
         konkrétního závodu ze seznamu v záložce kalendář. Pokud Vás BZL zaujala, v ORISu vždy najdete aktuální seznam
         všech OB závodů na

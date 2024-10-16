@@ -1,7 +1,7 @@
 import json
 import logging  # TODO: setup logger properly
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, overload, List
+from typing import Any, overload
 from urllib.error import HTTPError
 
 from src.event import Event
@@ -51,7 +51,7 @@ class EventManager:
         seasons = self.get_all_seasons()
         self._events = {season: self._load_all_events(season) for season in seasons}
 
-    def _create_event_from_config(self, season: str, event_id: str) -> Optional[Event]:
+    def _create_event_from_config(self, season: str, event_id: str) -> Event | None:
         """Load a json config with event's definition, fetch info from ORIS if there is
         an 'oris_id' in the config and create an instance of an Event class.
 
@@ -104,7 +104,7 @@ class EventManager:
             return None
         return event
 
-    def get_event(self, season: str, event_id: str) -> Optional[Event]:
+    def get_event(self, season: str, event_id: str) -> Event | None:
         """Get event from loaded events by season and event_id.
 
         Parameters
@@ -128,18 +128,16 @@ class EventManager:
         return None
 
     @overload
-    def get_all_events(self, season: str) -> Optional[Dict[str, Event]]:
-        ...
+    def get_all_events(self, season: str) -> dict[str, Event] | None: ...
 
     @overload
     def get_all_events(
         self, season: str, as_dicts: bool = False
-    ) -> Optional[Dict[str, Dict[str, Any]]]:
-        ...
+    ) -> dict[str, dict[str, Any]] | None: ...
 
     def get_all_events(
         self, season: str, as_dicts: bool = False
-    ) -> Optional[Union[Dict[str, Event], Dict[str, Dict[str, Any]]]]:
+    ) -> dict[str, Event] | dict[str, dict[str, Any]] | None:
         """Get all events of a season.
 
         Parameters
@@ -164,13 +162,13 @@ class EventManager:
 
         return events
 
-    def _assign_bzl_order(self, events: Dict[str, Event]) -> Dict[str, Event]:
+    def _assign_bzl_order(self, events: dict[str, Event]) -> dict[str, Event]:
         bzl_count = 0
         for event in events.values():
             if event.is_bzl:
                 bzl_count += 1
                 event.bzl_order = bzl_count
         return events
-    
-    def get_all_seasons(self) -> List[str]:
+
+    def get_all_seasons(self) -> list[str]:
         return [f.stem for f in Path("data").glob("*-*")]

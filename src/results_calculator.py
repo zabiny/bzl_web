@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -152,7 +152,7 @@ def race_mode(race_id: str):
         print("Communication with ORIS failed. Check your internet connection please.")
 
 
-def get_filenames_and_ids(season: str) -> Tuple[List[Path], List[int]]:
+def get_filenames_and_ids(season: str) -> tuple[list[Path], list[int]]:
     season_dir = Path(f"data/{season}/results")
     filenames = [f for f in season_dir.glob("points_*.csv")]
     race_ids = [int(f.stem[7:]) for f in filenames]
@@ -188,7 +188,7 @@ def list_races(season: str):
             )
 
 
-def get_overall_results(season: str) -> Optional[Dict[str, pd.DataFrame]]:
+def get_overall_results(season: str) -> dict[str, pd.DataFrame] | None:
     """
     Goes through all 'points_<id>.csv' files in a season's directory and creates overall
     results from points.
@@ -221,7 +221,7 @@ def get_overall_results(season: str) -> Optional[Dict[str, pd.DataFrame]]:
         race: pd.DataFrame = races[r_id]
         # Create a data structure for adding new runners
         # (have no evidence in already processed races)
-        new_runners = {}
+        new_runners: dict[str, dict[str, list[Any]]] = {}
         for class_desc in ["H", "D", "ZV", "HDD"]:
             new_runners[class_desc] = {
                 "Name": [],
@@ -239,12 +239,12 @@ def get_overall_results(season: str) -> Optional[Dict[str, pd.DataFrame]]:
                 # overall results
                 if reg_no in ovr_results[class_desc]["RegNo"].values:
                     reg_no_mask = ovr_results[class_desc]["RegNo"] == reg_no
-                    ovr_results[class_desc].loc[
-                        reg_no_mask, f"{r_id}-Place"
-                    ] = race_result["Place"]
-                    ovr_results[class_desc].loc[
-                        reg_no_mask, f"{r_id}-Points"
-                    ] = race_result["Points"]
+                    ovr_results[class_desc].loc[reg_no_mask, f"{r_id}-Place"] = (
+                        race_result["Place"]
+                    )
+                    ovr_results[class_desc].loc[reg_no_mask, f"{r_id}-Points"] = (
+                        race_result["Points"]
+                    )
                 # Runner with this RegNo has no results in this category in overall
                 # results so far
                 else:
@@ -273,12 +273,12 @@ def get_overall_results(season: str) -> Optional[Dict[str, pd.DataFrame]]:
                         )
                     else:
                         name_mask = ovr_results[class_desc]["Name"] == name
-                        ovr_results[class_desc].loc[
-                            name_mask, f"{r_id}-Place"
-                        ] = race_result["Place"]
-                        ovr_results[class_desc].loc[
-                            name_mask, f"{r_id}-Points"
-                        ] = race_result["Points"]
+                        ovr_results[class_desc].loc[name_mask, f"{r_id}-Place"] = (
+                            race_result["Place"]
+                        )
+                        ovr_results[class_desc].loc[name_mask, f"{r_id}-Points"] = (
+                            race_result["Points"]
+                        )
                 # Runner with this Name has no results in this category in overall
                 # results so far
                 else:
@@ -346,25 +346,25 @@ def _solve_duplicates_category(class_results: pd.DataFrame) -> pd.DataFrame:
             ids_2_merge = group.index
             main_id = int(decision)
 
-        df_tmp = {}
-        df_tmp["Name"] = group.loc[main_id, "Name"]
-        df_tmp["RegNo"] = group.loc[main_id, "RegNo"]
+        merged_runner_data = {}
+        merged_runner_data["Name"] = group.loc[main_id, "Name"]
+        merged_runner_data["RegNo"] = group.loc[main_id, "RegNo"]
         for col in group.columns[2:-1]:  # without Name, RegNo and name_unified
             notna = group.loc[ids_2_merge, col].dropna()
             if notna.empty:
-                df_tmp[col] = np.nan
+                merged_runner_data[col] = np.nan
             elif (len(notna) == 1) or ((notna == notna.iloc[0]).all()):
-                df_tmp[col] = notna.iloc[0]
+                merged_runner_data[col] = notna.iloc[0]
             else:
                 raise ValueError("You are probably merging people that you shouldn't.")
-        df_tmp = pd.DataFrame(df_tmp, index=[0])
-        print(df_tmp.T.to_markdown())
-        dfs.append(df_tmp)
+        merged_runner_df = pd.DataFrame(merged_runner_data, index=[0])
+        print(merged_runner_df.T.to_markdown())
+        dfs.append(merged_runner_df)
     df = pd.concat(dfs)
     return df
 
 
-def solve_duplicates(input_results: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
+def solve_duplicates(input_results: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     output_results = {}
     # Iterate through all categories and try to merge probable duplicities
     for class_desc in ["H", "D", "ZV", "HDD"]:
@@ -375,7 +375,7 @@ def solve_duplicates(input_results: Dict[str, pd.DataFrame]) -> Dict[str, pd.Dat
     return output_results
 
 
-def best_n_races(results: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
+def best_n_races(results: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     for class_desc in ["H", "D", "ZV", "HDD"]:
         num_of_all_races = len(results[class_desc].columns[2:]) // 2
         num_of_races_to_count = (num_of_all_races // 2) + 1

@@ -1,7 +1,7 @@
 import datetime
 import logging  # TODO: setup logger properly
 from collections import defaultdict
-from typing import Any, Dict, Optional
+from typing import Any
 from urllib.error import HTTPError
 
 import requests
@@ -13,16 +13,16 @@ class Event:
         desc_short: str,
         is_bzl: bool,
         difficulty,  # TODO: change to enum, remove optional
-        name: Optional[str] = None,
-        date: Optional[str] = None,
-        place_desc: Optional[str] = None,
-        desc_long: Optional[str] = None,
-        oris_id: Optional[int] = None,
-        entry_date: Optional[str] = None,
-        gps_lat: Optional[float] = None,
-        gps_lon: Optional[float] = None,
-        web: Optional[str] = None,
-        logo: Optional[str] = None,
+        name: str | None = None,
+        date: str | None = None,
+        place_desc: str | None = None,
+        desc_long: str | None = None,
+        oris_id: int | None = None,
+        entry_date: str | None = None,
+        gps_lat: float | None = None,
+        gps_lon: float | None = None,
+        web: str | None = None,
+        logo: str | None = None,
     ) -> None:
         self.name = name
         self.difficulty = difficulty
@@ -37,16 +37,16 @@ class Event:
         self.logo = logo
         self.is_bzl = is_bzl
 
-        self.bzl_order: Optional[int] = None  # will be set by event manager
+        self.bzl_order: int | None = None  # will be set by event manager
 
         # Did the event already happened?
         self.date = datetime.date.fromisoformat(date) if date else None
         self.is_past = datetime.date.today() > self.date if self.date else None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.__dict__
 
-    def _fetch_oris_data(self, oris_id: int) -> Dict:
+    def _fetch_oris_data(self, oris_id: int) -> dict[str, Any]:
         """Get info about an event from ORIS API.
 
         Retrieve info such as date, GPS coordinates of event center, start time etc.
