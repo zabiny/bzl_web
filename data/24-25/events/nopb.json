@@ -1,9 +1,9 @@
 {
     "name": "Mistrovství Brna v NOPB",
+    "oris_id": 8815,
     "web": "https://nopb.adamna.net/index.php?site=rozpis",
     "difficulty": "hard",
     "desc_short": "Noční scorelauf bez světel a buzol.",
     "is_bzl": false,
-    "place_desc": "Židenice",
-    "date": "2024-11-24"
+    "place_desc": "Židenice"
 }
