@@ -1,9 +1,9 @@
 {
     "name": "Kauflauf",
-    "date": "2025-01-01",
+    "date": "2025-03-02",
     "desc_long": "Zvolte si trať podle aktuální formy a podle toho, jak moc si to chcete užít ;-)",
     "difficulty": "medium",
-    "desc_short": "(Datum bude upřesněno) Městská klasika na vylepšených Mapy.cz",
+    "desc_short": "Městská klasika na vylepšených Mapy.cz",
     "is_bzl": false,
     "web": "https://kauflauf.adamna.net/"
 }
