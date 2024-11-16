@@ -25,11 +25,14 @@
 
         <!-- Difficulty Icon -->
         {% if event_data['difficulty'] == 'easy' %}
-        <img src="/static/images/easy.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_easy">
+        <img src="/static/images/easy.png" class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
+            alt="difficulty_easy">
         {% elif event_data['difficulty'] == 'medium' %}
-        <img src="/static/images/medium.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_medium">
+        <img src="/static/images/medium.png" class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
+            alt="difficulty_medium">
         {% elif event_data['difficulty'] == 'hard' %}
-        <img src="/static/images/hard.png" class="position-absolute end-0 top-0 mt-3 me-4" alt="difficulty_hard">
+        <img src="/static/images/hard.png" class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
+            alt="difficulty_hard">
         {% endif %}
 
         <!-- Short Description -->

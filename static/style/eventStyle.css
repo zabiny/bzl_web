@@ -1,5 +1,8 @@
+/* Handle the short description wrapping */
 #description {
-    max-width: 100%;
+    padding-right: 90px; /* Space for the difficulty icon */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 #map {
@@ -8,9 +11,17 @@
     margin-top: 60px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
     #map {
         width: 100%;
+    }
+
+    .difficulty-icon {
+        width: 40px;
+    }
+
+    #description {
+        padding-right: 50px; /* Less space needed for smaller icon */
     }
 }
 
@@ -21,4 +32,8 @@
 #logo {
     max-width: 100%;
     height: auto;
+}
+
+.difficulty-icon {
+    width: 80px; /* default size for desktop */
 }
