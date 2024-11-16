@@ -4,5 +4,7 @@
     "desc_short": "Sprint",
     "place_desc": "Slatina",
     "is_bzl": true,
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "organizer": "TJ Spartak první brněnská",
+    "organizer_logo": "pbm.png"
 }

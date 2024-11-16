@@ -5,5 +5,7 @@
     "difficulty": "hard",
     "desc_short": "Noční scorelauf bez světel a buzol.",
     "is_bzl": false,
-    "place_desc": "Židenice"
+    "place_desc": "Židenice",
+    "organizer": "Jiří Zelinka",
+    "organizer_logo": "mbm.png"
 }

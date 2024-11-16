@@ -37,6 +37,13 @@
                         class="difficulty-image">
                 </div>
             </div>
+            <!-- Organizer logo -->
+            <div class="organizer-logo" style="width: 60px; min-width: 60px; display: flex; align-items: center;">
+                {% if event.get('organizer_logo') %}
+                <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}"
+                    alt="{{ event.get('organizer', '') }} logo" style="max-height: 40px; max-width: 60px;">
+                {% endif %}
+            </div>
 
             <!-- Event name and short description -->
             <div class="description">

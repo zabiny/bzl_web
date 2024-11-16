@@ -12,11 +12,13 @@
 {% block body %}
 
 <!-- Event Name -->
-{% if event_data['name'] %}
-<h1 class="page-header">
+<h1 class="page-header text-center">
+    {% if event_data['bzl_order'] %}
+    {{event_data['bzl_order']}}. {{event_data['name']}}
+    {% else %}
     {{event_data['name']}}
+    {% endif %}
 </h1>
-{% endif %}
 
 <div class="position-relative" id="border">
     <div id="event-detail">
@@ -39,16 +41,48 @@
 
         <!-- Table with basic info -->
         <table class="table mt-4">
+            <!-- Date -->
             <tr>
                 <td>Datum:</td>
                 <td>{{event_data['date'] | czech_date_from_date }}</td>
             </tr>
+
+            <!-- Organizer -->
+            {% if event_data['organizer'] and event_data['organizer_logo_large'] %}
+            <tr>
+                <td>Pořadatel:</td>
+                <td>
+                    <img src="/static/images/logos/{{event_data['organizer_logo_large']}}" alt="organizer logo"
+                        class="me-2" style="height: 30px;">
+                    {{event_data['organizer']}}
+                </td>
+            </tr>
+            {% elif event_data['organizer'] and event_data['organizer_logo'] %}
+            <tr>
+                <td>Pořadatel:</td>
+                <td>
+                    <img src="/static/images/logos/{{event_data['organizer_logo']}}" alt="organizer logo" class="me-2"
+                        style="height: 30px;">
+                    {{event_data['organizer']}}
+                </td>
+            </tr>
+            {% elif event_data['organizer'] %}
+            <tr>
+                <td>Pořadatel:</td>
+                <td>{{event_data['organizer']}}</td>
+            </tr>
+            {% endif %}
+
+            <!-- Entry Date -->
             {% if event_data['entry_date'] %}
             <tr>
                 <td>Přihlášky do:</td>
                 <td>{{event_data['entry_date'] | czech_date_from_datetime }}</td>
             </tr>
             {% endif %}
+
+            <!-- Web -->
+            {% if event_data['web'] %}
             <tr>
                 <td>Web:</td>
                 <td>
@@ -61,6 +95,8 @@
                     </a>
                 </td>
             </tr>
+            {% endif %}
+            <!-- Place -->
             {% if event_data['place_desc'] %}
             <tr>
                 <td>Místo:</td>
@@ -76,10 +112,12 @@
         </div>
         {% endif %}
 
-        <!-- Image and logos if present -->
-        {% if event_data['logo'] %}
-        <div>
-            <img id="logo" src="/static/images/{{event_data['logo']}}" alt="logo">
+        <!-- Images if present -->
+        {% if event_data['images'] %}
+        <div class="text-center my-4">
+            {% for image in event_data['images'] %}
+            <img src="/static/images/{{image}}" alt="logo" class="mx-2" style="max-height: 100px;">
+            {% endfor %}
         </div>
         {% endif %}
 

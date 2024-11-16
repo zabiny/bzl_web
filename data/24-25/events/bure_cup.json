@@ -3,5 +3,8 @@
     "is_bzl": true,
     "difficulty": "easy",
     "place_desc": "Komín",
-    "desc_short": "Sprint"
+    "desc_short": "Sprint",
+    "organizer": "(BURE a spol.)",
+    "organizer_logo": "zbm.png",
+    "organizer_logo_large": "zbm_large.png"
 }

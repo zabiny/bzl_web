@@ -5,5 +5,7 @@
     "difficulty": "medium",
     "desc_short": "Městská klasika na vylepšených Mapy.cz",
     "is_bzl": false,
-    "web": "https://kauflauf.adamna.net/"
+    "web": "https://kauflauf.adamna.net/",
+    "organizer": "KOS TJ Tesla Brno (Kauflauf)",
+    "organizer_logo": "tbm.gif"
 }

@@ -4,5 +4,5 @@
     "desc_short": "Městský sprint",
     "difficulty": "easy",
     "desc_long": "Partnerem tohoto závodu je projekt Tipsport Sportuj s námi.",
-    "logo": "Tipsport_SPORTUJ_CUS_RGB.svg"
+    "images": ["Tipsport_SPORTUJ_CUS_RGB.svg"]
 }

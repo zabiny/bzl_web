@@ -14,7 +14,15 @@ em = EventManager()
 
 # Update the EventManager every 10 mins
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=em.update, trigger="interval", seconds=600)
+scheduler.add_job(
+    func=em.update,
+    trigger="interval",
+    seconds=600,
+    id="event_manager_update",
+    name="Update EventManager data",
+)
+# Enable APScheduler logging
+scheduler.print_jobs()
 scheduler.start()
 
 # Shut down the scheduler when exiting the app
