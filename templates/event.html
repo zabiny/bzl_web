@@ -124,6 +124,17 @@
         </div>
         {% endif %}
 
+        <!-- Video if present -->
+        {% if event_data['video_yt_id'] %}
+        <div class="text-center my-4">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{event_data['video_yt_id']}}"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        {% endif %}
+
         <!-- Map -->
         {% if event_data['gps_lat'] and event_data['gps_lon'] %}
         <div id="map"></div>

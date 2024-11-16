@@ -33,6 +33,7 @@ class Event:
         organizer_logo: str | None = None,
         organizer_logo_large: str | None = None,
         images: list[str] | None = None,
+        video_yt_id: str | None = None,
     ) -> None:
         self.name = name
         self.difficulty = difficulty
@@ -45,6 +46,7 @@ class Event:
         self.gps_lon = gps_lon
         self.web = web
         self.images = images
+        self.video_yt_id = video_yt_id
         self.is_bzl = is_bzl
         self.organizer = organizer
         self.organizer_logo = organizer_logo
