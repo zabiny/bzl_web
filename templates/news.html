@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}">
+{% endblock %}
+
+{% block body %}
+<div id="border">
+    {% for news_item in news %}
+    <article class="news-item">
+        {% if news_item.title %}
+        <h2 class="mb-3 mt-5">{{ news_item.title }}</h2>
+        {% endif %}
+        <div class="news-meta">
+            <span class="date">{{ news_item.created_at.strftime('%d.%m.%Y') }}</span>
+        </div>
+        <div class="news-content">
+            {{ news_item.get_rendered_content() | safe }}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

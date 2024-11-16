@@ -64,14 +64,12 @@ html, body, main, #body {
 .nav-item {
     flex: 1 1 auto;
     text-align: center;
-    border: 1px solid black;
-    border-top: none;
     font-size: 1.2rem;
+    border-right: 1px solid black;  /* Light separator between tabs */
 }
 
-.nav-item:first-child, .nav-item:last-child {
-    border-left:none;
-    border-right: none;
+.nav-item:last-child {
+    border-right: none;  /* Remove border from last tab */
 }
 
 .nav-tabs .nav-link {
@@ -79,21 +77,25 @@ html, body, main, #body {
     border-radius: 0;
     color: black;
     font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #e6f3ff;
+    color: black;
 }
 
 .nav-tabs {
-    border-bottom: none;
+    border-bottom: 1px solid black;
 }
 
 .nav-link {
     padding: 1.5rem 1rem;
-}
-
-.active.nav-link--left {
-    border-top-left-radius: 2em;
-}
-.active.nav-link--right {
-    border-top-right-radius: 2em;
 }
 
 .runner-image {
