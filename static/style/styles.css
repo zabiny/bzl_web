@@ -51,7 +51,7 @@ main {
     border-top: 1px solid #e9ecef;
     border-bottom: 1px solid #e9ecef;
     padding: 0;
-    background-color: #9cd8fa;  /* Light icy blue background */
+    background-color: #d4efff;  /* Light icy blue background */
 }
 
 .navbar-nav .nav-item {
@@ -75,7 +75,7 @@ main {
 .navbar-nav .nav-link.active {
     color: #0056b3;
     font-weight: 600;
-    background-color: #d9e8f6;  /* Slightly darker icy blue for active state */
+    background-color: #99cdfe;  /* Slightly darker icy blue for active state */
 }
 
 /* Underline effect for active tab */
@@ -88,74 +88,6 @@ main {
     height: 3px;
     background-color: #0056b3;
 }
-
-/* Desktop navbar styling */
-@media (min-width: 992px) {
-    .navbar-nav .nav-link {
-        padding: 1.25rem 2rem;  /* Increased padding */
-        font-size: 1.2rem;      /* Larger font size */
-        font-weight: 500;
-    }
-
-    .navbar-nav .nav-item {
-        margin: 0 0.75rem;      /* Slightly more space between items */
-    }
-}
-
-/* Mobile menu adjustments */
-@media (max-width: 991px) {
-    .navbar-nav .nav-item {
-        margin: 0;
-    }
-
-    .navbar-nav .nav-link {
-        padding: 1rem;
-        border-bottom: 1px solid #e9ecef;
-    }
-
-    .navbar-nav .nav-link.active::after {
-        display: none;  /* Remove underline effect on mobile */
-    }
-
-    .navbar-nav .nav-link.active {
-        background-color: #f8f9fa;  /* Light background for active item on mobile */
-    }
-}
-/* .nav-item {
-    flex: 1 1 auto;
-    text-align: center;
-    font-size: 1.2rem;
-} */
-
-/* .nav-item:last-child {
-    border-right: none;
-}
-
-.nav-link {
-    padding: 1.5rem 1rem;
-}
-
-.nav-tabs {
-    border-bottom: 1px solid black;
-}
-
-.nav-tabs .nav-link {
-    border: none;
-    border-radius: 0;
-    color: black;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-}
-
-.nav-tabs .nav-link:hover {
-    background-color: #f0f0f0;
-    color: black;
-}
-
-.nav-tabs .nav-link.active {
-    background-color: #e6f3ff;
-    color: black;
-} */
 
 /* Runner Images */
 .runner-image {
@@ -176,15 +108,26 @@ main {
     z-index: -1;
 }
 
-/* Mobile Styles */
-@media (max-width: 720px) {
-    #body {
-        padding-left: 2em;
-        padding-right: 2em;
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    transition: none;  /* Remove any transition from the button itself */
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Desktop and Mobile Responsive Styles */
+@media (min-width: 992px) {
+    .navbar-nav .nav-link {
+        padding: 1.25rem 2rem;  /* Increased padding */
+        font-size: 1.2rem;      /* Larger font size */
+        font-weight: 500;
     }
 
-    .runner-image {
-        display: none;
+    .navbar-nav .nav-item {
+        margin: 0 0.75rem;      /* Slightly more space between items */
     }
 }
 
@@ -201,22 +144,58 @@ main {
         width: 100%;
         max-width: 300px;
         padding: 1rem;
-        background-color: white;
+        background-color: #d4efff;  /* Same as desktop navbar */
         z-index: 1000;
         transform: translateX(-100%);
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.2s ease-out;
     }
 
     .navbar-collapse.show {
         transform: translateX(0);
     }
+
+    /* Backdrop styling */
+    .navbar-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;  /* Just below the menu */
+    }
+
+    /* Show backdrop when menu is open */
+    .navbar-collapse.show + .navbar-backdrop {
+        display: block;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-nav .nav-link.active::after {
+        display: none;  /* Remove underline effect on mobile */
+    }
+
+    .navbar-nav .nav-link.active {
+        background-color: #f8f9fa;  /* Light background for active item on mobile */
+    }
 }
 
-.navbar-toggler {
-    border: none;
-    padding: 0.5rem;
-}
+@media (max-width: 720px) {
+    #body {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
 
-.navbar-toggler:focus {
-    box-shadow: none;
+    .runner-image {
+        display: none;
+    }
 }
