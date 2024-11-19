@@ -6,5 +6,5 @@
     "is_bzl": true,
     "difficulty": "easy",
     "organizer": "OOB Spartak Adamov",
-    "images": ["logos/logo_adasprint.webp"]
+    "organizer_logo": "logo_adasprint.webp"
 }
