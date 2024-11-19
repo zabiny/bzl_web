@@ -1,10 +1,17 @@
 import datetime
 import logging  # TODO: setup logger properly
 from collections import defaultdict
+from enum import StrEnum
 from typing import Any
 from urllib.error import HTTPError
 
 import requests
+
+
+class Difficulty(StrEnum):
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
 
 
 class Event:
@@ -12,7 +19,7 @@ class Event:
         self,
         desc_short: str,
         is_bzl: bool,
-        difficulty,  # TODO: change to enum, remove optional
+        difficulty: Difficulty,
         name: str | None = None,
         date: str | None = None,
         place_desc: str | None = None,
@@ -22,7 +29,11 @@ class Event:
         gps_lat: float | None = None,
         gps_lon: float | None = None,
         web: str | None = None,
-        logo: str | None = None,
+        organizer: str | None = None,
+        organizer_logo: str | None = None,
+        organizer_logo_large: str | None = None,
+        images: list[str] | None = None,
+        video_yt_id: str | None = None,
     ) -> None:
         self.name = name
         self.difficulty = difficulty
@@ -34,9 +45,12 @@ class Event:
         self.gps_lat = gps_lat
         self.gps_lon = gps_lon
         self.web = web
-        self.logo = logo
+        self.images = images
+        self.video_yt_id = video_yt_id
         self.is_bzl = is_bzl
-
+        self.organizer = organizer
+        self.organizer_logo = organizer_logo
+        self.organizer_logo_large = organizer_logo_large
         self.bzl_order: int | None = None  # will be set by event manager
 
         # Did the event already happened?
@@ -79,6 +93,7 @@ class Event:
             "place_desc": oris_json["Place"],
             "gps_lat": oris_json["GPSLat"] if oris_json["GPSLat"] != "0" else None,
             "gps_lon": oris_json["GPSLon"] if oris_json["GPSLon"] != "0" else None,
+            "organizer": oris_json["Org1"]["Name"],
         }
         result["is_past"] = datetime.date.today() > result["date"]
         return result

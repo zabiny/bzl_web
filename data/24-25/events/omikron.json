@@ -1,9 +1,12 @@
 {
     "name": "O-mikron",
     "desc_short": "Krátký lesní závod s fintou",
+    "web": "https://o-mikron.czechian.net/zavod/",
     "difficulty": "medium",
     "is_bzl": false,
     "place_desc": "Sadová (Zaječí potok)",
     "date": "2024-12-08",
-    "desc_long": "Směrný čas 15 minut."
+    "desc_long": "Směrný čas 15 minut.",
+    "organizer": "O-mikron",
+    "organizer_logo": "mbm.png"
 }

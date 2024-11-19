@@ -1,10 +1,12 @@
 {
     "name": "BZL: Adamna cup",
-    "date": "2024-12-01",
+    "oris_id": 8902,
     "web": "http://cup.adamna.net",
     "is_bzl": true,
     "place_desc": "Bystrc - Kamechy (nový prostor)",
     "difficulty": "medium",
     "desc_long": "22. ročník tradičního sprintového závodu se self-choice, letos z velké části v nesprintovém prostředí. Pojďte se poztrácet do hustníčků, remízků a louček :-) Čeká vás z půlky zcela nový, dosud nezmapovaný prostor!",
-    "desc_short": "Sprint se self-choice"
+    "desc_short": "Sprint se self-choice",
+    "organizer": "KOS TJ Tesla Brno (Adamna)",
+    "organizer_logo": "tbm.gif"
 }

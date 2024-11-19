@@ -1,31 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style/homeStyle.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/infoStyle.css') }}">
 {% endblock %}
 
 {% block body %}
 <div id="border">
-    <h2 class="mb-3 mt-5">Sezóna 2024-2025</h2>
-    <p>
-        Podzimní oficiální orienťácká sezóna pomalu končí, což znamená, že se blíží další ročník Brněnské zimní ligy
-        (BZL). Stejně jako minulé roky, i letos pro Vás pořadatelé připravují spoustu závodů. To, které z nich se
-        budou počítat do celkového hodnocení ligy stejně tak jako podrobné informace k nim, naleznete v záložce <a
-            href="{{ url_for('calendar', season='24-25') }}">Kalendář závodů</a>.
-        U většiny závodů budou informace postupně přibývat.
-    </p>
-    <h2 class="mb-3 mt-5">Sezóna 2023-2024</h2>
-    <p>
-        Letošní ročník 2023/24 je za námi. Sláva vítězům, čest poraženým! Doufáme,
-        že se vám závody líbily a zase jste poznali nová místa nejen v Brně, ale třeba i Blansku nebo Bílovicích.
-        Na závodech BZL letos startovalo 796 závodníků! (Společně s dalšími závody můžeme atakovat tisícovku...)
-        Budeme rádi, když nám zůstanete věrni i v dalším roce zimních lig. Teď už zase hurá do lesa!
-        Obrovské poděkování patří i jednotlivým pořadatelům BZL, že to pro nás dělají!<br>
-        Díky, jste skvělí!
-    </p>
     <h2 class="mb-3 mt-5">Co je to BZL?</h2>
     <p>
-        Brněnská zimní liga (BZL) je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno
+        Sportega Brněnská zimní liga (BZL) je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno
         Žabovřesky.
         Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
         i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
@@ -37,7 +20,9 @@
         <a href="https://zacitorientak.cz/brno/co-to-je/190" target="_blank">zacitorientak.cz</a>
         , či můžete zhlédnout krátké video zde:
         <a href="https://youtu.be/D767m2DVVkc" target="_blank">Orientační běh - zelený sport</a>
+
     </p>
+
     <h2 class="mb-3 mt-5" id="kategorie">Kategorie</h2>
     <p>
         Na každý závod je nutné si vybrat správnou kategorii. Pokud je závod zařazen do BZL, jsou kategorie následující:
@@ -77,6 +62,7 @@
     </table>
     </br>
     <p>Mimo soutěž je možno absolvovat i jinou kategorii, pro začátečníky doporučujeme kategorii ZV.</p>
+
     <h2 class="mb-3 mt-5">Startovné</h2>
     <p>
         Startovné v termínu pomocí internetové přihlášky u většiny závodů stojí 100 Kč, v případě dohlášení až na místě
@@ -85,6 +71,7 @@
         nutné dostavit se na prezentaci v centru závodu a zaplatit startovné. </br>
         Uvedené ceny jsou pouze orientační, sledujte prosím pokyny jednotlivých pořadatelů.
     </p>
+
     <h2 class="mb-3 mt-5">Přihlášky</h2>
     <p>
         Pokud není určeno pořadetelem konkrétního závodu jinak, je pro přihlašování použit informační systém

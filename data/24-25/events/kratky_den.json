@@ -1,6 +1,11 @@
 {
     "oris_id": 8777,
+    "web": "https://kratkyden.zabiny.club/",
     "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
     "difficulty": "hard",
-    "is_bzl": false
+    "is_bzl": false,
+    "organizer_logo": "zbm.png",
+    "organizer_logo_large": "zbm_large.png",
+    "desc_long": "Krátký den je štafetový závod v orienťáku po vzoru skandinávských klasik Tiomila a Jukola.\nPoměřte síly s ostatními kluby. V zimě, s čelovkou, v noci.\nZávod je vhodný pro celý oddíl, postavte na start týmy dospělých, žáků a nově i veteránů.\nMrkněte na video z letošního ročníku a nasajte atmosféru Krátkého dne.",
+    "video_yt_id": "1xHYvPZiq3c"
 }

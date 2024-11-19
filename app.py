@@ -8,13 +8,22 @@ from flask import Flask, redirect, render_template, url_for
 from werkzeug import Response
 
 from src.event_manager import EventManager
+from src.news import load_news
 
 app = Flask(__name__)
 em = EventManager()
 
 # Update the EventManager every 10 mins
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=em.update, trigger="interval", seconds=600)
+scheduler.add_job(
+    func=em.update,
+    trigger="interval",
+    seconds=600,
+    id="event_manager_update",
+    name="Update EventManager data",
+)
+# Enable APScheduler logging
+scheduler.print_jobs()
 scheduler.start()
 
 # Shut down the scheduler when exiting the app
@@ -24,16 +33,29 @@ atexit.register(lambda: scheduler.shutdown())
 # Home
 @app.route("/")
 @app.route("/home")
-def home() -> str:
-    hdd_max_year = date.today().year - 10 + (date.today().month > 6)
-    zv_kid_year = date.today().year - 14 + (date.today().month > 6)
-    zv_vet_year = date.today().year - 45 + (date.today().month > 6)
+def home() -> Response:
+    return redirect(url_for("news"))
+
+
+# Info
+@app.route("/info")
+def info() -> str:
+    hdd_max_year = date.today().year - 11 + (date.today().month > 6)
+    zv_kid_year = date.today().year - 15 + (date.today().month > 6)
+    zv_vet_year = date.today().year - 51 + (date.today().month > 6)
     return render_template(
-        "home.html",
+        "info.html",
+        hdd_max_year=hdd_max_year,
         zv_kid_year=zv_kid_year,
         zv_vet_year=zv_vet_year,
-        hdd_max_year=hdd_max_year,
     )
+
+
+# News
+@app.route("/news")
+def news() -> str:
+    news_items = load_news()
+    return render_template("news.html", news=news_items)
 
 
 # Calendar

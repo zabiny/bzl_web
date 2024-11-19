@@ -1,9 +1,5 @@
-/*
-For better looks of the whole page
-*/
-
-h1,
-h2 {
+/* Typography */
+h1, h2 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold !important;
 }
@@ -21,18 +17,13 @@ a {
     text-decoration: none !important;
 }
 
+/* Layout */
 header {
     text-align: center;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding: 3rem 0;
     border-bottom: 1px solid black;
     margin-inline: auto;
     max-width: 70em;
-}
-
-.page-header {
-    margin-top: 1rem;
-    text-align: center;
 }
 
 main {
@@ -41,76 +32,73 @@ main {
     border-left: 1px solid black;
     border-right: 1px solid black;
     background-color: white;
-}
-
-#body {
-    padding-top: 15px;
-    padding-bottom: 50px;
-    padding-left: 5em;
-    padding-right: 5em;
-    position: relative;
-}
-@media (max-width: 720px) {
-    #body {
-        padding-left: 2em;
-        padding-right: 2em;
-    }
-}
-
-html, body, main, #body {
     min-height: 100%;
 }
 
-.nav-item {
-    flex: 1 1 auto;
+#body {
+    padding: 15px 5em 50px;
+    position: relative;
+    min-height: 100%;
+}
+
+.page-header {
+    margin-top: 1rem;
     text-align: center;
-    border: 1px solid black;
-    border-top: none;
-    font-size: 1.2rem;
 }
 
-.nav-item:first-child, .nav-item:last-child {
-    border-left:none;
-    border-right: none;
+/* Navigation */
+.navbar {
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    padding: 0;
+    background-color: #d4efff;  /* Light icy blue background */
 }
 
-.nav-tabs .nav-link {
-    border: none;
-    border-radius: 0;
-    color: black;
-    font-weight: bold;
+.navbar-nav .nav-item {
+    position: relative;
+    margin: 0 0.5rem;
 }
 
-.nav-tabs {
-    border-bottom: none;
+.navbar-nav .nav-link {
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    color: #495057;
+    transition: color 0.2s ease-in-out;
 }
 
-.nav-link {
-    padding: 1.5rem 1rem;
+/* Hover effect */
+.navbar-nav .nav-link:hover {
+    color: #0056b3;
 }
 
-.active.nav-link--left {
-    border-top-left-radius: 2em;
-}
-.active.nav-link--right {
-    border-top-right-radius: 2em;
+/* Active state */
+.navbar-nav .nav-link.active {
+    color: #0056b3;
+    font-weight: 600;
+    background-color: #99cdfe;  /* Slightly darker icy blue for active state */
 }
 
+/* Underline effect for active tab */
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #0056b3;
+}
+
+/* Runner Images */
 .runner-image {
     width: 8vw;
     min-width: 100px;
     height: auto;
     z-index: -1;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
 }
 
-@media (max-width: 720px) {
-    .runner-image {
-        display: none;
-    }
-}
-
+/* Particles Background */
 #particles-js {
     position: absolute;
     top: 0;
@@ -118,4 +106,96 @@ html, body, main, #body {
     bottom: 0;
     right: 0;
     z-index: -1;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    transition: none;  /* Remove any transition from the button itself */
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Desktop and Mobile Responsive Styles */
+@media (min-width: 992px) {
+    .navbar-nav .nav-link {
+        padding: 1.25rem 2rem;  /* Increased padding */
+        font-size: 1.2rem;      /* Larger font size */
+        font-weight: 500;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0 0.75rem;      /* Slightly more space between items */
+    }
+}
+
+@media (max-width: 991px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem;
+        background-color: #d4efff;  /* Same as desktop navbar */
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease-out;
+    }
+
+    .navbar-collapse.show {
+        transform: translateX(0);
+    }
+
+    /* Backdrop styling */
+    .navbar-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;  /* Just below the menu */
+    }
+
+    /* Show backdrop when menu is open */
+    .navbar-collapse.show + .navbar-backdrop {
+        display: block;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-nav .nav-link.active::after {
+        display: none;  /* Remove underline effect on mobile */
+    }
+
+    .navbar-nav .nav-link.active {
+        background-color: #f8f9fa;  /* Light background for active item on mobile */
+    }
+}
+
+@media (max-width: 720px) {
+    #body {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+
+    .runner-image {
+        display: none;
+    }
 }
