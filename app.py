@@ -40,9 +40,9 @@ def home() -> Response:
 # Info
 @app.route("/info")
 def info() -> str:
-    hdd_max_year = date.today().year - 10 + (date.today().month > 6)
-    zv_kid_year = date.today().year - 14 + (date.today().month > 6)
-    zv_vet_year = date.today().year - 45 + (date.today().month > 6)
+    hdd_max_year = date.today().year - 11 + (date.today().month > 6)
+    zv_kid_year = date.today().year - 15 + (date.today().month > 6)
+    zv_vet_year = date.today().year - 51 + (date.today().month > 6)
     return render_template(
         "info.html",
         hdd_max_year=hdd_max_year,
