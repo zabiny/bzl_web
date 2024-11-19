@@ -22,6 +22,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/style/styles.css">
     <link rel="stylesheet" href="/static/style/menuStyle.css">
+
+    <!-- Add Font Awesome for hamburger icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -47,35 +50,62 @@
             style="bottom: 0; right: min(45%, 100px);" alt="runner7">
     </div>
 
-    <header class="d-flex align-items-center justify-content-between">
-        <a href="https://www.sportega.cz/"><img src="/static/images/Sportega_logo_rgb_DarkBlue.png" alt="Sportega logo"
-                style="height: 60px;"></a>
-        <h1><a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Brněnská zimní liga</a></h1>
+    <header class="d-flex align-items-center justify-content-between p-3">
+        <!-- Left: Sportega logo -->
+        <a href="https://www.sportega.cz/" class="d-none d-lg-block">
+            <img src="/static/images/Sportega_logo_rgb_DarkBlue.png" alt="Sportega logo" style="height: 60px;">
+        </a>
+
+        <!-- Center: Title with hamburger on mobile -->
+        <div class="d-flex align-items-center">
+            <button class="navbar-toggler d-lg-none me-3" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="mb-0 text-center">
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Brněnská zimní liga</a>
+            </h1>
+        </div>
+
+        <!-- Right: Lampion -->
         <img src="/static/images/lampion.png" alt="Orientační lampion" style="height: 60px;">
     </header>
 
-    <main>
-        <!-- Navigation tabs -->
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link {% if request.path == '/' or '/news' in request.path %}active{% endif %}"
-                    href="{{ url_for('home') }}">Novinky</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.path == '/info' %}active{% endif %}"
-                    href="{{ url_for('info') }}">Informace</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if '/calendar' in request.path %}active{% endif %}"
-                    href="{{ url_for('calendar', season='24-25') }}">Kalendář závodů</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if '/results' in request.path %}active{% endif %}"
-                    href="{{ url_for('results', season='24-25') }}">Výsledky</a>
-            </li>
-        </ul>
 
+    <main>
         <!-- Main content area -->
+        <!-- Centered navigation for large screens -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/' or '/news' in request.path %}active{% endif %}"
+                                href="{{ url_for('home') }}">Novinky</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/info' %}active{% endif %}"
+                                href="{{ url_for('info') }}">Informace</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/calendar' in request.path %}active{% endif %}"
+                                href="{{ url_for('calendar', season='24-25') }}">Kalendář závodů</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/results' in request.path %}active{% endif %}"
+                                href="{{ url_for('results', season='24-25') }}">Výsledky</a>
+                        </li>
+                        <!-- Mobile-only logo -->
+                        <li class="nav-item d-lg-none mt-3">
+                            <a href="https://www.sportega.cz/" class="nav-link">
+                                <img src="/static/images/Sportega_logo_rgb_DarkBlue.png" alt="Sportega logo"
+                                    style="height: 40px;">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <div id="body">
             {% block body %}{% endblock %}
         </div>

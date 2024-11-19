@@ -1,9 +1,5 @@
-/*
-For better looks of the whole page
-*/
-
-h1,
-h2 {
+/* Typography */
+h1, h2 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold !important;
 }
@@ -21,18 +17,13 @@ a {
     text-decoration: none !important;
 }
 
+/* Layout */
 header {
     text-align: center;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding: 3rem 0;
     border-bottom: 1px solid black;
     margin-inline: auto;
     max-width: 70em;
-}
-
-.page-header {
-    margin-top: 1rem;
-    text-align: center;
 }
 
 main {
@@ -41,35 +32,111 @@ main {
     border-left: 1px solid black;
     border-right: 1px solid black;
     background-color: white;
-}
-
-#body {
-    padding-top: 15px;
-    padding-bottom: 50px;
-    padding-left: 5em;
-    padding-right: 5em;
-    position: relative;
-}
-@media (max-width: 720px) {
-    #body {
-        padding-left: 2em;
-        padding-right: 2em;
-    }
-}
-
-html, body, main, #body {
     min-height: 100%;
 }
 
-.nav-item {
+#body {
+    padding: 15px 5em 50px;
+    position: relative;
+    min-height: 100%;
+}
+
+.page-header {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* Navigation */
+.navbar {
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+    padding: 0;
+    background-color: #9cd8fa;  /* Light icy blue background */
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+    margin: 0 0.5rem;
+}
+
+.navbar-nav .nav-link {
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    color: #495057;
+    transition: color 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.navbar-nav .nav-link:hover {
+    color: #0056b3;
+}
+
+/* Active state */
+.navbar-nav .nav-link.active {
+    color: #0056b3;
+    font-weight: 600;
+    background-color: #d9e8f6;  /* Slightly darker icy blue for active state */
+}
+
+/* Underline effect for active tab */
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #0056b3;
+}
+
+/* Desktop navbar styling */
+@media (min-width: 992px) {
+    .navbar-nav .nav-link {
+        padding: 1.25rem 2rem;  /* Increased padding */
+        font-size: 1.2rem;      /* Larger font size */
+        font-weight: 500;
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0 0.75rem;      /* Slightly more space between items */
+    }
+}
+
+/* Mobile menu adjustments */
+@media (max-width: 991px) {
+    .navbar-nav .nav-item {
+        margin: 0;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .navbar-nav .nav-link.active::after {
+        display: none;  /* Remove underline effect on mobile */
+    }
+
+    .navbar-nav .nav-link.active {
+        background-color: #f8f9fa;  /* Light background for active item on mobile */
+    }
+}
+/* .nav-item {
     flex: 1 1 auto;
     text-align: center;
     font-size: 1.2rem;
-    border-right: 1px solid black;  /* Light separator between tabs */
+} */
+
+/* .nav-item:last-child {
+    border-right: none;
 }
 
-.nav-item:last-child {
-    border-right: none;  /* Remove border from last tab */
+.nav-link {
+    padding: 1.5rem 1rem;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid black;
 }
 
 .nav-tabs .nav-link {
@@ -88,31 +155,18 @@ html, body, main, #body {
 .nav-tabs .nav-link.active {
     background-color: #e6f3ff;
     color: black;
-}
+} */
 
-.nav-tabs {
-    border-bottom: 1px solid black;
-}
-
-.nav-link {
-    padding: 1.5rem 1rem;
-}
-
+/* Runner Images */
 .runner-image {
     width: 8vw;
     min-width: 100px;
     height: auto;
     z-index: -1;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
 }
 
-@media (max-width: 720px) {
-    .runner-image {
-        display: none;
-    }
-}
-
+/* Particles Background */
 #particles-js {
     position: absolute;
     top: 0;
@@ -120,4 +174,49 @@ html, body, main, #body {
     bottom: 0;
     right: 0;
     z-index: -1;
+}
+
+/* Mobile Styles */
+@media (max-width: 720px) {
+    #body {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+
+    .runner-image {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem;
+        background-color: white;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .navbar-collapse.show {
+        transform: translateX(0);
+    }
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
 }
