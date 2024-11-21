@@ -32,6 +32,7 @@ body {
     font-size: var(--font-size-base);
     line-height: 1.5;
     color: var(--text-dark);
+    min-height: 100vh;
 }
 
 /* Site title */
@@ -56,6 +57,9 @@ h1 {
 
 /* Content spacing for mobile */
 .container {
+    max-width: 1140px;
+    width: 100%;
+    margin: 0 auto;
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -132,7 +136,6 @@ a {
 header {
     text-align: center;
     padding: 3rem 0;
-    border-bottom: 1px solid black;
     margin-inline: auto;
     max-width: 70em;
 }
@@ -140,6 +143,7 @@ header {
 main {
     margin-inline: auto;
     max-width: 70em;
+    border-top: 1px solid black;
     border-left: 1px solid black;
     border-right: 1px solid black;
     background-color: white;
@@ -343,3 +347,31 @@ main {
         padding: 1.5rem 0;  /* Standard padding on desktop */
     }
 }
+
+.footer {
+    background-color: var(--winter-bg-light);
+    border-top: 1px solid var(--winter-bg-medium);
+    margin-top: 3rem;
+}
+
+.footer p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer a {
+    color: var(--winter-primary);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-logo img {
+    height: 50px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+
