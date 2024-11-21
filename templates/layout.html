@@ -4,13 +4,13 @@
 <head>
     {% block head %}{% endblock %}
     <meta charset="UTF-8">
-    <title>BZL - Brněnská zimní liga v orientačním běhu</title>
+    <title>Sportega BZL - brněnská zimní liga v orientačním běhu</title>
     <link rel="shortcut icon" href="/static/images/frog.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Open Graph meta tags for social media sharing -->
-    <meta property="og:title" content="Brněnská zimní liga" />
-    <meta property="og:description" content="Brněnská zimní liga v orientačním běhu." />
+    <meta property="og:title" content="Sportega brněnská zimní liga" />
+    <meta property="og:description" content="Sportega brněnská zimní liga v orientačním běhu." />
     <meta property="og:url" content="https://bzl.zabiny.club" />
     <meta property="og:image"
         content="https://www.ubc.net/sites/default/files/styles/main_image_smaller_768x400/public/8699ab038ca123f8b6906a45a83cf627.png" />
@@ -63,7 +63,9 @@
                 <i class="fas fa-bars"></i>
             </button>
             <h1 class="mb-0 text-center">
-                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Brněnská zimní liga</a>
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">
+                    Sportega brněnská zimní liga
+                </a>
             </h1>
         </div>
 
@@ -112,6 +114,13 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Add page title section -->
+        <div class="page-title-container">
+            <div class="container text-center">
+                <h2 class="page-title">{% block page_title %}{% endblock %}</h2>
+            </div>
+        </div>
 
         <!-- Backdrop for mobile menu -->
         <div class="navbar-backdrop" data-bs-toggle="collapse" data-bs-target="#navbarContent"></div>

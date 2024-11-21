@@ -4,13 +4,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style/calendarStyle.css') }}">
 {% endblock %}
 
+{% block page_title %}Kalendář závodů ({{ season | full_season }}){% endblock %}
+
 {% block body %}
-
 <div id="border">
-    <h2 class="page-header">
-        sezóna {{ season | full_season }}
-    </h2>
-
     <div id="calendar">
         {% for event_id, event in events.items() %}
         <div class="calendar-row">

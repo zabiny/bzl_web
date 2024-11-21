@@ -199,3 +199,17 @@ main {
         display: none;
     }
 }
+
+.page-title-container {
+    background-color: #f8f9fa;  /* Light gray background */
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #212529;
+}
