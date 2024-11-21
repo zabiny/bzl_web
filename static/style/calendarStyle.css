@@ -1,65 +1,115 @@
+/* Calendar layout */
 #calendar {
     margin: 2em 1em;
 }
+
 @media (min-width: 600px) {
     #calendar {
         margin: 3em 5em;
     }
 }
 
+/* Calendar row base layout */
 .calendar-row {
     display: flex;
-    flex-direction: row;
     gap: 2em;
 }
 
+/* First column (date and logo) */
+.first-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90px;
+    gap: 0.5rem;
+}
+
+/* Date styles */
 .date {
     display: flex;
     flex-direction: column;
     text-align: center;
+    width: 70px;
 }
 
-.first-col {
-    flex: 0 0 5em;
-}
-
-.description {
+/* Logo styles */
+.organizer-logo {
     display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
 }
 
-.difficulty {
-    display: flex;
-    flex: 0 0 6em;
-}
-
-.difficulty--mobile {
-    display: flex;
-    max-width: 3em;
-    margin: 0.5em auto 0;
-}
-
-.difficulty--desktop {
-    display: none;
-}
-
-@media (min-width: 600px) {
-    .difficulty--mobile {
-        display: none;
-    }
-
-    .difficulty--desktop {
-        display: flex;
-    }
-}
-
-.difficulty-image {
-    max-height: 100%;
-    max-width: 100%;
+.organizer-logo img {
+    max-height: 40px;
+    max-width: 60px;
     object-fit: contain;
 }
 
+/* Description column */
+.description {
+    flex: 1;
+}
+
+/* Difficulty icon - bigger size */
+.difficulty {
+    display: none;
+}
+
+.difficulty-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+/* Medium screens - horizontal date and logo */
+@media (min-width: 768px) {
+    .calendar-row {
+        align-items: center;
+    }
+
+    .first-col {
+        flex-direction: row;
+        width: 160px;
+        gap: 1.5rem;
+        margin-right: 1rem;
+        justify-content: space-between;
+    }
+
+    .organizer-logo {
+        flex: 0 0 60px;
+    }
+}
+
+/* Landscape mobile adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .calendar-row {
+        gap: 1em;
+    }
+
+    .first-col {
+        gap: 1rem;
+    }
+}
+
+/* Large screens - show difficulty */
+@media (min-width: 992px) {
+    .difficulty {
+        display: block;
+        margin-left: auto;
+        padding-left: 1rem;
+    }
+}
+
+/* Past events styling */
 .past-event {
     color: lightslategray;
 }
+
+/* Keep vertical layout on very narrow screens */
+@media (max-width: 499px) {
+    .first-col-content {
+        flex-direction: column;
+    }
+}
+
