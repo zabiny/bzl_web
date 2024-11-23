@@ -34,6 +34,18 @@
     height: auto;
 }
 
-.difficulty-icon {
-    width: 80px; /* default size for desktop */
+/* Difficulty icons - shared styles */
+.difficulty-image {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
 }
+
+/* Event page specific */
+.event-difficulty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+

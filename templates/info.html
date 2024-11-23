@@ -4,17 +4,19 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style/infoStyle.css') }}">
 {% endblock %}
 
+{% block page_title %}Informace{% endblock %}
+
 {% block body %}
 <div id="border">
-    <h2 class="mb-3 mt-5">Co je to BZL?</h2>
+    <h2 class="mb-3 mt-5">Co je to Sportega BZL?</h2>
     <p>
-        Sportega Brněnská zimní liga (BZL) je společný projekt brněnských oddílů orientačního běhu pod záštitou SK Brno
-        Žabovřesky.
+        Sportega brněnská zimní liga (Sportega BZL) je společný projekt brněnských oddílů orientačního běhu pod
+        záštitou SK Brno Žabovřesky.
         Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
         i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
         fyzické výkonnosti či mapových schopností.<br>
-        Součástí BZL jsou závody konané v městských lokalitách Brna a Blanska - například sídliště, lesoparky a
-        parky.
+        Součástí Sportega BZL jsou závody konané v městských lokalitách Brna a Blanska - například sídliště, lesoparky
+        a parky.
         Orientace v tomto prostředí není tak náročná jako v lese, a proto je vhodná i pro účastníky bez zkušeností s
         orientačním během. Více o orientačním běhu se můžete dozvědět na webu
         <a href="https://zacitorientak.cz/brno/co-to-je/190" target="_blank">zacitorientak.cz</a>
@@ -25,14 +27,15 @@
 
     <h2 class="mb-3 mt-5" id="kategorie">Kategorie</h2>
     <p>
-        Na každý závod je nutné si vybrat správnou kategorii. Pokud je závod zařazen do BZL, jsou kategorie následující:
+        Na každý závod je nutné si vybrat správnou kategorii. Pokud je závod zařazen do Sportega BZL, jsou kategorie
+        následující:
         Muži běhají kategorii H; ženy bojují v kategorii D; děti do 10 let - ročník {{ hdd_max_year }} a mladší - mohou
         absolvovat svoji trať HDD v doprovodu rodičů; Žáci ročníku {{ zv_kid_year }} a mladší se hlásí do kategorie ZV,
         do
         této kategorie patří také veteráni ({{ zv_vet_year }} a starší). Pokud si jdete vyzkoušel orientační běh úplně
         poprvé a nevěříte si zatím na kategorie D a H, je kategorie ZV i pro vás. Stejně tak i starší děti mohou
         stále absolvovat kategorii HDD. V obou případech, kdy nesplňujete věkový limit, však poběžíte mimo soutěž a
-        nebudete započítáni výsledků. U závodů, které nejsou zařazené do BZL, se kategorie mohou lišit.
+        nebudete započítáni výsledků. U závodů, které nejsou zařazené do Sportega BZL, se kategorie mohou lišit.
     </p>
     <table>
         <thead>
@@ -63,6 +66,33 @@
     </br>
     <p>Mimo soutěž je možno absolvovat i jinou kategorii, pro začátečníky doporučujeme kategorii ZV.</p>
 
+    <h2 class="mb-3 mt-5">Pravidla hodnocení</h2>
+    <p>
+        Celkové výsledky se budou počítat ze 4 nejlepších závodů ze 7 možných.
+        <br>
+        Bodování závodníků je následovně:
+
+    <ul>
+        <li>1. místo: 200 bodů</li>
+        <li>2. místo: 190 bodů</li>
+        <li>3. místo: 182 bodů</li>
+        <li>4. místo: 176 bodů</li>
+        <li>5. místo: 172 bodů</li>
+        <li>6. místo: 170 bodů</li>
+        <li>7. místo: 169 bodů</li>
+        <li>8. místo: 168 bodů</li>
+        <li>...</li>
+    </ul>
+
+    V případě rovnosti bodů mezi prvními 3 závodníky rozhoduje větší počet prvních, resp. druhých, třetích a dalších
+    umístění v závodech. Obdobně jako medailové pořadí zemí na olympiádě. Díky našemu hlavnímu sponzorovi
+    <i>Sportega</i>
+    obdrží první tři závodníci celkového pořadí z každé kategorie poukazy do
+    <a href="https://www.sportega.cz" target="_blank">e-obchodu Sportegy</a>.
+    <br><br>
+    Běhejte fair play a podle pravidel OB.
+    </p>
+
     <h2 class="mb-3 mt-5">Startovné</h2>
     <p>
         Startovné v termínu pomocí internetové přihlášky u většiny závodů stojí 100 Kč, v případě dohlášení až na místě
@@ -80,7 +110,8 @@
         členem žádného orientačního klubu, můžete využít jednorázové přihlášky po rozkliknutí závodu v systému ORIS (<a
             href="https://oris.orientacnisporty.cz/files/help/Jednorazove-prihlasky-ucastnik.pdf">návod</a>).
         Přihlášky probíhají na každý závod zvlášť, termíny přihlášek a odkaz na přihlášení naleznete po rozkliknutí
-        konkrétního závodu ze seznamu v záložce kalendář. Pokud Vás BZL zaujala, v ORISu vždy najdete aktuální seznam
+        konkrétního závodu ze seznamu v záložce kalendář. Pokud Vás Sportega BZL zaujala, v ORISu vždy najdete aktuální
+        seznam
         všech OB závodů na celý rok.
     </p>
 </div>

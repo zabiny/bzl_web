@@ -4,13 +4,13 @@
 <head>
     {% block head %}{% endblock %}
     <meta charset="UTF-8">
-    <title>BZL - Brněnská zimní liga v orientačním běhu</title>
+    <title>Sportega BZL - brněnská zimní liga v orientačním běhu</title>
     <link rel="shortcut icon" href="/static/images/frog.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Open Graph meta tags for social media sharing -->
-    <meta property="og:title" content="Brněnská zimní liga" />
-    <meta property="og:description" content="Brněnská zimní liga v orientačním běhu." />
+    <meta property="og:title" content="Sportega brněnská zimní liga" />
+    <meta property="og:description" content="Sportega brněnská zimní liga v orientačním běhu." />
     <meta property="og:url" content="https://bzl.zabiny.club" />
     <meta property="og:image"
         content="https://www.ubc.net/sites/default/files/styles/main_image_smaller_768x400/public/8699ab038ca123f8b6906a45a83cf627.png" />
@@ -25,6 +25,11 @@
 
     <!-- Add Font Awesome for hamburger icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Add Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -50,22 +55,21 @@
             style="bottom: 0; right: min(45%, 100px);" alt="runner7">
     </div>
 
-    <header class="d-flex align-items-center justify-content-between p-3">
-        <!-- Left: Sportega logo -->
-        <a href="https://www.sportega.cz/" class="d-none d-lg-block">
-            <img src="/static/images/Sportega_logo_rgb_DarkBlue.png" alt="Sportega logo" style="height: 60px;">
-        </a>
-
-        <!-- Center: Title with hamburger on mobile -->
+    <header class="d-flex align-items-center p-3">
+        <!-- Left: Title with hamburger on mobile -->
         <div class="d-flex align-items-center">
             <button class="navbar-toggler d-lg-none me-3" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarContent">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 class="mb-0 text-center">
-                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Brněnská zimní liga</a>
+            <h1 class="mb-0">
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Sportega brněnská zimní
+                    liga</a>
             </h1>
         </div>
+
+        <!-- Spacer to push lampion to the right -->
+        <div class="flex-grow-1"></div>
 
         <!-- Right: Lampion -->
         <img src="/static/images/lampion.png" alt="Orientační lampion" style="height: 60px;">
@@ -113,6 +117,13 @@
             </div>
         </nav>
 
+        <!-- Add page title section -->
+        <div class="page-title-container">
+            <div class="container text-center">
+                <h2 class="page-title">{% block page_title %}{% endblock %}</h2>
+            </div>
+        </div>
+
         <!-- Backdrop for mobile menu -->
         <div class="navbar-backdrop" data-bs-toggle="collapse" data-bs-target="#navbarContent"></div>
 
@@ -121,6 +132,27 @@
             {% block body %}{% endblock %}
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Left side: Basic info -->
+                <div class="col-12 col-md-8 mb-3 mb-md-0">
+                    <p class="mb-1"><i>Sportega brněnská zimní liga</i> je seriál závodů v orientačním běhu.</p>
+                    <p class="mb-1">Kontakt: <a href="mailto:poradatel@zabiny.club">poradatel@zabiny.club</a></p>
+                    <p class="mb-0">© 2024 SK Brno Žabovřesky</p>
+                </div>
+
+                <!-- Right side: Sportega logo -->
+                <div class="col-12 col-md-4 text-md-end">
+                    <a href="https://www.sportega.cz/" target="_blank" class="footer-logo">
+                        <img src="/static/images/Sportega_logo_rgb_DarkBlue.png" alt="Sportega logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Particles.js container -->
     <div id="particles-js"></div>
@@ -151,7 +183,7 @@
         }
     </script>
 
-    {% block footer %}{% endblock %}
+
 </body>
 
 </html>

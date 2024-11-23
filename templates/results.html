@@ -5,14 +5,10 @@
 <link rel="stylesheet" href="/static/style/resultsStyle.css">
 {% endblock %}
 
+{% block page_title %}Celkové výsledky ({{ season | full_season }}){% endblock %}
+
 {% block body %}
-
 <div id="border">
-  <!-- Page header -->
-  <h2 class="page-header">
-    Celkové výsledky {{ season | full_season }}
-  </h2>
-
   <!-- Season selector dropdown -->
   <select id="season-selector" aria-label="select season" onchange="
     console.log(this);

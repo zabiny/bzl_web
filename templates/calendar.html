@@ -4,19 +4,15 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style/calendarStyle.css') }}">
 {% endblock %}
 
+{% block page_title %}Kalendář závodů ({{ season | full_season }}){% endblock %}
+
 {% block body %}
-
 <div id="border">
-    <h2 class="page-header">
-        sezóna {{ season | full_season }}
-    </h2>
-
     <div id="calendar">
         {% for event_id, event in events.items() %}
         <div class="calendar-row">
-            <!-- Date and difficulty (on mobile) -->
+            <!-- Date and logo -->
             <div class="first-col">
-                <!-- Date display -->
                 <div class="date">
                     <div>
                         <h3 class="{{ 'past-event' if event['is_past'] }}" style="margin-bottom: 0">
@@ -26,26 +22,15 @@
                     <div>{{ event['date'] | month_and_year_from_date | upper }}</div>
                 </div>
 
-                <!-- Difficulty icon (mobile view) -->
-                <div class="difficulty difficulty--mobile">
-                    {% set difficulty_image = {
-                    'easy': 'easy.png',
-                    'medium': 'medium.png',
-                    'hard': 'hard.png'
-                    } %}
-                    <img src="{{ url_for('static', filename='images/' + difficulty_image.get(event['difficulty'], 'medium.png')) }}"
-                        class="difficulty-image">
+                <div class="organizer-logo">
+                    {% if event.get('organizer_logo') %}
+                    <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}"
+                        alt="{{ event.get('organizer', '') }} logo">
+                    {% endif %}
                 </div>
             </div>
-            <!-- Organizer logo -->
-            <div class="organizer-logo" style="width: 60px; min-width: 60px; display: flex; align-items: center;">
-                {% if event.get('organizer_logo') %}
-                <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}"
-                    alt="{{ event.get('organizer', '') }} logo" style="max-height: 40px; max-width: 60px;">
-                {% endif %}
-            </div>
 
-            <!-- Event name and short description -->
+            <!-- Description -->
             <div class="description">
                 <div>
                     <a href="{{ url_for('event', season=season, event_id=event_id) }}">
@@ -60,10 +45,15 @@
                 <div>{{ event['desc_short'] }}</div>
             </div>
 
-            <!-- Difficulty icon (desktop view) -->
-            <div class="difficulty difficulty--desktop">
+            <!-- Difficulty icon - only shows on large screens -->
+            <div class="difficulty">
+                {% set difficulty_image = {
+                'easy': 'easy.png',
+                'medium': 'medium.png',
+                'hard': 'hard.png'
+                } %}
                 <img src="{{ url_for('static', filename='images/' + difficulty_image.get(event['difficulty'], 'medium.png')) }}"
-                    class="difficulty-image">
+                    class="difficulty-image" alt="Difficulty level">
             </div>
         </div>
         <hr />
