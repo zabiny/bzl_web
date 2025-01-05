@@ -1,7 +1,21 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-<!-- Custom CSS for results page -->
+<!-- jQuery first -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Add DataTables CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- Add FixedColumns extension -->
+<link rel="stylesheet" type="text/css"
+  href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
+<script type="text/javascript"
+  src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+
+<!-- Custom CSS -->
 <link rel="stylesheet" href="/static/style/resultsStyle.css">
 {% endblock %}
 
@@ -9,23 +23,20 @@
 
 {% block body %}
 <div id="border">
-  <!-- Season selector dropdown -->
-  <select id="season-selector" aria-label="select season" onchange="
-    console.log(this);
-    window.location.href = '/' + this.value + '/results';
-  ">
+  <!-- Season selector -->
+  <select id="season-selector" aria-label="select season"
+    onchange="window.location.href = '/' + this.value + '/results'">
     {% for s in seasons|sort(reverse=True) %}
     <option value="{{ s }}" {% if s==season %} selected {% endif %}>{{ s | full_season }}</option>
     {% endfor %}
   </select>
 
-  <!-- Display message if no results are available -->
   {% if not results %}
   <p class="text-center mt-5">Výsledky pro tuto sezónu nejsou k dispozici.</p>
   {% endif %}
 
-  <!-- Table of contents -->
-  <div id="results-summary" class="row">
+  <!-- Category navigation -->
+  <div id="results-summary">
     {% for category in results.keys() %}
     <div class="col-sm-1">
       <a href="#{{category}}" class="link-primary">{{ category }}</a>
@@ -34,51 +45,63 @@
   </div>
 
   <!-- Results tables -->
-  <div id="results-table" class="table-responsive">
+  <div id="results-table">
     {% for category, df in results.items() %}
-    <!-- Category header and back to top link -->
-    <div class="row">
-      <div class="col-sm-1">
-        <h3 id="{{category}}">{{ category }}</h3>
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 id="{{category}}" class="mb-0">{{ category }}</h3>
+        <a href="#results-summary" class="btn btn-sm btn-outline-secondary">↑ TOP</a>
       </div>
-      <div class="col-sm-10"></div>
-      <div class="col-sm-1">
-        <a href="#results-summary" class="link-secondary">TOP</a>
+      <div class="card-body">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Pořadí</th>
+              {% for column in df.columns %}
+              <th>{{ column }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for index, row in df.iterrows() %}
+            <tr
+              class="{% if index == 1 %}table-warning{% elif index == 2 %}table-light{% elif index == 3 %}table-danger{% endif %}">
+              <td><strong>{{ index }}</strong></td>
+              {% for cell in row %}
+              <td>{{ cell }}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-
-    <!-- Results table for each category -->
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th></th>
-          {% for column in df.columns %}
-          <th>{{ column }}</th>
-          {% endfor %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for index, row in df.iterrows() %}
-        <!-- Apply special classes for top 3 positions -->
-        {% if index == 1 %}
-        <tr class="gold">
-          {% elif index == 2 %}
-        <tr class="silver">
-          {% elif index == 3 %}
-        <tr class="bronze">
-          {% else %}
-        <tr>
-          {% endif %}
-          <td>{{ index }}</td>
-          {% for cell in row %}
-          <td>{{ cell }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
     {% endfor %}
   </div>
-</div>
 
+  <script>
+    $(document).ready(function () {
+      $('.table').DataTable({
+        responsive: false,
+        pageLength: 25,
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/cs.json'
+        },
+        dom: '<"d-flex justify-content-between align-items-center"lf>rt<"d-flex justify-content-between align-items-center"ip>',
+        scrollCollapse: true,
+        paging: true,
+        autoWidth: false,
+        fixedHeader: false,
+        scrollX: true,
+        fixedColumns: {
+          left: 2
+        },
+        columnDefs: [
+          { width: '25px', targets: 0 },
+          { width: '150px', targets: 1 }
+        ]
+      });
+    });
+  </script>
+</div>
 {% endblock %}
