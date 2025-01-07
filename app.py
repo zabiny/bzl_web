@@ -99,9 +99,14 @@ def results(season: str) -> str:
         events = em.get_all_events(season)
         if events is None:
             return render_template("results.html", season=season, results={})
-        oris_id_to_name_mapping = {
-            ev.oris_id: ev.name for ev in events.values() if ev.oris_id
-        }
+        oris_id_to_name_mapping = {}
+        for ev in events.values():
+            if ev.oris_id and ev.name is not None:
+                if "BZL" in ev.name:
+                    name = ev.name.split("BZL: ")[1]
+                else:
+                    name = ev.name
+                oris_id_to_name_mapping[ev.oris_id] = name
 
         oris_ids_in_results = set(
             [int(x.split("-")[0]) for x in df.columns if x[0].isdigit()]

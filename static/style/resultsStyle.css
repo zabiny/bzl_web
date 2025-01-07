@@ -1,22 +1,140 @@
+/* Basic layout */
 #results-table {
     padding: 1em;
+    max-width: none !important;
+    overflow: visible;
 }
 
+/* Category navigation buttons */
 #results-summary {
     padding: 1em;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
 }
 
-.gold {
-    background-color: gold;
-    font-weight: bold;
+#results-summary .col-sm-1 {
+    flex: 0 0 auto;
+    width: auto;
 }
 
-.silver {
-background-color: silver;
-font-weight: bold;
+#results-summary a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+    min-width: 100px;
+    text-align: center;
 }
 
-.bronze {
-background-color: #cd7f32; /* bronze color */
-font-weight: bold;
+#results-summary a:hover {
+    background-color: #0d6efd;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#results-summary a:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Season selector */
+#season-selector {
+    width: auto;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    background-color: white;
+}
+
+/* Card styling */
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    max-width: none !important;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    padding: 1rem;
+}
+
+/* Table styles */
+.table thead th {
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+    background-color: #212529;
+    color: white;
+}
+
+/* Medal styles */
+.table-warning td {  /* First place - Gold */
+    background-color: #fff2cc !important;
+}
+
+.table-light td {   /* Second place - Silver */
+    background-color: #e8eaed !important;
+}
+
+.table-danger td {  /* Third place - Bronze */
+    background-color: #ffe5d9 !important;
+}
+
+/* Fixed columns medal styles */
+.dtfc-fixed-left .table-warning {
+    background-color: #fff2cc !important;
+}
+
+.dtfc-fixed-left .table-light {
+    background-color: #e8eaed !important;
+}
+
+.dtfc-fixed-left .table-danger {
+    background-color: #ffe5d9 !important;
+}
+
+/* Add bold text for medal positions */
+.table-warning td,
+.table-light td,
+.table-danger td {
+    font-weight: bold !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
+
+/* Add these column width styles */
+.table th:first-child,
+.table td:first-child {
+    width: 25px !important;
+    min-width: 25px !important;
+    max-width: 25px !important;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
 }
