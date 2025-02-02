@@ -127,9 +127,9 @@
 /* Add these column width styles */
 .table th:first-child,
 .table td:first-child {
-    width: 25px !important;
-    min-width: 25px !important;
-    max-width: 25px !important;
+    width: 5px !important;
+    min-width: 5px !important;
+    max-width: 5px !important;
 }
 
 .table th:nth-child(2),
