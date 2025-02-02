@@ -138,3 +138,32 @@
     min-width: 150px !important;
     max-width: 150px !important;
 }
+
+/* Mobile rotation hint */
+.rotation-hint {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    text-align: center;
+    color: #856404;
+}
+
+.hint-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.hint-content i {
+    font-size: 1.25rem;
+}
+
+/* Hide hint in landscape mode */
+@media (orientation: landscape) {
+    .rotation-hint {
+        display: none !important;
+    }
+}
