@@ -17,6 +17,9 @@
 
 <!-- Custom CSS -->
 <link rel="stylesheet" href="/static/style/resultsStyle.css">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
 
 {% block page_title %}Celkové výsledky ({{ season | full_season }}){% endblock %}
@@ -42,6 +45,14 @@
       <a href="#{{category}}" class="link-primary">{{ category }}</a>
     </div>
     {% endfor %}
+  </div>
+
+  <!-- Mobile rotation hint -->
+  <div class="rotation-hint d-md-none">
+    <div class="hint-content">
+      <i class="fas fa-mobile-alt fa-rotate-90"></i>
+      <span>Pro lepší zobrazení otočte telefon na šířku</span>
+    </div>
   </div>
 
   <!-- Results tables -->
@@ -97,7 +108,7 @@
           left: 2
         },
         columnDefs: [
-          { width: '25px', targets: 0 },
+          { width: '11px', targets: 0 },
           { width: '150px', targets: 1 }
         ]
       });

@@ -7,6 +7,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 from werkzeug import Response
 
+from results_calculator.overall import CATEGORIES
+from results_calculator.race import HDD_MAX_YEAR, ZV_KID_YEAR, ZV_VET_YEAR
 from src.event_manager import EventManager
 from src.news import load_news
 
@@ -40,14 +42,11 @@ def home() -> Response:
 # Info
 @app.route("/info")
 def info() -> str:
-    hdd_max_year = date.today().year - 11 + (date.today().month > 6)
-    zv_kid_year = date.today().year - 15 + (date.today().month > 6)
-    zv_vet_year = date.today().year - 51 + (date.today().month > 6)
     return render_template(
         "info.html",
-        hdd_max_year=hdd_max_year,
-        zv_kid_year=zv_kid_year,
-        zv_vet_year=zv_vet_year,
+        hdd_max_year=HDD_MAX_YEAR,
+        zv_kid_year=ZV_KID_YEAR,
+        zv_vet_year=ZV_VET_YEAR,
     )
 
 
@@ -73,16 +72,12 @@ def results(season: str) -> str:
     try:
         # Load results per category
         category_dfs = []
-        for category in ["H", "D", "ZV", "HDD"]:
+        for category in CATEGORIES:
             df = pd.read_csv(
                 f"data/{season}/results/overall_{category}.csv", index_col=0
             )
             df["category"] = category
-            # Assign overall place
-            best_n_col = df.filter(regex=r"Best.*").columns[0]
-            df["place"] = df[best_n_col].apply(
-                lambda points: df[best_n_col].tolist().index(points) + 1
-            )
+
             # Fix formatting
             for place_col in df.filter(regex=r".*-Place"):
                 if df[place_col].dtype == float:
@@ -136,8 +131,8 @@ def results(season: str) -> str:
             .drop(columns=cols_to_drop)
         )
         # Split DataFrame per category
-        for category, group in df.groupby("category"):
-            group_df = group.set_index("place", drop=True)
+        for category in CATEGORIES:
+            group_df = df[df["category"] == category].set_index("place", drop=True)
             results[category] = group_df.drop(columns=["category"])
     finally:
         return render_template(
