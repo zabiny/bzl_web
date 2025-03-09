@@ -153,7 +153,7 @@ def _split_zv_class(
         ):
             # We know there is only one row with this name (from prev. check).
             # The .all() method is required for proper type checking.
-            if df_zv[df_zv["Name"] == unreg["Name"]]["yob"].isna().all():
+            if df_zv.loc[df_zv["Name"] == unreg["Name"], "yob"].isna().all():
                 # Assign all known unreg's attributes to the row (yob, regno, etc.)
                 for key in unreg.keys():
                     df_zv.loc[df_zv["Name"] == unreg["Name"], key] = unreg[key]
