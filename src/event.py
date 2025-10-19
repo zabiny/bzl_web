@@ -23,7 +23,7 @@ class Event:
         name: str | None = None,
         date: str | None = None,
         place_desc: str | None = None,
-        desc_long: str | None = None,
+        desc_long: str | list[str] | None = None,
         oris_id: int | None = None,
         entry_date: str | None = None,
         gps_lat: float | None = None,
@@ -39,7 +39,9 @@ class Event:
         self.difficulty = difficulty
         self.place_desc = place_desc
         self.desc_short = desc_short
-        self.desc_long = desc_long
+        self.desc_long = (
+            "\n".join(desc_long) if isinstance(desc_long, list) else desc_long
+        )
         self.oris_id = oris_id
         self.entry_date = entry_date
         self.gps_lat = gps_lat
@@ -61,7 +63,8 @@ class Event:
         return self.__dict__
 
     def _fetch_oris_data(self, oris_id: int) -> dict[str, Any]:
-        """Get info about an event from ORIS API.
+        """
+        Get info about an event from ORIS API.
 
         Retrieve info such as date, GPS coordinates of event center, start time etc.
 
@@ -99,7 +102,8 @@ class Event:
         return result
 
     def add_oris_data(self) -> None:
-        """Append information about an event retrieved from ORIS API.
+        """
+        Append information about an event retrieved from ORIS API.
 
         If some info was manually set in config, it's NOT overwritten by ORIS.
         """
