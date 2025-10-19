@@ -9,12 +9,60 @@ import requests
 
 
 class Difficulty(StrEnum):
+    """Enumeration of event difficulty levels."""
+
     EASY = "easy"
     MEDIUM = "medium"
     HARD = "hard"
 
 
 class Event:
+    """
+    Represents an orienteering event.
+
+    Attributes
+    ----------
+    name
+        Event name.
+    difficulty
+        Event difficulty level.
+    place_desc
+        Description of the event location.
+    desc_short
+        Short description of the event.
+    desc_long
+        Long description of the event.
+    oris_id
+        ORIS database ID.
+    entry_date
+        Entry deadline date.
+    gps_lat
+        GPS latitude of event center.
+    gps_lon
+        GPS longitude of event center.
+    web
+        Event website URL.
+    images
+        List of image URLs.
+    video_yt_id
+        YouTube video ID.
+    is_bzl
+        Whether this is an event of the BZL series.
+    organizer
+        Organizer name.
+    organizer_logo
+        URL to organizer logo.
+    organizer_logo_large
+        URL to large organizer logo.
+    bzl_order
+        Order in BZL series.
+    date
+        Event date.
+    is_past
+        Whether the event has already occurred.
+
+    """
+
     def __init__(
         self,
         desc_short: str,
@@ -35,6 +83,47 @@ class Event:
         images: list[str] | None = None,
         video_yt_id: str | None = None,
     ) -> None:
+        """
+        Initialize an Event instance.
+
+        Parameters
+        ----------
+        desc_short
+            Short description of the event.
+        is_bzl
+            Whether this is an event of the BZL series.
+        difficulty
+            Event difficulty level.
+        name
+            Event name (can be fetched from ORIS if not provided).
+        date
+            Event date in ISO format (YYYY-MM-DD).
+        place_desc
+            Description of the event location.
+        desc_long
+            Long description of the event (string or list of strings).
+        oris_id
+            ORIS database ID for fetching additional data.
+        entry_date
+            Entry deadline date.
+        gps_lat
+            GPS latitude of event center.
+        gps_lon
+            GPS longitude of event center.
+        web
+            Event website URL.
+        organizer
+            Organizer name.
+        organizer_logo
+            URL to organizer logo.
+        organizer_logo_large
+            URL to large organizer logo.
+        images
+            List of image URLs.
+        video_yt_id
+            YouTube video ID.
+
+        """
         self.name = name
         self.difficulty = difficulty
         self.place_desc = place_desc
@@ -60,6 +149,14 @@ class Event:
         self.is_past = datetime.date.today() > self.date if self.date else None
 
     def to_dict(self) -> dict[str, Any]:
+        """
+        Convert the Event instance to a dictionary.
+
+        Returns
+        -------
+        Dictionary containing all event attributes.
+
+        """
         return self.__dict__
 
     def _fetch_oris_data(self, oris_id: int) -> dict[str, Any]:
@@ -86,7 +183,7 @@ class Event:
             response = requests.get(api_url)
             oris_json = response.json()["Data"]
         except (ConnectionError, HTTPError, TimeoutError) as e:
-            logging.error(f"Communicatoin with ORIS (race {oris_id}) failed!\n{e}")
+            logging.error("Communication with ORIS (race %s) failed!\n%s", oris_id, e)
             oris_json = defaultdict(None)
 
         result = {

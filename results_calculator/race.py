@@ -42,11 +42,12 @@ def race(
     """
     output_dir.mkdir(parents=True, exist_ok=True)
     try:
-        with open(known_unregs_file, "r") as f:
+        with known_unregs_file.open() as f:
             known_unregs = json.load(f)
     except FileNotFoundError:
         logging.warning(
-            f"File '{known_unregs_file}' not found! Assuming no unregistered runners."
+            "File '%s' not found! Assuming no unregistered runners.",
+            known_unregs_file,
         )
         known_unregs = []
 
@@ -64,7 +65,7 @@ def race(
         )
         return
     except requests.exceptions.HTTPError as e:
-        logging.error(f"ORIS returned an error: {e}")
+        logging.error("ORIS returned an error: %s", e)
         return
 
     if race_metadata["Status"] == "OK":
@@ -87,7 +88,7 @@ def race(
         )
         return
     except requests.exceptions.HTTPError as e:
-        logging.error(f"ORIS returned an error: {e}")
+        logging.error("ORIS returned an error: %s", e)
         return
 
     # Create a dataframe from the results and clean it
@@ -101,8 +102,8 @@ def race(
     except KeyError as e:
         logging.error(
             "ERROR: Event DataFrame has a wrong format (result's ID is "
-            "missing). Please check that you used correct ORIS id.\n"
-            f"{e}"
+            "missing). Please check that you used correct ORIS id.\n%s",
+            e,
         )
         return
 
@@ -115,7 +116,7 @@ def race(
     # Export to .csv
     output_file = output_dir / f"points_{oris_id}.csv"
     df_results.to_csv(output_file, sep=",", index=False)
-    logging.info(f"Event was processed successfully and exported to '{output_file}'")
+    logging.info("Event was processed successfully and exported to '%s'", output_file)
 
 
 def _clean_race_dataframe(df: pd.DataFrame) -> pd.DataFrame:
@@ -138,9 +139,7 @@ def _clean_race_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 def _split_zv_class(
     df_all: pd.DataFrame, known_unregs: list[dict[str, str | int]]
 ) -> pd.DataFrame:
-    """
-    Split ZV class to Z, V and other.
-    """
+    """Split ZV class to Z, V and other."""
     # Get year of birth from registration number
     df_zv = df_all[df_all["ClassDesc"] == "ZV"].copy()
     df_zv["yob"] = df_zv["RegNo"].apply(get_yob)
@@ -155,7 +154,7 @@ def _split_zv_class(
             # The .all() method is required for proper type checking.
             if df_zv.loc[df_zv["Name"] == unreg["Name"], "yob"].isna().all():
                 # Assign all known unreg's attributes to the row (yob, regno, etc.)
-                for key in unreg.keys():
+                for key in unreg:
                     df_zv.loc[df_zv["Name"] == unreg["Name"], key] = unreg[key]
 
     # Create Z class (zaci)
@@ -195,28 +194,25 @@ def _split_zv_class(
 
 
 def get_yob(reg_no: str) -> int | NAType:
-    """
-    Get year of birth from registration number.
-    """
+    """Get year of birth from registration number."""
     if reg_no.isdigit() or "nereg" in reg_no:
         return pd.NA
-    else:
-        try:
-            year_str = reg_no[3:5]
-            if int(year_str) > datetime.now().year % 100:
-                return int("19" + year_str)
-            else:
-                return int("20" + year_str)
-        except ValueError:
-            logging.error(
-                f"Error parsing year of birth from registration number: {reg_no}"
-            )
-            return pd.NA
+    try:
+        year_str = reg_no[3:5]
+        if int(year_str) > datetime.now().year % 100:
+            return int("19" + year_str)
+        return int("20" + year_str)
+    except ValueError:
+        logging.error(
+            "Error parsing year of birth from registration number: %s", reg_no
+        )
+        return pd.NA
 
 
 def _get_points(place: str) -> int:
     """
-    Transfer given place (str) to points by following rule:
+    Transfer given place (str) to points by following rule.
+
     1st place = 200p
     2nd place = 190p
     3rd place = 182p
@@ -238,7 +234,6 @@ def _get_points(place: str) -> int:
         return 176
     if place == "5.":
         return 172
-    if place == "DISK" or place == "MS" or int(place[:-1]) > 175:
+    if place in {"DISK", "MS"} or int(place[:-1]) > 175:
         return 0
-    else:
-        return 176 - int(place[:-1])
+    return 176 - int(place[:-1])
