@@ -1,0 +1,245 @@
+ClassDesc,Place,Name,RegNo,UserID,Time,Points
+D,1.,Beránková Kamila,ZBM1152,,27:12,200
+D,2.,Hlavová Hana,TBM8888,,28:06,190
+D,3.,Matušková Jana,RBK9999,37723,29:07,182
+D,4.,Mádlová Věra,PBM8951,,30:37,176
+D,5.,Batistová Karolína,ZBM0864,,31:23,172
+D,6.,Plachá Andrea,JPV7676,,31:50,170
+D,7.,Kozmonová Helena,PBM8751,,32:02,169
+D,8.,Křístková Veronika,ZBM8379,,33:16,168
+D,9.,Kočová Lenka,ZBM8160,,33:30,167
+D,10.,Smětáková Ivana,HLV8153,,33:33,166
+D,11.,Vaňková Markéta,nereg.,,34:07,165
+D,12.,Chloupková Barbora,VBM8455,,34:10,164
+D,13.,Smítalová Jana,ZBM8053,,34:29,163
+D,14.,Sladká Magdalena,PBM8450,,34:43,162
+D,15.,Špirková Anežka,MBM9051,2811,35:12,161
+D,16.,Přikrylová Lenka,0160001,,36:01,160
+D,17.,Vespalcová Alena,ABR8080,58992,36:13,159
+D,18.,Stehlíková Jana,TBM8658,,36:29,158
+D,19.,Tomanová Veronika,LBM7751,2271,36:45,157
+D,20.,Korpasová Ivana,LBM7362,2268,37:33,156
+D,20.,Růžičková Zuzana,VBM9353,,37:33,156
+D,22.,Ondrůjová Lenka,ZBM9157,,37:44,154
+D,23.,Dvořáková Hana,ZBM8676,,37:56,153
+D,24.,Plachá Aneta,JPV0555,,38:06,152
+D,25.,Trávníčková Silvie,ADA8551,,38:36,151
+D,26.,Kozumplíková Lucie,VBM8254,,39:24,150
+D,27.,Kadlecová Jolana,PBM1053,47860,39:31,149
+D,28.,Košíková Jana,PBM8352,,41:26,148
+D,29.,Štefanová Markéta,BKG9350,,41:41,147
+D,30.,Dohnalová Květa,ZBM7954,,43:19,146
+D,31.,Horsáková Barbora,BKG9150,,43:30,145
+D,32.,Marková Marta,ZBM7851,,44:19,144
+D,33.,Jégrová Kateřina,0100001,,44:24,143
+D,34.,Beránková Julie,ZBM0956,,45:41,142
+D,35.,Beránková Šárka,ZBM7356,,49:36,141
+D,36.,šabatová Lenka,0120001,,53:56,140
+D,37.,Pařízková Zuzana,ZBM8351,,55:10,139
+D,38.,Alena Motyčáková,0190003,,56:44,138
+D,39.,Spáčilová Veronika,BKG9450,,58:05,137
+D,DISK,Nováčková Obelczová Věra,ZBM7752,,DISK,0
+H,1.,Adámek Filip,TBM0101,,23:15,200
+H,1.,Coufal Jáchym,ZBM0200,,23:15,200
+H,3.,Zimmermann Jakub,TBM8911,,26:14,182
+H,4.,Marek Filip,ZBM0706,,26:46,176
+H,5.,Drábek Jan,ZBM8511,,28:01,172
+H,6.,Fučík Karel,VBM7246,,28:19,170
+H,7.,Doucha Martin,SNA0501,4904,28:59,169
+H,8.,Killar Lukáš,0250002,,29:09,168
+H,9.,Jordanov Alexandr,ZBM9503,,29:20,167
+H,10.,Kozmon Petr,PBM8301,,29:44,166
+H,11.,Plachý Ondřej,JPV0707,,30:08,165
+H,12.,Marek Vojtěch,ZBM0410,,30:13,164
+H,13.,Stehlík Martin,TBM8525,,30:48,163
+H,14.,Odehnal Tomáš,PBM0500,,31:31,162
+H,15.,Pauschek Karel,PBM8509,,32:28,161
+H,16.,Smítal Rostislav,ZBM7903,,32:35,160
+H,17.,Kozumplík Aleš,VBM8403,,32:47,159
+H,18.,Čerbák Adam,0160002,,32:53,158
+H,19.,Kyncl Tomáš,ZBM7201,,33:21,157
+H,20.,Kopáč David,ZBM7610,,33:51,156
+H,21.,Kyncl Ondřej,0120002,,33:53,155
+H,22.,Obrtlík Václav,BKG9000,,34:01,154
+H,23.,Žemlík Boleslav,BKG9100,,34:02,153
+H,24.,Janda Petr,ZBM7542,,34:40,152
+H,25.,Matuš Vít,VRB0202,,34:44,151
+H,26.,Odehnal Luděk,ADA7400,,35:04,150
+H,27.,Kubálek Miroslav,VBM0501,,35:32,149
+H,28.,Jurák Adam,ZBM8404,,35:49,148
+H,29.,Beránek Miroslav,ZBM7705,,36:47,147
+H,30.,Šilar Radek,UBM7201,,36:50,146
+H,31.,Palát Tomáš,ABM0307,16,36:56,145
+H,32.,Eschler Radek,UBM7904,,37:10,144
+H,33.,Bárta Ladislav,RBK7802,54351,37:11,143
+H,34.,Šunka Josef,0080001,,37:26,142
+H,35.,Nováček Michal,ZBM8006,,38:15,141
+H,36.,Široký Jakub,PBM1000,54160,38:36,140
+H,37.,Trávniček Petr,ADA8402,,38:44,139
+H,38.,Dvořák Martin,ZBM8425,,38:54,138
+H,39.,Polášek Vojtěch,0200002,,39:10,137
+H,40.,Sladký Marek,PBM8604,,39:31,136
+H,41.,Jelínek Tomáš,ZBM9607,,39:52,135
+H,42.,Dvořák Petr,ZBM8310,,39:53,134
+H,43.,Marek Aleš,0060001,,40:45,133
+H,44.,Klášterecký Tomáš,BBM8100,,41:51,132
+H,45.,Kycl Miroslav,LBM7100,32779,42:10,131
+H,46.,Polášek Lukáš,0200001,,42:49,130
+H,47.,Kobližek Ondřej,0070004,,43:50,129
+H,48.,Kavan Tomáš,TBM8603,,43:53,128
+H,49.,Procházka Vojtěch,0090001,,44:04,127
+H,50.,Bok Petr,0100003,,44:13,126
+H,51.,Šebek Richard,0230002,,44:17,125
+H,52.,Plachý Martin,JPV6515,,44:20,124
+H,53.,Fousek Adam,MOV9501,,44:49,123
+H,54.,Bilík Jiří,nereg.,,45:05,122
+H,55.,Holáň Radim,ZBM7541,,45:07,121
+H,56.,Korpas Jaroslav,LBM6113,2264,45:27,120
+H,56.,Denemarek Ivo,BBM7901,,45:27,120
+H,58.,Nový Ondřej,0070002,,45:44,118
+H,59.,Špirk Petr,MBM8506,58624,46:05,117
+H,60.,Kolář Josef,0070001,,47:56,116
+H,61.,Motyčák Lukáš,0190001,,49:12,115
+H,62.,Dvořák Miloš,BBM7300,,49:36,114
+H,63.,Tejkal Pavel,ADA8401,,50:47,113
+H,64.,Plachý Matyáš,JPV1010,,50:57,112
+H,65.,Polách David,ZBM8003,,53:24,111
+H,66.,Šalomon Tomáš,ZBM1010,,56:30,110
+H,67.,Růžička Tomáš,VBM8406,,69:33,109
+H,DISK,Urban František,RBK9701,58683,DISK,0
+HDD,1.,Dvořák Jakub,ZBM1503,,17:58,200
+HDD,2.,Jašová Anna,ZBM1557,,20:36,190
+HDD,3.,Marek Daniel,ZBM1701,,20:58,182
+HDD,4.,Janda Tobiáš,ZBM1902,,22:40,176
+HDD,5.,Marková Zuzana,ZBM1751,,22:54,172
+HDD,6.,Pařízek Matěj,ZBM1603,,23:58,170
+HDD,7.,Dvořáková Anežka,ZBM1851,,25:12,169
+HDD,8.,Kozmon Tomáš,PBM2000,,25:35,168
+HDD,9.,Kobližek Kryštof,0070005,,25:39,167
+HDD,10.,Zelinka Radim,PBM2020,,26:26,166
+HDD,11.,Matulová Adéla,PBM1751,,26:53,165
+HDD,12.,Holáňová Silvie,ZBM1752,,27:06,164
+HDD,13.,Kovářová Antonie,ABM1651,57280,29:12,163
+HDD,14.,Novák Ondřej,0210001,,30:36,162
+HDD,15.,Špirk Eduard,MBM1809,,32:47,161
+HDD,16.,Nový David,0070003,,36:52,160
+HDD,17.,Zimmermann Albert,nereg.,,37:41,159
+HDD,18.,Trávníčková Jitka,0140001,,37:48,158
+HDD,19.,Trávníček Adam,0140002,,37:51,157
+HDD,20.,Nový Filip,ZBM1707,,38:14,156
+HDD,21.,Chaloupka Matěj,ZBM1403,,39:23,155
+HDD,22.,Pecka Lukáš,HLV7707,,39:33,154
+HDD,23.,Eschlerová Lenka,UBM1751,,40:27,153
+HDD,24.,Sladká Meda,PBM1851,,42:27,152
+HDD,25.,Nováčková Anika,ZBM1653,,44:16,151
+HDD,26.,Karpíšek Prokop,0180001,,46:32,150
+HDD,27.,Růžička Tadeáš,VBM1902,,47:26,149
+HDD,28.,Lišková Anna,ZBM1852,,51:44,148
+HDD,29.,Kozumplíková Andrea,VBM1653,,54:19,147
+HDD,30.,Novák Adam,0210002,,57:02,146
+HDD,31.,Novák Eliáš,0210003,,57:10,145
+HDD,32.,Zimmermannová Štěpánka,nereg.,,61:08,144
+HDD,33.,Zelinková Julie,MBM2364,,69:16,143
+HDD,DISK,Stehlíková Anna,0150001,,DISK,0
+HDD,DISK,Trš Josef,PBM1501,,DISK,0
+HDD,DISK,Stehlík Tomáš,0150002,,DISK,0
+HDD,DISK,Klášterecký Matouš,BBM1800,,DISK,0
+HDD,DISK,Kozumplík David Larry,VBM2101,,DISK,0
+Expert H,1.,Bulička Martin,ZBM0807,,24:28,200
+Expert H,2.,Macek Ondřej,LPU0209,,26:27,190
+Expert H,3.,Mareček Šimon,LPU0222,,27:28,182
+Expert H,4.,Gryc Vojtěch,TBM0106,,28:20,176
+Expert H,5.,Mokrý Ondřej,ABM9410,72,28:38,172
+Expert H,6.,Hovorka Lukáš,LPU9001,,29:01,170
+Expert H,7.,Matula Petr,ADA8202,,29:22,169
+Expert H,8.,Toman Matěj,ZBM0919,,30:12,168
+Expert H,9.,Mokrý Stanislav,ZBM9202,,32:07,167
+Expert H,10.,Šrubař Michal,ZBM8607,,33:41,166
+Expert H,11.,Koča Jaroslav,ZBM8206,,35:34,165
+Expert H,12.,Brosch Petr,RBK7111,29633,35:59,164
+Expert H,13.,Václavek Petr,ZBM0916,,36:09,163
+Expert H,14.,Cenek Radim,ZBM7203,,38:14,162
+Expert H,15.,Coufal Svatoš,ZBM6700,,39:29,161
+Expert H,16.,Žák Jan,LPU9802,,44:09,160
+Expert H,17.,Novotný Petr,0030001,,51:03,159
+Expert H,18.,Jágr Jaroslav,SBK7549,,59:35,158
+Expert H,19.,Kaňka Jan,TZL7405,,61:33,157
+Expert H,DISK,Zelený Pavel,ZBM7302,,DISK,0
+Expert H,DISK,Kura Jakub,0130001,,DISK,0
+Expert D,1.,Barnatová Klára,ZBM0352,,23:49,200
+Expert D,2.,Korpasová Tereza,TBM9898,,23:50,190
+Expert D,3.,Tomanová Eliška,ZBM0658,,24:20,182
+Expert D,4.,Jeřábková Jitka,TZL9453,,27:09,176
+Expert D,5.,Matulová Lucie,ADA8880,,27:20,172
+Expert D,6.,Kočová Klára,ZBM0850,,27:55,170
+Expert D,7.,Coufalová Thea,ZBM1050,,28:36,169
+Expert D,8.,Coufalová Rea,ZBM0953,,29:39,168
+Expert D,9.,Kurečková Klára,TBM0667,,29:58,167
+Expert D,10.,Broschová Alžběta,RBK1151,25546,30:29,166
+Expert D,11.,Kučerová Tereza,ZBM0957,,31:15,165
+Expert D,12.,Finstrlová Kristýna,ZBM0752,,32:20,164
+Expert D,13.,Rotková Veronika,ZBM0854,,32:56,163
+Expert D,14.,Marková Eva,ZBM0954,,33:21,162
+Expert D,15.,Jágrová Zuzana,RBK1051,42376,33:22,161
+Expert D,16.,Broschová Lucie,RBK7451,14834,35:32,160
+Expert D,17.,Jelínková Adéla,LPU0254,,36:13,159
+Expert D,18.,Jágrová Vlasta,SBK7789,,48:51,158
+Z,1.,Smítal Vendelín,ZBM1203,,16:22,200
+Z,2.,Koča František,ZBM1100,,16:45,190
+Z,3.,Veselý Josef,ZBM1111,,17:46,182
+Z,4.,Hikl Martin,ZBM1104,,18:55,176
+Z,5.,Uchytil Ivo,PZR1201,,18:58,172
+Z,6.,Sedláček Martin,TBM1212,,19:36,170
+Z,7.,Dohnalová Eliška,ZBM1253,,21:17,169
+Z,8.,Chaloupková Klára,ZBM1260,,21:34,168
+Z,9.,Nováček Kryštof,ZBM1207,,21:34,167
+Z,10.,Kozmon Lukáš,PBM1301,,21:46,166
+Z,11.,Fučíková Ema,VBM1151,,22:43,165
+Z,12.,Dvořáková Dita,ZBM1158,,22:49,164
+Z,13.,Eschler Martin,UBM1402,,23:16,163
+Z,14.,Chloupek Filip,VBM1301,,24:09,162
+Z,15.,Jašek Vít,ABR1111,28007,24:28,161
+Z,16.,Šilar Martin,UBM1101,,26:10,160
+Z,17.,Chloupková Kristýna,VBM1152,,26:48,159
+Z,18.,Smítalová Meda,ZBM1356,,26:50,158
+Z,19.,Matulová Markéta,PBM1554,,26:54,157
+Z,20.,Kozmonová Sára,PBM1552,,27:44,156
+Z,21.,Pala Tereza,PBM1557,54204,28:28,155
+Z,22.,Zapletal František,ZBM1413,,30:03,154
+Z,23.,Liška Jan,ZBM1306,,33:36,153
+Z,24.,Pala Barbora,PBM1355,54203,41:29,152
+Z,25.,Bilík Jakub,ZBM1704,,52:55,151
+Z,DISK,Janda Kryštof,ZBM1309,,DISK,0
+Z,DISK,Marková Lucie,ZBM1351,,DISK,0
+Z,DISK,Klášterecký Antonín,BBM1402,,DISK,0
+Z,DISK,Tejkal Václav,ADA1401,,DISK,0
+Z,30.,Honzírek Matouš,ZBM1106,,23:25,146
+V,1.,Trš Lubomír,PBM7302,,18:20,200
+V,2.,Jordanov Nikolaj,VBM6501,,21:42,190
+V,3.,Hlavová Miroslava,KON6389,,24:32,182
+V,4.,Otoupalík Jan,TBM7123,,25:40,176
+V,5.,Jašek Milan,TBM6201,,25:56,172
+V,6.,Minařík Luboš,TBM5711,,27:19,170
+V,7.,Zabloudil Pavel,TBM5003,,28:15,169
+V,8.,Tesařová Jitka,RBK6451,4071,29:16,168
+V,9.,Robotka Libor,PBM5303,,31:16,167
+V,10.,Tršová Daniela,PBM7375,,31:43,166
+V,11.,Jašková Monika,TBM6363,,33:37,165
+V,12.,Eremiášová Jana,TBM5451,,34:39,164
+V,13.,Stejskal Petr,BKG6100,,35:04,163
+V,14.,Kyclová Jitka,LBM7450,32780,37:00,162
+V,15.,Jalový Jaroslav,RBK5719,4065,39:55,161
+V,16.,Zelinková Ludmila,MBM5885,,62:52,160
+V,DISK,Toman Ondřej,LBM7517,2269,DISK,0
+V,DISK,Zapletal Petr,ZBM7204,,DISK,0
+V,DISK,Obrátil Miroslav,ABM6502,30,DISK,0
+ZV-other,9.,Sedláček Petr,0020001,,21:21,167
+ZV-other,20.,Sedláčková Alžběta,TBM7872,,24:42,156
+ZV-other,31.,Buráň Zdeněk,0170001,,28:42,145
+ZV-other,33.,Kaňková Helena,TZL7654,,29:47,143
+ZV-other,35.,Šimek Petr,0240001,,30:47,141
+ZV-other,38.,Buráňová Hana,0170002,,32:02,138
+ZV-other,46.,Ramachová Magda,PBM8151,,43:14,130
+ZV-other,47.,Karel Motyčák,0190002,,44:42,129
+ZV-other,48.,Hoření Veronika,ZBM0652,,45:34,128
+ZV-other,51.,Hrůza Vladimír,0040001,,71:46,125
