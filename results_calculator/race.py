@@ -203,7 +203,7 @@ def get_yob(reg_no: str) -> int | NAType:
             return int("19" + year_str)
         return int("20" + year_str)
     except ValueError:
-        logging.error(
+        logging.warning(
             "Error parsing year of birth from registration number: %s", reg_no
         )
         return pd.NA
