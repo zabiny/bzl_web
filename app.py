@@ -184,6 +184,75 @@ def _combine_points_and_places(
     return df, cols_to_drop
 
 
+def _is_female(regno: str, name: str) -> bool:
+    """
+    Infer female from RegNo (third digit >= 5) or fallback to surname.
+
+    Never raises; invalid RegNo (nereg., wrong format) falls back to
+    surname (-ová, -á). Returns False if undetermined.
+    """
+    try:
+        if regno is None or pd.isna(regno):
+            regno = ""
+        s = str(regno).strip()
+        digits = [c for c in s if c.isdigit()]
+        if len(digits) >= 3:
+            return int(digits[2]) >= 5
+    except (ValueError, IndexError, TypeError):
+        pass
+    try:
+        if name is None or pd.isna(name):
+            return False
+        parts = str(name).strip().split()
+        if not parts:
+            return False
+        surname = parts[0]
+        return surname.endswith(("ová", "á"))
+    except (TypeError, AttributeError):
+        return False
+
+
+def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[int, str]]:
+    """
+    For categories Z and V, map place -> medal class for top 3 male and top 3 female.
+
+    Returns dict category -> {place: "medal-gold"|"medal-silver"|"medal-bronze"}.
+    """
+    out: dict[str, dict[int, str]] = {}
+    for cat in ["Z", "V"]:
+        if cat not in df["category"].values:
+            out[cat] = {}
+            continue
+        sub = df[df["category"] == cat]
+        if (
+            "RegNo" not in sub.columns
+            or "Jméno" not in sub.columns
+            or "place" not in sub.columns
+        ):
+            out[cat] = {}
+            continue
+        male_places = []
+        female_places = []
+        for _, row in sub.iterrows():
+            try:
+                place = row["place"]
+                regno = row["RegNo"]
+                name = row["Jméno"]
+            except (KeyError, TypeError):
+                continue
+            if _is_female(regno, name):
+                female_places.append(place)
+            else:
+                male_places.append(place)
+        medal_map = {}
+        for rank, place in enumerate(sorted(male_places)[:3], start=1):
+            medal_map[place] = ["medal-gold", "medal-silver", "medal-bronze"][rank - 1]
+        for rank, place in enumerate(sorted(female_places)[:3], start=1):
+            medal_map[place] = ["medal-gold", "medal-silver", "medal-bronze"][rank - 1]
+        out[cat] = medal_map
+    return out
+
+
 # Results
 @app.route("/<string:season>/results")
 def results(season: str) -> str:
@@ -201,6 +270,7 @@ def results(season: str) -> str:
 
     """
     results = {}
+    medal_class_by_category = {}
     seasons = em.get_all_seasons()
     try:
         # Load results per category
@@ -217,7 +287,12 @@ def results(season: str) -> str:
         # Process DataFrame (rename and drop columns etc.)
         events = em.get_all_events(season)
         if events is None:
-            return render_template("results.html", season=season, results={})
+            return render_template(
+                "results.html",
+                season=season,
+                results={},
+                medal_class_by_category={},
+            )
 
         oris_id_to_name_mapping = _build_oris_name_mapping(events)
         oris_ids_in_results = {
@@ -229,7 +304,7 @@ def results(season: str) -> str:
         )
 
         best_n_col = str(df.filter(regex=r"Best.*").columns[0])
-        n = best_n_col.split("-")[0][4:]
+        n = best_n_col.split("-", 1)[0][4:]
         df = (
             df.rename(
                 columns={
@@ -240,13 +315,18 @@ def results(season: str) -> str:
             .replace(["nan (nan.)", "nan (nan)"], "---")
             .drop(columns=cols_to_drop)
         )
+        medal_class_by_category = _medal_class_by_category(df)
         # Split DataFrame per category
         for category in CATEGORIES:
             group_df = df[df["category"] == category].set_index("place", drop=True)
             results[category] = group_df.drop(columns=["category"])
     finally:
         return render_template(
-            "results.html", seasons=seasons, season=season, results=results
+            "results.html",
+            seasons=seasons,
+            season=season,
+            results=results,
+            medal_class_by_category=medal_class_by_category,
         )
 
 

@@ -75,8 +75,9 @@
           </thead>
           <tbody>
             {% for index, row in df.iterrows() %}
+            {% set medal_class = medal_class_by_category.get(category, {}).get(index, '') %}
             <tr
-              class="{% if index == 1 %}table-warning{% elif index == 2 %}table-light{% elif index == 3 %}table-danger{% endif %}">
+              class="{% if category in ['Z', 'V'] %}{{ medal_class }}{% else %}{% if index == 1 %}table-warning{% elif index == 2 %}table-light{% elif index == 3 %}table-danger{% endif %}{% endif %}">
               <td><strong>{{ index }}</strong></td>
               {% for cell in row %}
               <td>{{ cell }}</td>
