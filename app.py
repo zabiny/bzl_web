@@ -212,13 +212,14 @@ def _is_female(regno: str, name: str) -> bool:
         return False
 
 
-def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[int, str]]:
+def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[tuple, str]]:
     """
-    For categories Z and V, map place -> medal class for top 3 male and top 3 female.
+    For categories Z and V, map (place, name) -> medal class for top 3 per gender.
 
-    Returns dict category -> {place: "medal-gold"|"medal-silver"|"medal-bronze"}.
+    Keys are (place, name) so tied places get correct medals. Returns
+    dict category -> {(place, name): "medal-gold"|"medal-silver"|"medal-bronze"}.
     """
-    out: dict[str, dict[int, str]] = {}
+    out: dict[str, dict[tuple, str]] = {}
     for cat in ["Z", "V"]:
         if cat not in df["category"].values:
             out[cat] = {}
@@ -231,8 +232,8 @@ def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[int, str]]:
         ):
             out[cat] = {}
             continue
-        male_places = []
-        female_places = []
+        male_rows: list[tuple[int, str]] = []
+        female_rows: list[tuple[int, str]] = []
         for _, row in sub.iterrows():
             try:
                 place = row["place"]
@@ -240,15 +241,28 @@ def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[int, str]]:
                 name = row["Jméno"]
             except (KeyError, TypeError):
                 continue
+            key = (int(place), str(name))
             if _is_female(regno, name):
-                female_places.append(place)
+                female_rows.append(key)
             else:
-                male_places.append(place)
-        medal_map = {}
-        for rank, place in enumerate(sorted(male_places)[:3], start=1):
-            medal_map[place] = ["medal-gold", "medal-silver", "medal-bronze"][rank - 1]
-        for rank, place in enumerate(sorted(female_places)[:3], start=1):
-            medal_map[place] = ["medal-gold", "medal-silver", "medal-bronze"][rank - 1]
+                male_rows.append(key)
+        medal_map: dict[tuple, str] = {}
+        for rank, (place, name) in enumerate(
+            sorted(male_rows, key=lambda x: x[0])[:3], start=1
+        ):
+            medal_map[(int(place), str(name))] = [
+                "medal-gold",
+                "medal-silver",
+                "medal-bronze",
+            ][rank - 1]
+        for rank, (place, name) in enumerate(
+            sorted(female_rows, key=lambda x: x[0])[:3], start=1
+        ):
+            medal_map[(int(place), str(name))] = [
+                "medal-gold",
+                "medal-silver",
+                "medal-bronze",
+            ][rank - 1]
         out[cat] = medal_map
     return out
 

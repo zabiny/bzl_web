@@ -75,12 +75,15 @@
           </thead>
           <tbody>
             {% for index, row in df.iterrows() %}
-            {% set medal_class = medal_class_by_category.get(category, {}).get(index, '') %}
-            <tr
-              class="{% if category in ['Z', 'V'] %}{{ medal_class }}{% else %}{% if index == 1 %}table-warning{% elif index == 2 %}table-light{% elif index == 3 %}table-danger{% endif %}{% endif %}">
+            {% set medal_key = (index, row['Jméno']) if category in ['Z', 'V'] else (0, '') %}
+            {% set medal_class = medal_class_by_category.get(category, {}).get(medal_key, '') %}
+            {% if category not in ['Z', 'V'] %}
+              {% set medal_class = 'table-warning' if index == 1 else ('table-light' if index == 2 else ('table-danger' if index == 3 else '')) %}
+            {% endif %}
+            <tr class="{{ medal_class }}">
               <td><strong>{{ index }}</strong></td>
               {% for cell in row %}
-              <td>{{ cell }}</td>
+              <td>{% if loop.first %}{% if medal_class == 'medal-gold' or (category not in ['Z', 'V'] and index == 1) %}🥇 {% elif medal_class == 'medal-silver' or (category not in ['Z', 'V'] and index == 2) %}🥈 {% elif medal_class == 'medal-bronze' or (category not in ['Z', 'V'] and index == 3) %}🥉 {% endif %}{% endif %}{{ cell }}</td>
               {% endfor %}
             </tr>
             {% endfor %}
