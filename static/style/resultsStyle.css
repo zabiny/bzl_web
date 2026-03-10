@@ -115,6 +115,34 @@
     font-weight: bold !important;
 }
 
+/* Z/V top 3 by gender (medal-gold, medal-silver, medal-bronze) */
+.medal-gold td {
+    background-color: #fff2cc !important;
+    font-weight: bold !important;
+}
+
+.medal-silver td {
+    background-color: #e8eaed !important;
+    font-weight: bold !important;
+}
+
+.medal-bronze td {
+    background-color: #ffe5d9 !important;
+    font-weight: bold !important;
+}
+
+.dtfc-fixed-left .medal-gold {
+    background-color: #fff2cc !important;
+}
+
+.dtfc-fixed-left .medal-silver {
+    background-color: #e8eaed !important;
+}
+
+.dtfc-fixed-left .medal-bronze {
+    background-color: #ffe5d9 !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .card-header {

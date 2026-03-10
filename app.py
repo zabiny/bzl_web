@@ -184,6 +184,89 @@ def _combine_points_and_places(
     return df, cols_to_drop
 
 
+def _is_female(regno: str, name: str) -> bool:
+    """
+    Infer female from RegNo (third digit >= 5) or fallback to surname.
+
+    Never raises; invalid RegNo (nereg., wrong format) falls back to
+    surname (-ová, -á). Returns False if undetermined.
+    """
+    try:
+        if regno is None or pd.isna(regno):
+            regno = ""
+        s = str(regno).strip()
+        digits = [c for c in s if c.isdigit()]
+        if len(digits) >= 3:
+            return int(digits[2]) >= 5
+    except (ValueError, IndexError, TypeError):
+        pass
+    try:
+        if name is None or pd.isna(name):
+            return False
+        parts = str(name).strip().split()
+        if not parts:
+            return False
+        surname = parts[0]
+        return surname.endswith(("ová", "á"))
+    except (TypeError, AttributeError):
+        return False
+
+
+def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[tuple, str]]:
+    """
+    For categories Z and V, map (place, name) -> medal class for top 3 per gender.
+
+    Keys are (place, name) so tied places get correct medals. Returns
+    dict category -> {(place, name): "medal-gold"|"medal-silver"|"medal-bronze"}.
+    """
+    out: dict[str, dict[tuple, str]] = {}
+    for cat in ["Z", "V"]:
+        if cat not in df["category"].values:
+            out[cat] = {}
+            continue
+        sub = df[df["category"] == cat]
+        if (
+            "RegNo" not in sub.columns
+            or "Jméno" not in sub.columns
+            or "place" not in sub.columns
+        ):
+            out[cat] = {}
+            continue
+        male_rows: list[tuple[int, str]] = []
+        female_rows: list[tuple[int, str]] = []
+        for _, row in sub.iterrows():
+            try:
+                place = row["place"]
+                regno = row["RegNo"]
+                name = row["Jméno"]
+            except (KeyError, TypeError):
+                continue
+            key = (int(place), str(name))
+            if _is_female(regno, name):
+                female_rows.append(key)
+            else:
+                male_rows.append(key)
+        medal_map: dict[tuple, str] = {}
+        for rank, (place, name) in enumerate(
+            sorted(male_rows, key=lambda x: x[0])[:3], start=1
+        ):
+            medal_map[(int(place), str(name))] = [
+                "medal-gold",
+                "medal-silver",
+                "medal-bronze",
+            ][rank - 1]
+        for rank, (place, name) in enumerate(
+            sorted(female_rows, key=lambda x: x[0])[:3], start=1
+        ):
+            medal_map[(int(place), str(name))] = [
+                "medal-gold",
+                "medal-silver",
+                "medal-bronze",
+            ][rank - 1]
+        out[cat] = medal_map
+    return out
+
+
 # Results
 @app.route("/<string:season>/results")
 def results(season: str) -> str:
@@ -201,6 +284,7 @@ def results(season: str) -> str:
 
     """
     results = {}
+    medal_class_by_category = {}
     seasons = em.get_all_seasons()
     try:
         # Load results per category
@@ -217,7 +301,12 @@ def results(season: str) -> str:
         # Process DataFrame (rename and drop columns etc.)
         events = em.get_all_events(season)
         if events is None:
-            return render_template("results.html", season=season, results={})
+            return render_template(
+                "results.html",
+                season=season,
+                results={},
+                medal_class_by_category={},
+            )
 
         oris_id_to_name_mapping = _build_oris_name_mapping(events)
         oris_ids_in_results = {
@@ -229,7 +318,7 @@ def results(season: str) -> str:
         )
 
         best_n_col = str(df.filter(regex=r"Best.*").columns[0])
-        n = best_n_col.split("-")[0][4:]
+        n = best_n_col.split("-", 1)[0][4:]
         df = (
             df.rename(
                 columns={
@@ -240,13 +329,18 @@ def results(season: str) -> str:
             .replace(["nan (nan.)", "nan (nan)"], "---")
             .drop(columns=cols_to_drop)
         )
+        medal_class_by_category = _medal_class_by_category(df)
         # Split DataFrame per category
         for category in CATEGORIES:
             group_df = df[df["category"] == category].set_index("place", drop=True)
             results[category] = group_df.drop(columns=["category"])
     finally:
         return render_template(
-            "results.html", seasons=seasons, season=season, results=results
+            "results.html",
+            seasons=seasons,
+            season=season,
+            results=results,
+            medal_class_by_category=medal_class_by_category,
         )
 
 
