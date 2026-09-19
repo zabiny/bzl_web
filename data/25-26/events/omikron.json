@@ -1,6 +1,8 @@
 {
     "name": "O-mikron",
     "date": "2026-02-08",
+    "gps_lat": "49.236207",
+    "gps_lon": "16.604730",
     "oris_id": 9545,
     "place_desc": "Zaječí potok",
     "desc_short": "Krátký závod s fintou",
