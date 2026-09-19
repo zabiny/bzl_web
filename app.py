@@ -401,7 +401,11 @@ def event(season: str, event_id: str) -> str | Response:
     """
     ev = em.get_event(season, event_id)
     if ev:
-        return render_template("event.html", event_data=ev.to_dict())
+        return render_template(
+            "event.html",
+            event_data=ev.to_dict(),
+            mapy_api_key=os.environ.get("MAPY_API_KEY", ""),
+        )
     return redirect(url_for("home"))
 
 

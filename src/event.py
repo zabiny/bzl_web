@@ -47,7 +47,7 @@ class Event:
     desc_short
         Short description of the event.
     desc_long
-        Long description of the event.
+        Long description, as a list of paragraphs.
     oris_id
         ORIS database ID.
     entry_date
@@ -117,7 +117,8 @@ class Event:
         place_desc
             Description of the event location.
         desc_long
-            Long description of the event (string or list of strings).
+            Long description. A single string is one paragraph; a list of
+            strings is rendered as one paragraph per item.
         oris_id
             ORIS database ID for fetching additional data.
         entry_date
@@ -144,9 +145,7 @@ class Event:
         self.difficulty = difficulty
         self.place_desc = place_desc
         self.desc_short = desc_short
-        self.desc_long = (
-            "\n".join(desc_long) if isinstance(desc_long, list) else desc_long
-        )
+        self.desc_long = self._as_paragraphs(desc_long)
         self.oris_id = oris_id
         self.entry_date = entry_date
         self.gps_lat = gps_lat
@@ -161,6 +160,22 @@ class Event:
         self.bzl_order: int | None = None  # will be set by event manager
 
         self.date = datetime.date.fromisoformat(date) if date else None
+
+    @staticmethod
+    def _as_paragraphs(desc_long: str | list[str] | None) -> list[str]:
+        r"""
+        Normalise a long description into a list of paragraphs.
+
+        The config allows either a single string or a list of strings. They used
+        to be joined with ``"\\n"``, which HTML collapses into a single space —
+        so multi-line descriptions rendered as one run-on block. Keeping them
+        as a list lets the template wrap each one in its own ``<p>``.
+        """
+        if desc_long is None:
+            return []
+        if isinstance(desc_long, str):
+            desc_long = desc_long.split("\n")
+        return [p.strip() for p in desc_long if p and p.strip()]
 
     @property
     def is_past(self) -> bool | None:
