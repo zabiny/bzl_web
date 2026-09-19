@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [master, devel]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Ruff (lint)
+        run: ruff check --output-format=github .
+
+      - name: Ruff (format)
+        run: ruff format --check .
+
+      - name: Mypy
+        run: mypy app.py src results_calculator
+
+      - name: Pytest
+        run: pytest -q
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build production image
+        run: docker build -f docker/Dockerfile -t bzl_web:ci .
+
+      - name: Start the container and check it serves pages
+        env:
+          # No ORIS access from CI; the app must come up from cache/config alone.
+          BZL_LOG_LEVEL: INFO
+        run: |
+          docker run -d --name bzl_ci -p 5099:5099 bzl_web:ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:5099/news > /dev/null; then
+              echo "Site is up after ${attempt}s"
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS http://localhost:5099/news  > /dev/null
+          curl -fsS http://localhost:5099/info  > /dev/null
+          echo "--- container logs ---"
+          docker logs bzl_ci
+          docker rm -f bzl_ci
