@@ -1,6 +1,8 @@
 import atexit
 import locale
-from datetime import date
+import logging
+import os
+from datetime import date, datetime
 
 import pandas as pd
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -12,24 +14,49 @@ from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
 
+logging.basicConfig(
+    level=os.environ.get("BZL_LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
+logger = logging.getLogger(__name__)
+
+#: How often to re-read the data directory and refresh events from ORIS.
+REFRESH_INTERVAL_SECONDS = 600
+
 app = Flask(__name__)
 em = EventManager()
 
-# Update the EventManager every 10 mins
-scheduler = BackgroundScheduler()
-scheduler.add_job(
-    func=em.update,
-    trigger="interval",
-    seconds=600,
-    id="event_manager_update",
-    name="Update EventManager data",
-)
-# Enable APScheduler logging
-scheduler.print_jobs()
-scheduler.start()
 
-# Shut down the scheduler when exiting the app
-atexit.register(lambda: scheduler.shutdown())
+def _start_scheduler() -> BackgroundScheduler | None:
+    """
+    Start the background refresh of event data.
+
+    The first run is scheduled immediately but still on the scheduler's thread,
+    so that start-up never blocks on (or fails because of) ORIS. Set
+    ``BZL_DISABLE_SCHEDULER=1`` to skip it entirely, which tests rely on so
+    that they never touch the network.
+    """
+    if os.environ.get("BZL_DISABLE_SCHEDULER") == "1":
+        logger.info("Background refresh disabled by BZL_DISABLE_SCHEDULER.")
+        return None
+
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(
+        func=em.update,
+        trigger="interval",
+        seconds=REFRESH_INTERVAL_SECONDS,
+        id="event_manager_update",
+        name="Update EventManager data",
+        next_run_time=datetime.now(),
+        coalesce=True,
+        max_instances=1,
+    )
+    scheduler.start()
+    atexit.register(scheduler.shutdown)
+    return scheduler
+
+
+scheduler = _start_scheduler()
 
 
 # Home

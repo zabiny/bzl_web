@@ -1,11 +1,23 @@
+"""The :class:`Event` domain object: one race, from its JSON config plus ORIS."""
+
 import datetime
-import logging  # TODO: setup logger properly
-from collections import defaultdict
+import logging
 from enum import StrEnum
 from typing import Any
-from urllib.error import HTTPError
 
-import requests
+logger = logging.getLogger(__name__)
+
+#: Fields that ORIS can supply. A value set manually in the event's JSON config
+#: always wins over the one from ORIS.
+ORIS_FIELDS = (
+    "name",
+    "date",
+    "entry_date",
+    "place_desc",
+    "gps_lat",
+    "gps_lon",
+    "organizer",
+)
 
 
 class Difficulty(StrEnum):
@@ -19,6 +31,10 @@ class Difficulty(StrEnum):
 class Event:
     """
     Represents an orienteering event.
+
+    An ``Event`` is built from its JSON config and never talks to the network
+    itself; ORIS data is handed to it by the
+    :class:`~src.event_manager.EventManager` via :meth:`apply_oris_data`.
 
     Attributes
     ----------
@@ -144,72 +160,64 @@ class Event:
         self.organizer_logo_large = organizer_logo_large
         self.bzl_order: int | None = None  # will be set by event manager
 
-        # Did the event already happened?
         self.date = datetime.date.fromisoformat(date) if date else None
-        self.is_past = datetime.date.today() > self.date if self.date else None
+
+    @property
+    def is_past(self) -> bool | None:
+        """
+        Whether the event has already happened.
+
+        A property rather than a stored value, so it stays correct in a server
+        process that runs for months without a restart.
+        """
+        if self.date is None:
+            return None
+        return datetime.date.today() > self.date
 
     def to_dict(self) -> dict[str, Any]:
         """
-        Convert the Event instance to a dictionary.
+        Convert the Event instance to a dictionary for use in templates.
 
         Returns
         -------
-        Dictionary containing all event attributes.
+        Dictionary containing all event attributes, including the computed
+        ``is_past``.
 
         """
-        return self.__dict__
+        return {
+            "name": self.name,
+            "difficulty": self.difficulty,
+            "place_desc": self.place_desc,
+            "desc_short": self.desc_short,
+            "desc_long": self.desc_long,
+            "oris_id": self.oris_id,
+            "entry_date": self.entry_date,
+            "gps_lat": self.gps_lat,
+            "gps_lon": self.gps_lon,
+            "web": self.web,
+            "images": self.images,
+            "video_yt_id": self.video_yt_id,
+            "is_bzl": self.is_bzl,
+            "organizer": self.organizer,
+            "organizer_logo": self.organizer_logo,
+            "organizer_logo_large": self.organizer_logo_large,
+            "bzl_order": self.bzl_order,
+            "date": self.date,
+            "is_past": self.is_past,
+        }
 
-    def _fetch_oris_data(self, oris_id: int) -> dict[str, Any]:
+    def apply_oris_data(self, oris_data: dict[str, Any]) -> None:
         """
-        Get info about an event from ORIS API.
+        Fill in missing fields from an ORIS payload.
 
-        Retrieve info such as date, GPS coordinates of event center, start time etc.
+        Anything set manually in the event's JSON config is left untouched.
 
         Parameters
         ----------
-        oris_id
-            Event's ORIS ID
+        oris_data
+            Normalised data as returned by :meth:`src.oris.OrisClient.get_event`.
 
-        Returns
-        -------
-        Dict
-            Info about the event in ORIS.
         """
-        api_url = (
-            "https://oris.orientacnisporty.cz/API/?format=json&method=getEvent&"
-            f"id={oris_id}"
-        )
-        try:
-            response = requests.get(api_url)
-            oris_json = response.json()["Data"]
-        except (ConnectionError, HTTPError, TimeoutError) as e:
-            logging.error("Communication with ORIS (race %s) failed!\n%s", oris_id, e)
-            oris_json = defaultdict(None)
-
-        result = {
-            "name": oris_json["Name"],
-            "date": datetime.date.fromisoformat(oris_json["Date"]),
-            "entry_date": oris_json["EntryDate1"],
-            "place_desc": oris_json["Place"],
-            "gps_lat": oris_json["GPSLat"] if oris_json["GPSLat"] != "0" else None,
-            "gps_lon": oris_json["GPSLon"] if oris_json["GPSLon"] != "0" else None,
-            "organizer": oris_json["Org1"]["Name"],
-        }
-        result["is_past"] = datetime.date.today() > result["date"]
-        return result
-
-    def add_oris_data(self) -> None:
-        """
-        Append information about an event retrieved from ORIS API.
-
-        If some info was manually set in config, it's NOT overwritten by ORIS.
-        """
-        if not self.oris_id:
-            raise AttributeError(
-                f"Event {self.name} does not have ORIS ID and tries to fetch ORIS data!"
-            )
-        oris_data = self._fetch_oris_data(self.oris_id)
-
-        for key, oris_value in oris_data.items():
-            if getattr(self, key) is None:
-                setattr(self, key, oris_value)
+        for key in ORIS_FIELDS:
+            if getattr(self, key, None) is None and oris_data.get(key) is not None:
+                setattr(self, key, oris_data[key])
