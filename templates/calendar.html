@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Kalendář závodů {{ season | full_season }} - Sportega BZL{% endblock %}
+{% block title %}Kalendář závodů {{ season | full_season }} - {{ site.short_title }}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style/calendarStyle.css') }}">

@@ -75,6 +75,29 @@ FIXTURE_RESULTS = {
 
 RACE_IDS = (11111, 22222)
 
+# Deliberately not the real names, so a test asserting on them proves the page
+# is reading the configuration rather than a string baked into a template.
+FIXTURE_SITE = {
+    "title": "Testovací zimní liga",
+    "short_title": "TZL",
+    "description": "Popis testovací ligy.",
+    "url": "https://example.test",
+    "contact_email": "test@example.test",
+    "og_image": "og-image.png",
+    "organizer": {
+        "name": "Testovací oddíl",
+        "url": "https://oddil.example.test",
+        "logo": "logos/zbm_large.png",
+    },
+    "partners": [
+        {
+            "name": "Testpartner",
+            "url": "https://partner.example.test",
+            "logo": "logos/mbm.png",
+        }
+    ],
+}
+
 
 def _write_results(results_dir: Path) -> None:
     header = (
@@ -100,6 +123,9 @@ def data_root(tmp_path_factory: pytest.TempPathFactory) -> Path:
     events_dir.mkdir(parents=True)
     results_dir.mkdir(parents=True)
 
+    (root / "site.json").write_text(
+        json.dumps(FIXTURE_SITE, ensure_ascii=False), encoding="utf-8"
+    )
     for event_id, config in FIXTURE_EVENTS.items():
         (events_dir / f"{event_id}.json").write_text(
             json.dumps(config, ensure_ascii=False), encoding="utf-8"

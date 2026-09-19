@@ -15,6 +15,7 @@ from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
 from src.results import load_season_results
+from src.site_config import load_site_config
 
 logging.basicConfig(
     level=os.environ.get("BZL_LOG_LEVEL", "INFO").upper(),
@@ -86,9 +87,10 @@ def _require_season(season: str) -> None:
 
 
 @app.context_processor
-def inject_seasons() -> dict[str, object]:
-    """Make the season list and current year available to every template."""
+def inject_globals() -> dict[str, object]:
+    """Make the site configuration, seasons and year available to every template."""
     return {
+        "site": load_site_config(),
         "all_seasons": em.get_all_seasons(),
         "current_season": em.get_latest_season(),
         "current_year": date.today().year,

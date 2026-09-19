@@ -128,6 +128,34 @@ is the event's URL, so `kauflauf.json` becomes `/25-26/event/kauflauf/`.
 **Anything you set here wins over ORIS.** The app re-reads `data/` every 10
 minutes, so a change appears without a restart.
 
+### Change the league name, the sponsor or the organiser
+
+All of it lives in `data/site.json`:
+
+```json
+{
+    "title": "Sportega brněnská zimní liga",
+    "short_title": "Sportega BZL",
+    "description": "...",
+    "contact_email": "poradatel@zabiny.club",
+    "og_image": "og-image.png",
+    "organizer": { "name": "...", "url": "...", "logo": "logos/zbm_large.png" },
+    "partners": [
+        { "name": "Sportega", "url": "https://www.sportega.cz/", "logo": "Sportega_logo_rgb_DarkBlue.png" }
+    ]
+}
+```
+
+The name appears in the page titles, the header, the footer, the rules page
+and the link-preview tags; it is written once here. Dropping a sponsor is
+`"partners": []` — their logos disappear from the header and footer, and the
+paragraph on the rules page about e-shop vouchers goes with them. Logo paths
+are relative to `static/images/`.
+
+This file is inside the mounted data volume, so a change needs a restart, not
+a rebuild. Old news items still name the sponsor of their time, which is as it
+should be — they are a record of what happened.
+
 ### Post a news item
 
 Drop an HTML fragment into `templates/news/`, named `YYYY-MM-DD_slug.html`. The
@@ -181,12 +209,15 @@ src/
   oris.py                  ORIS API client with an on-disk fallback cache
   results.py               Builds the tables and medals for the results page
   news.py                  Reads templates/news/
+  site_config.py           League name, organiser and partners
   paths.py                 Where the data lives
 results_calculator/        Standalone CLI, imports no Flask
   race.py                  ORIS results -> points_<id>.csv
   overall.py               points_*.csv -> overall_<category>.csv
   sex.py                   Sex, for medals in the mixed Z and V categories
   decisions.py             Remembers duplicate-runner answers
+data/
+  site.json                League name, organiser, partners
 data/<season>/
   events/*.json            One file per race
   results/points_*.csv     Per-race points

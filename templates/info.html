@@ -1,19 +1,19 @@
 {% extends 'layout.html' %}
 
-{% block title %}Informace - Sportega BZL{% endblock %}
+{% block title %}Informace - {{ site.short_title }}{% endblock %}
 
 {% block page_title %}Informace{% endblock %}
 
 {% block body %}
 <div id="border">
-    <h2 class="mb-3 mt-5">Co je to Sportega BZL?</h2>
+    <h2 class="mb-3 mt-5">Co je to {{ site.short_title }}?</h2>
     <p>
-        Sportega brněnská zimní liga (Sportega BZL) je společný projekt brněnských oddílů orientačního běhu pod
-        záštitou SK Brno Žabovřesky.
+        {{ site.title }} ({{ site.short_title }}) je společný projekt brněnských oddílů orientačního běhu pod
+        záštitou {{ site.organizer.name }}.
         Částečně je zaměřen na zimní tréninkovou přípravu již stávajících závodníků, nedílnou součástí je však
         i popularizace orientačního běhu a všeobecný rozvoj sportu v Brně. Je určený pro všechny bez omezení věku,
         fyzické výkonnosti či mapových schopností.<br>
-        Součástí Sportega BZL jsou závody konané v městských lokalitách Brna a Blanska - například sídliště, lesoparky
+        Součástí {{ site.short_title }} jsou závody konané v městských lokalitách Brna a Blanska - například sídliště, lesoparky
         a parky.
         Orientace v tomto prostředí není tak náročná jako v lese, a proto je vhodná i pro účastníky bez zkušeností s
         orientačním během. Více o orientačním běhu se můžete dozvědět na webu
@@ -25,7 +25,7 @@
 
     <h2 class="mb-3 mt-5" id="kategorie">Kategorie</h2>
     <p>
-        Na každý závod je nutné si vybrat správnou kategorii. Pokud je závod zařazen do Sportega BZL, jsou kategorie
+        Na každý závod je nutné si vybrat správnou kategorii. Pokud je závod zařazen do {{ site.short_title }}, jsou kategorie
         následující:
         Muži běhají kategorii H; ženy bojují v kategorii D; děti do 10 let - ročník {{ hdd_max_year }} a mladší - mohou
         absolvovat svoji trať HDD v doprovodu rodičů; Žáci ročníku {{ zv_kid_year }} a mladší se hlásí do kategorie ZV,
@@ -33,7 +33,7 @@
         této kategorie patří také veteráni ({{ zv_vet_year }} a starší). Pokud si jdete vyzkoušel orientační běh úplně
         poprvé a nevěříte si zatím na kategorie D a H, je kategorie ZV i pro vás. Stejně tak i starší děti mohou
         stále absolvovat kategorii HDD. V obou případech, kdy nesplňujete věkový limit, však poběžíte mimo soutěž a
-        nebudete započítáni výsledků. U závodů, které nejsou zařazené do Sportega BZL, se kategorie mohou lišit.
+        nebudete započítáni výsledků. U závodů, které nejsou zařazené do {{ site.short_title }}, se kategorie mohou lišit.
     </p>
     <table>
         <thead>
@@ -83,10 +83,12 @@
     </ul>
 
     V případě rovnosti bodů mezi prvními 3 závodníky rozhoduje větší počet prvních, resp. druhých, třetích a dalších
-    umístění v závodech. Obdobně jako medailové pořadí zemí na olympiádě. Díky našemu hlavnímu sponzorovi
-    <i>Sportega</i>
+    umístění v závodech. Obdobně jako medailové pořadí zemí na olympiádě.
+    {% if site.main_partner %}
+    Díky našemu hlavnímu sponzorovi <i>{{ site.main_partner.name }}</i>
     obdrží první tři závodníci celkového pořadí z každé kategorie poukazy do
-    <a href="https://www.sportega.cz" target="_blank">e-obchodu Sportegy</a>.
+    <a href="{{ site.main_partner.url }}" target="_blank" rel="noopener">jeho e-obchodu</a>.
+    {% endif %}
     <br><br>
     Běhejte fair play a podle pravidel OB.
     </p>
@@ -108,7 +110,7 @@
         členem žádného orientačního klubu, můžete využít jednorázové přihlášky po rozkliknutí závodu v systému ORIS (<a
             href="https://oris.orientacnisporty.cz/files/help/Jednorazove-prihlasky-ucastnik.pdf">návod</a>).
         Přihlášky probíhají na každý závod zvlášť, termíny přihlášek a odkaz na přihlášení naleznete po rozkliknutí
-        konkrétního závodu ze seznamu v záložce kalendář. Pokud Vás Sportega BZL zaujala, v ORISu vždy najdete aktuální
+        konkrétního závodu ze seznamu v záložce kalendář. Pokud Vás {{ site.short_title }} zaujala, v ORISu vždy najdete aktuální
         seznam
         všech OB závodů na celý rok.
     </p>

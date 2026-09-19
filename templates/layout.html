@@ -3,18 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Sportega BZL - brněnská zimní liga v orientačním běhu{% endblock %}</title>
+    <title>{% block title %}{{ site.title }}{% endblock %}</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/frog.svg') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description"
-        content="Sportega brněnská zimní liga je zimní seriál závodů v orientačním běhu v Brně a okolí. Kalendář závodů, průběžné výsledky a novinky.">
+    <meta name="description" content="{{ site.description }}">
 
     <!-- Open Graph meta tags for social media sharing -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Sportega brněnská zimní liga" />
-    <meta property="og:description" content="Sportega brněnská zimní liga v orientačním běhu." />
-    <meta property="og:url" content="https://bzl.zabiny.club" />
-    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}" />
+    <meta property="og:title" content="{{ site.title }}" />
+    <meta property="og:description" content="{{ site.description }}" />
+    <meta property="og:url" content="{{ site.url }}" />
+    <meta property="og:image"
+        content="{{ url_for('static', filename='images/' + site.og_image, _external=True) }}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -68,8 +68,7 @@
                 <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
             <h1 class="mb-0">
-                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Sportega brněnská zimní
-                    liga</a>
+                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">{{ site.title }}</a>
             </h1>
         </div>
 
@@ -113,13 +112,15 @@
                                 href="{{ url_for('results', season=current_season) }}">Výsledky</a>
                         </li>
                         {% endif %}
-                        <!-- Mobile-only logo -->
+                        <!-- Mobile-only partner logos -->
+                        {% for partner in site.partners %}
                         <li class="nav-item d-lg-none mt-3">
-                            <a href="https://www.sportega.cz/" class="nav-link">
-                                <img src="{{ url_for('static', filename='images/Sportega_logo_rgb_DarkBlue.png') }}"
-                                    alt="Sportega" style="height: 40px;">
+                            <a href="{{ partner.url }}" class="nav-link" target="_blank" rel="noopener">
+                                <img src="{{ url_for('static', filename='images/' + partner.logo) }}"
+                                    alt="{{ partner.name }}" style="height: 40px;">
                             </a>
                         </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -147,23 +148,27 @@
             <div class="row align-items-center">
                 <!-- Left side: Basic info -->
                 <div class="col-12 col-md-8 mb-3 mb-md-0">
-                    <p class="mb-1"><i>Sportega brněnská zimní liga</i> je seriál závodů v orientačním běhu.</p>
-                    <p class="mb-1">Kontakt: <a href="mailto:poradatel@zabiny.club">poradatel@zabiny.club</a></p>
-                    <p class="mb-0">© {{ current_year }} SK Brno Žabovřesky</p>
+                    <p class="mb-1"><i>{{ site.title }}</i> je seriál závodů v orientačním běhu.</p>
+                    <p class="mb-1">Kontakt:
+                        <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a>
+                    </p>
+                    <p class="mb-0">© {{ current_year }} {{ site.organizer.name }}</p>
                 </div>
 
                 <!-- Right side: Logos -->
                 <div
                     class="col-12 col-md-4 text-md-end d-flex justify-content-center justify-content-md-end align-items-center">
                     <div class="footer-logos">
-                        <a href="https://zabiny.club" target="_blank" rel="noopener" class="footer-logo me-3">
-                            <img src="{{ url_for('static', filename='images/logos/zbm_large.png') }}"
-                                alt="SK Brno Žabovřesky" style="height: 45px;">
+                        <a href="{{ site.organizer.url }}" target="_blank" rel="noopener" class="footer-logo">
+                            <img src="{{ url_for('static', filename='images/' + site.organizer.logo) }}"
+                                alt="{{ site.organizer.name }}" style="height: 45px;">
                         </a>
-                        <a href="https://www.sportega.cz/" target="_blank" rel="noopener" class="footer-logo">
-                            <img src="{{ url_for('static', filename='images/Sportega_logo_rgb_DarkBlue.png') }}"
-                                alt="Sportega" style="height: 35px;">
+                        {% for partner in site.partners %}
+                        <a href="{{ partner.url }}" target="_blank" rel="noopener" class="footer-logo">
+                            <img src="{{ url_for('static', filename='images/' + partner.logo) }}"
+                                alt="{{ partner.name }}" style="height: 35px;">
                         </a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

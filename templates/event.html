@@ -2,7 +2,7 @@
 
 {% set has_map = event_data['gps_lat'] and event_data['gps_lon'] %}
 
-{% block title %}{{ event_data['name'] }} - Sportega BZL{% endblock %}
+{% block title %}{{ event_data['name'] }} - {{ site.short_title }}{% endblock %}
 
 {% block head %}
 {% if has_map and mapy_api_key %}

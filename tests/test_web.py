@@ -160,3 +160,71 @@ def test_social_preview_image_is_hosted_locally(client):
     html = client.get("/news").get_data(as_text=True)
     assert "ubc.net" not in html
     assert "og-image.png" in html
+
+
+# --- branding comes from data/site.json, not from the markup ---------------
+
+
+@pytest.mark.parametrize(
+    "url",
+    ["/info", "/26-27/calendar", "/26-27/results", "/26-27/event/bez_mapy/"],
+)
+def test_no_page_hard_codes_the_league_or_sponsor_name(client, url):
+    """
+    Renaming the league must not mean hunting through the templates.
+
+    /news is excluded on purpose: the articles are historical and name the
+    sponsor of their time, which is content rather than branding.
+    """
+    html = client.get(url).get_data(as_text=True)
+    assert "Sportega" not in html
+    assert "brněnská zimní liga" not in html
+
+
+def test_the_configured_title_is_used(client):
+    html = client.get("/news").get_data(as_text=True)
+    assert "Testovací zimní liga" in html
+    assert '<meta property="og:title" content="Testovací zimní liga" />' in html
+
+
+def test_page_titles_use_the_short_name(client):
+    html = client.get("/26-27/calendar").get_data(as_text=True)
+    assert _titles(html)[0].endswith("TZL")
+
+
+def test_the_configured_organizer_and_contact_appear(client):
+    html = client.get("/news").get_data(as_text=True)
+    assert "Testovací oddíl" in html
+    assert "test@example.test" in html
+
+
+def test_partner_logos_come_from_the_configuration(client):
+    html = client.get("/news").get_data(as_text=True)
+    assert "https://partner.example.test" in html
+    assert 'alt="Testpartner"' in html
+
+
+def test_dropping_the_sponsor_removes_it_everywhere(client, data_root):
+    """The scenario this exists for: the partner is not renewed."""
+    import json
+
+    path = data_root / "site.json"
+    original = path.read_text(encoding="utf-8")
+    config = json.loads(original)
+    config["partners"] = []
+    config["title"] = "Brněnská zimní liga"
+    config["short_title"] = "BZL"
+    path.write_text(json.dumps(config, ensure_ascii=False), encoding="utf-8")
+    try:
+        home = client.get("/news").get_data(as_text=True)
+        info = client.get("/info").get_data(as_text=True)
+    finally:
+        path.write_text(original, encoding="utf-8")
+
+    assert "Testpartner" not in home
+    assert "partner.example.test" not in home
+    assert "Brněnská zimní liga" in home
+    # The prize paragraph is about the sponsor, so it goes with them.
+    assert "hlavnímu sponzorovi" not in info
+    # The organiser is not a sponsor and stays.
+    assert "Testovací oddíl" in home
