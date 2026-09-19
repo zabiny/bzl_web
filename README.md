@@ -47,7 +47,7 @@ python app.py          # http://localhost:5000
 
 ```bash
 cp .env.example .env     # then put your Mapy.com API key in it
-docker compose up -d --build
+docker compose -f docker-compose.local.yml up -d --build
 ```
 
 The site listens on port **5099**. `data/` and `templates/news/` are mounted as

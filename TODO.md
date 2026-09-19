@@ -16,14 +16,13 @@ CI and documentation underneath it.
 ## Look at it
 
 ```bash
-docker compose up -d --build     # http://localhost:5099
-docker compose logs -f           # watch it
-docker compose down              # stop
+docker compose -f docker-compose.local.yml up -d --build   # localhost:5099
+docker compose -f docker-compose.local.yml logs -f
+docker compose -f docker-compose.local.yml down
 ```
 
 Content is mounted, so editing anything under `data/` or `templates/news/` then
-`docker compose restart web` is enough — no rebuild. Code changes do need
-`--build`.
+restarting is enough — no rebuild. Code changes do need `--build`.
 
 Without Docker:
 
@@ -93,14 +92,28 @@ What is known about the deployment, as of 2026-09-19:
 
 Two things follow:
 
-- **`MAPY_API_KEY` must be set on that VM**, not here. Where depends on how the
-  container is started: a `.env` beside a `docker-compose.yml`, `-e` on a
-  `docker run`, `Environment=` in a systemd unit, or a platform's settings page.
-  Worth finding out and writing into the README.
-- `docker-compose.yml` in this repo may or may not be what the server uses. If
-  the VM starts the container some other way, that file is for local use only
-  and the server's own configuration needs the same volumes (`./data`,
-  `./templates/news`) to keep content editable without a rebuild.
+The deployment is **Coolify** on that VM, set up by a colleague; pushing to
+master is the whole release process.
+
+- **`MAPY_API_KEY` has to be set in Coolify**, not here: open the application,
+  Environment Variables, add it as a *runtime* variable (not build-time), and
+  redeploy. Needs Coolify access, or a colleague to add it.
+- While in there, it is worth noting **which Build Pack** the application uses
+  (Dockerfile, Nixpacks, Docker Compose) and writing it into the README. The
+  Dockerfile's `EXPOSE 5099` and its gunicorn bind are unchanged from master, so
+  the port contract Coolify relies on is the same as it has always been.
+- The local compose file is deliberately named `docker-compose.local.yml` rather
+  than `docker-compose.yml`, so that a platform scanning the repository root
+  cannot pick it up. Its port binding and bind mounts are right for a laptop and
+  wrong for that server. If Coolify turns out to use the Dockerfile build pack -
+  which is likely, since the build pack is chosen per application and does not
+  change by itself - the name could go back, but there is no reason to.
+- **Does Coolify mount `data/` as a volume?** If not, results and news still
+  come from the image and publishing them needs a redeploy, exactly as before.
+  That is not a regression, but a persistent mount for `./data` would make
+  publishing a file change. The container writes nothing to `data/` at runtime;
+  the ORIS cache lives in `/var/cache/bzl`, and if that is not writable the app
+  logs a warning and carries on.
 
 ### 3. ORIS — broken at the source, and moving domain
 
