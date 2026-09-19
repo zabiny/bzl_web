@@ -192,7 +192,7 @@ All optional, all environment variables.
 
 | Variable | Default | What it does |
 |---|---|---|
-| `MAPY_API_KEY` | *(empty)* | Mapy.com key for the map on each event page. Without it the page shows a link to Mapy.com instead. Free key: <https://developer.mapy.com/account/> |
+| `MAPY_API_KEY` | *(empty)* | Mapy.com key for the map on each event page. Without it the page shows a link to Mapy.com instead. Free key: <https://developer.mapy.com/account/>. It is a browser-side key and is rendered into the page, so it is public once deployed — but keep it out of the repository, which is public and gets scraped. Set it in the environment of wherever the site runs. |
 | `BZL_DATA_DIR` | `data` | Where the seasons live |
 | `BZL_ORIS_CACHE_DIR` | `<data>/.oris_cache` | Cached ORIS responses |
 | `BZL_LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR` |

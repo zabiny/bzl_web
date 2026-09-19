@@ -58,7 +58,9 @@ one that makes the biggest visible difference. About five minutes:
 
 4. `docker compose up -d` — compose reads `.env` on its own. Open any event with
    coordinates, e.g. `/25-26/event/omikron/`, and the map should be there.
-5. Set the same variable wherever the site actually runs, once that is known.
+5. **Set the same variable on the server** — `.env` here only affects your own
+   machine. See the deployment note below. Deploying without the key is safe:
+   event pages fall back to a Mapy.com link, nothing breaks.
 
 **The key is public.** It is a browser-side key: it goes into the page as a
 `data-apikey` attribute and anyone viewing source can read it. That is how every
@@ -73,27 +75,32 @@ If you would rather the key never reach the browser at all, the alternative is
 to proxy the tiles through Flask. That is more code, adds latency and puts tile
 traffic through your server, and is almost certainly not worth it here.
 
-### 2. Nothing is pushed, and the deploy path is unknown
+### 2. Nothing is pushed, and the key has to reach the server
 
-24 commits sit locally. Before pushing, work out how the site is actually built
-and released, because it is **not** in this repository:
+24+ commits sit locally.
 
-- No GitHub Actions workflow exists on `zabiny/bzl_web` (the API reports zero).
-- No Jenkinsfile, no `.gitlab-ci`, no tags, no releases.
-- The `origin/deploy` branch has not moved since November 2022.
+What is known about the deployment, as of 2026-09-19:
 
-So it is a webhook, something on the server, a registry build, or a workflow in
-another repo. Whatever it is, it reacts to pushes rather than to workflow runs,
-so the new `.github/workflows/ci.yml` should be inert — but that is reasoning,
-not verification. **Find the deploy and write it down in the README.**
+- Pushing to `master` deploys to <https://bzl.zabiny.club>, pushing to `devel`
+  to <https://dev.bzl.zabiny.club>.
+- Both names resolve to `20.52.186.181`, which is also `azure.zabiny.club` — an
+  Azure VM running Ubuntu with **nginx 1.18.0** in front of the container.
+- `dev.bzl.zabiny.club` currently answers **502**, so nginx is configured for it
+  but nothing is listening behind it.
+- There is still **no GitHub Actions workflow** on the repository (the API
+  reports zero), so whatever reacts to the push lives on that VM or in an
+  external service, not in this repo.
 
-Also decide whether CI should skip routine content commits:
+Two things follow:
 
-```yaml
-on:
-  push:
-    paths-ignore: ['data/**', 'templates/news/**']
-```
+- **`MAPY_API_KEY` must be set on that VM**, not here. Where depends on how the
+  container is started: a `.env` beside a `docker-compose.yml`, `-e` on a
+  `docker run`, `Environment=` in a systemd unit, or a platform's settings page.
+  Worth finding out and writing into the README.
+- `docker-compose.yml` in this repo may or may not be what the server uses. If
+  the VM starts the container some other way, that file is for local use only
+  and the server's own configuration needs the same volumes (`./data`,
+  `./templates/news`) to keep content editable without a rebuild.
 
 ### 3. ORIS — broken at the source, and moving domain
 
