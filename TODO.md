@@ -2,17 +2,27 @@
 
 Working notes for picking this up again. Written 2026-09-19.
 
-Branch **`pre-26-27-redesign`**, pushed, open as **PR #77 into `devel`** —
-<https://github.com/zabiny/bzl_web/pull/77>. CI is green (lint, format, types,
-199 tests, and a container that builds and serves pages with no ORIS access).
-Working tree clean.
+Branch **`pre-26-27-redesign`**, open as **PR #77 into `devel`** —
+<https://github.com/zabiny/bzl_web/pull/77>. Merging it deploys to
+<https://dev.bzl.zabiny.club>, not to production.
 
-Merging that PR deploys to <https://dev.bzl.zabiny.club>, not to production.
+The redesign the branch is named after **has now been done**. Three pieces,
+one commit each:
 
-The season 25/26 is over. The next one has not been set up yet, and the redesign
-this branch is named after has not been started — what happened instead was a
-pass over the existing site, fixing things that were broken and putting tests,
-CI and documentation underneath it.
+1. `7e212e9` — removed the broken decorative layer (runner silhouettes,
+   particle starfield, Font Awesome) and the defects it was hiding.
+2. `dbedc93` — `src/race_stats.py`: participant counts and per-category
+   podiums, read from the per-race results files.
+3. `0c44106` — the redesign itself: an ISOM map palette behind a two-layer
+   token system, the calendar drawn as an orienteering course, and the
+   standings rebuilt as cards on a phone, which removed jQuery, DataTables
+   and FixedColumns.
+
+The four candidate designs were judged on a canvas and **variant B, "Kurz"**,
+was chosen: <https://claude.ai/artifact/BbxmizzuMVnzt5wPDfuKCP> (private —
+share it from the page's Share menu if anyone else needs to see it).
+
+The season 25/26 is over and 26/27 is not set up yet.
 
 ---
 
@@ -35,8 +45,10 @@ pip install -e ".[dev]"
 python app.py                    # http://localhost:5000
 ```
 
-Pages worth looking at: `/news`, `/info`, `/25-26/calendar`, `/25-26/results`,
-and an event with coordinates such as `/25-26/event/omikron/`.
+Pages worth looking at: `/25-26/calendar` (the course, and a finished race
+expanded to its podium), `/25-26/results` (resize below 780px to see the
+cards), `/news`, `/info`, and an event with coordinates such as
+`/25-26/event/omikron/`.
 
 **Maps need a key.** Without `MAPY_API_KEY` set, event pages show a link to
 Mapy.com instead of a map. See the first open item.
@@ -140,7 +152,25 @@ Then one JSON per race (schema in the README). Nothing else needs touching: the
 navigation, the season dropdown and the "best N of M" sentence on the rules page
 all read the newest season directory.
 
-### 5. Smaller things, none urgent
+### 5. Design follow-ups
+
+The owner expects to find nits once the redesign has been lived with. Known
+open questions, none blocking:
+
+- **The course at full length.** It was designed against four races and now
+  renders twelve. It holds, but nobody has looked at a full season on a phone
+  for long.
+- **The results page is still 344 KB** — down from 417 KB with the whole
+  DataTables stack gone, but it renders 681 rows. If it ever feels slow,
+  the fix is a route per category rather than paging.
+- **Race podiums in Z and V are ranked by place, not split by sex**, unlike
+  the season medals. The race was scored as one field per class, so a per-sex
+  race podium would show a "winner" who did not get the winning points. Raised
+  with the owner and left as is.
+- **Dark mode** is designed for but not built: `tokens.css` section 6 holds
+  the contract, and it is a re-valuing of section 2 alone.
+
+### 6. Smaller things, none urgent
 
 - `docker/Dockerfile` installs `uv` and then uninstalls it in the same layer to
   keep it out of the image. A multi-stage build would be tidier.

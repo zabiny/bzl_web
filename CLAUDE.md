@@ -47,6 +47,29 @@ All three run in CI. `ruff format` is authoritative; line length 88.
   and sponsors change. Do not hard-code the name in a template; there is a test
   that fails if you do.
 - **No secrets in the repo.** `MAPY_API_KEY` comes from the environment.
+- **No colour literal outside `static/style/tokens.css`**, and no component
+  may reference a primitive token. Components use the semantic names only.
+  That single rule is what makes dark mode a drop-in later; section 6 of
+  tokens.css holds the contract. Two greps enforce it:
+
+  ```bash
+  grep -nE 'var\(--(isom|paper|ink|silver)-' static/style/{base,components,page-*}.css
+  grep -nEi '#[0-9a-f]{3,8}|hsla?\(' static/style/{base,components,page-*}.css
+  ```
+
+  Both should return nothing. `currentColor`, `transparent` and `inherit` are
+  fine, and so are the two `rgb(... / n%)` translucent overlays in
+  `components.css`. Print colours are tokens too (`--print-ink`,
+  `--print-paper`) rather than an exemption, because paper is white and ink
+  is black however the screen is themed.
+- **The calendar is drawn as an orienteering course.** Three conventions are
+  load-bearing, because breaking any of them is what a competitor notices
+  first: the start triangle's apex points along the line at the first race,
+  the connecting line is **solid** (a dashed line is a marked route, symbol
+  707), and the line never touches a symbol. Numbers inside the circles and
+  a straight vertical line are deliberate simplifications. A race outside the
+  league is a plain dot, never a smaller circle - a small circle reads as a
+  control drawn badly.
 
 ## Layout
 
@@ -55,6 +78,7 @@ app.py                  routes, template filters, error pages
 src/oris.py             ORIS API client + disk cache (never raises)
 src/event_manager.py    loads seasons, background refresh
 src/results.py          builds the results tables and medals
+src/race_stats.py       per-race participant counts and podiums
 src/site_config.py      league name, organiser, partners
 results_calculator/     standalone CLI, imports no Flask
 data/<season>/          events/*.json, results/*.csv

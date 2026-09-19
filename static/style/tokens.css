@@ -213,6 +213,11 @@
     --duration-base: 200ms;
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
+    /* Paper is white and ink is black however the screen is themed, so
+       these are their own tokens rather than an exemption from the rule. */
+    --print-ink: #000;
+    --print-paper: #fff;
+
     --z-nav: 100;
     --z-backdrop: 900;
     --z-menu: 1000;

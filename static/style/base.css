@@ -182,7 +182,7 @@ img {
     body {
         display: block;
         background: none;
-        color: #000;
+        color: var(--print-ink);
     }
 
     .site-nav,
@@ -196,14 +196,14 @@ img {
 
     .site-header {
         background: none !important;
-        color: #000 !important;
-        border-bottom: 1px solid #000;
+        color: var(--print-ink) !important;
+        border-bottom: 1px solid var(--print-ink);
     }
 
     .site-header a,
     .site-header .brand-name,
     .site-header .brand-tagline {
-        color: #000 !important;
+        color: var(--print-ink) !important;
     }
 
     .shell {

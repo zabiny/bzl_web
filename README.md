@@ -211,6 +211,7 @@ src/
   oris.py                  ORIS API client with an on-disk fallback cache
   results.py               Builds the tables and medals for the results page
   news.py                  Reads templates/news/
+  race_stats.py            Participant counts and podiums for the calendar
   site_config.py           League name, organiser and partners
   paths.py                 Where the data lives
 results_calculator/        Standalone CLI, imports no Flask
@@ -225,7 +226,14 @@ data/<season>/
   results/points_*.csv     Per-race points
   results/overall_*.csv    Season standings, one per category
   results/merge_decisions.json   Recorded duplicate-runner answers
-templates/, static/        Jinja templates and assets
+templates/                 Jinja templates
+static/style/
+  tokens.css               Design tokens. The only file with a colour in it
+  base.css                 Page, typography, links, focus, print
+  components.css           Header, nav, footer, pills, medals, news
+  page-calendar.css        The calendar drawn as a course
+  page-results.css         Standings: table above 780px, cards below
+  page-event.css           Event page and the Leaflet map
 tests/                     pytest suite
 ```
 
@@ -240,6 +248,33 @@ registration number. The age cut-offs move on 1 July each year.
 1st 200, 2nd 190, 3rd 182, 4th 176, 5th 172, then `176 − place` down to 1 point
 at 175th. A runner's total is their best `N` races, where `N` is just over half
 the season's races (3 of 5, 4 of 7).
+
+### The calendar is a course
+
+A season is drawn the way a course is drawn on an orienteering map: a start
+triangle, a numbered control circle for each race that counts towards the
+standings, a plain dot for races that do not, and two concentric circles for
+the final standings. The numbers are the `bzl_order` of each race.
+
+Three conventions are kept exactly, because breaking them is what an
+orienteer notices first: the triangle's apex points along the line at the
+first race, the connecting line is **solid** (dashed would mean a marked
+route), and the line never touches a symbol. Numbers inside the circles and
+a straight vertical line are deliberate simplifications — the metaphor is
+meant to be read, not surveyed.
+
+### Race statistics
+
+A finished race shows how many people ran it, and expands to the podium of
+each category. This comes from `points_<oris_id>.csv`, so a race has
+statistics exactly when its results have been published — there is no date
+logic involved. Participants means everyone in the file, including
+disqualified and out-of-competition runners and any class the league does
+not score, because the question it answers is "how big was this race".
+
+Ties are shown, not resolved: the `Place` column is already
+standard-competition-ranked by the timing software, so a shared first place
+appears as two runners at 1. and the next at 3.
 
 ### Medals
 
