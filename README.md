@@ -1,4 +1,4 @@
-# BZL — Sportega brněnská zimní liga
+# BZL — Sportega Brněnská zimní liga
 
 Website and results calculator for the **Sportega Brněnská zimní liga**, a winter
 series of orienteering races in Brno, run by [SK Brno
@@ -134,7 +134,7 @@ All of it lives in `data/site.json`:
 
 ```json
 {
-    "title": "Sportega brněnská zimní liga",
+    "title": "Sportega Brněnská zimní liga",
     "short_title": "Sportega BZL",
     "description": "...",
     "contact_email": "poradatel@zabiny.club",

@@ -176,8 +176,8 @@ def test_no_page_hard_codes_the_league_or_sponsor_name(client, url):
     /news is excluded on purpose: the articles are historical and name the
     sponsor of their time, which is content rather than branding.
     """
-    html = client.get(url).get_data(as_text=True)
-    assert "Sportega" not in html
+    html = client.get(url).get_data(as_text=True).lower()
+    assert "sportega" not in html
     assert "brněnská zimní liga" not in html
 
 
