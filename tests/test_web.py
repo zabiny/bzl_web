@@ -228,3 +228,38 @@ def test_dropping_the_sponsor_removes_it_everywhere(client, data_root):
     assert "hlavnímu sponzorovi" not in info
     # The organiser is not a sponsor and stays.
     assert "Testovací oddíl" in home
+
+
+# --- graceful degradation when ORIS data is missing ------------------------
+
+
+def test_results_never_show_raw_race_columns(client):
+    """
+    A race whose event cannot be named must not leak its raw columns.
+
+    When ORIS is unreachable, an event with no local name is dropped, and the
+    results page used to render that race's "22222-Place" and "22222-Points"
+    columns directly - displaying empty cells as the string "nan".
+    """
+    html = client.get("/26-27/results").get_data(as_text=True)
+    assert "-Place<" not in html
+    assert "-Points<" not in html
+    assert "nan" not in html
+
+
+def test_an_unnameable_race_still_shows_its_results(client):
+    """Its results are real; only the name is missing, so label it by id."""
+    html = client.get("/26-27/results").get_data(as_text=True)
+    assert "Závod 22222" in html
+
+
+def test_a_named_race_uses_its_name(client):
+    html = client.get("/26-27/results").get_data(as_text=True)
+    assert "Závod s mapou" in html
+
+
+def test_an_undated_race_says_so_on_the_calendar(client):
+    """It used to render a blank where the day and month go."""
+    html = client.get("/26-27/calendar").get_data(as_text=True)
+    assert "Závod bez termínu" in html
+    assert "upřesníme" in html

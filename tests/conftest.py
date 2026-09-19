@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT))
 FIXTURE_EVENTS = {
     "s_mapou": {
         "name": "Závod s mapou",
+        "oris_id": 11111,
         "date": "2027-01-10",
         "desc_short": "Závod, který má souřadnice.",
         "desc_long": ["První odstavec.", "Druhý odstavec."],
@@ -36,6 +37,12 @@ FIXTURE_EVENTS = {
     "jen_oris": {
         "oris_id": 99999,
         "desc_short": "Závod, který zná jen ORIS.",
+        "difficulty": "easy",
+        "is_bzl": False,
+    },
+    "bez_data": {
+        "name": "Závod bez termínu",
+        "desc_short": "Závod, jehož termín zatím neznáme.",
         "difficulty": "easy",
         "is_bzl": False,
     },

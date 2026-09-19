@@ -23,12 +23,16 @@
             <!-- Date and logo -->
             <div class="first-col">
                 <div class="date">
+                    {% if event['date'] %}
                     <div>
                         <h3 class="{{ 'past-event' if event['is_past'] }}" style="margin-bottom: 0">
                             {{ event['date'] | day_from_date }}
                         </h3>
                     </div>
                     <div>{{ event['date'] | month_and_year_from_date | upper }}</div>
+                    {% else %}
+                    <div class="date-unknown">termín<br>upřesníme</div>
+                    {% endif %}
                 </div>
 
                 <div class="organizer-logo">

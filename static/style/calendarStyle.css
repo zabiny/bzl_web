@@ -113,3 +113,10 @@
     }
 }
 
+
+/* A race whose date is not known yet (its ORIS entry has not been read). */
+.date-unknown {
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: var(--text-muted, #4a5568);
+}

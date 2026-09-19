@@ -20,6 +20,10 @@ logger = logging.getLogger(__name__)
 #: Shown instead of a score for a race the runner did not start.
 MISSING_CELL = "---"
 
+#: Column heading for a race whose event name is not known, so that its
+#: results still appear instead of leaking raw columns into the page.
+UNNAMED_RACE_LABEL = "Závod {oris_id}"
+
 #: Categories that are mixed, and therefore get medals per sex.
 MIXED_GENDER_CATEGORIES = ("Z", "V")
 
@@ -180,18 +184,28 @@ def _combine_points_and_places(
     """
     Fold each race's points and place columns into one ``"190 (2.)"`` column.
 
+    Driven by the races present in the results rather than by the races we can
+    name. A race whose name is unknown - its event was dropped because ORIS is
+    unreachable and its config carries no local name - still gets a column,
+    labelled with its ORIS id. Iterating over the names instead left those
+    columns untouched, so the raw ``9519-Place`` and ``9519-Points`` columns
+    leaked into the page and rendered their empty cells as "nan".
+
     Returns the frame plus the list of now-redundant source columns to drop.
     """
     consumed = []
-    for oris_id, name in race_names.items():
-        if oris_id not in race_ids:
+    for oris_id in sorted(race_ids):
+        points_column = f"{oris_id}-Points"
+        places_column = f"{oris_id}-Place"
+        if points_column not in df.columns or places_column not in df.columns:
             continue
-        points = df[f"{oris_id}-Points"]
-        places = df[f"{oris_id}-Place"]
+        points = df[points_column]
+        places = df[places_column]
         combined = points.map(_format_points) + " (" + places.map(_format_place) + ")"
         # A runner who missed the race gets a dash rather than "nan (nan)".
-        df[name] = combined.mask(points.isna() & places.isna(), MISSING_CELL)
-        consumed.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
+        label = race_names.get(oris_id, UNNAMED_RACE_LABEL.format(oris_id=oris_id))
+        df[label] = combined.mask(points.isna() & places.isna(), MISSING_CELL)
+        consumed.extend([points_column, places_column])
     return df, consumed
 
 
