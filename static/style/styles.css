@@ -206,6 +206,24 @@ main {
 }
 
 /* Runner Images */
+.runner-column {
+    position: absolute;
+    top: 216px;
+    width: 22vw;
+    z-index: -1;
+}
+
+.runner-column-left {
+    left: 0;
+    min-height: 100%;
+}
+
+.runner-column-right {
+    right: 0;
+    bottom: 0;
+    height: 100%;
+}
+
 .runner-image {
     width: 8vw;
     min-width: 100px;

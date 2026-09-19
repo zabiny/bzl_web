@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% block title %}Kalendář závodů {{ season | full_season }} - Sportega BZL{% endblock %}
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style/calendarStyle.css') }}">
 {% endblock %}
@@ -9,6 +11,13 @@
 {% block body %}
 <div id="border">
     <div id="calendar">
+        {% if not events %}
+        <p class="text-center my-5">Pro tuto sezónu zatím nejsou naplánované žádné závody.</p>
+        {% endif %}
+
+        {% set difficulty_image = {'easy': 'easy.png', 'medium': 'medium.png', 'hard': 'hard.png'} %}
+        {% set difficulty_label = {'easy': 'Lehká trať', 'medium': 'Středně těžká trať', 'hard': 'Těžká trať'} %}
+
         {% for event_id, event in events.items() %}
         <div class="calendar-row">
             <!-- Date and logo -->
@@ -25,7 +34,7 @@
                 <div class="organizer-logo">
                     {% if event.get('organizer_logo') %}
                     <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}"
-                        alt="{{ event.get('organizer', '') }} logo">
+                        alt="{{ event.get('organizer', '') }}">
                     {% endif %}
                 </div>
             </div>
@@ -47,13 +56,9 @@
 
             <!-- Difficulty icon - only shows on large screens -->
             <div class="difficulty">
-                {% set difficulty_image = {
-                'easy': 'easy.png',
-                'medium': 'medium.png',
-                'hard': 'hard.png'
-                } %}
-                <img src="{{ url_for('static', filename='images/' + difficulty_image.get(event['difficulty'], 'medium.png')) }}"
-                    class="difficulty-image" alt="Difficulty level">
+                {% set difficulty = event['difficulty'] if event['difficulty'] in difficulty_image else 'medium' %}
+                <img src="{{ url_for('static', filename='images/' + difficulty_image[difficulty]) }}"
+                    class="difficulty-image" alt="{{ difficulty_label[difficulty] }}">
             </div>
         </div>
         <hr />

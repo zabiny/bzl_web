@@ -59,6 +59,16 @@ def _start_scheduler() -> BackgroundScheduler | None:
 scheduler = _start_scheduler()
 
 
+@app.context_processor
+def inject_seasons() -> dict[str, object]:
+    """Make the season list and current year available to every template."""
+    return {
+        "all_seasons": em.get_all_seasons(),
+        "current_season": em.get_latest_season(),
+        "current_year": date.today().year,
+    }
+
+
 # Home
 @app.route("/")
 @app.route("/home")

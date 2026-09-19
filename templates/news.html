@@ -1,9 +1,5 @@
 {% extends 'layout.html' %}
 
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style/newsStyle.css') }}">
-{% endblock %}
-
 {% block page_title %}Novinky{% endblock %}
 
 {% block body %}
@@ -14,7 +10,9 @@
         <h2 class="mb-3 mt-5">{{ news_item.title }}</h2>
         {% endif %}
         <div class="news-meta">
-            <span class="date">{{ news_item.created_at.strftime('%d.%m.%Y') }}</span>
+            <time class="date" datetime="{{ news_item.created_at.isoformat() }}">
+                {{ news_item.created_at.strftime('%d.%m.%Y') }}
+            </time>
         </div>
         <div class="news-content">
             {{ news_item.get_rendered_content() | safe }}
