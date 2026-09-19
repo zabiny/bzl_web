@@ -2,8 +2,8 @@
 
 Working notes for picking this up again. Written 2026-09-19.
 
-Branch **`pre-26-27-redesign`**, 19 commits ahead of `master`, **nothing pushed**.
-Working tree clean. `pytest` (163 tests), `ruff check`, `ruff format --check` and
+Branch **`pre-26-27-redesign`**, 20 commits ahead of `master`, **nothing pushed**.
+Working tree clean. `pytest` (195 tests), `ruff check`, `ruff format --check` and
 `mypy` all pass; the production image builds and serves.
 
 The season 25/26 is over. The next one has not been set up yet, and the redesign
@@ -61,7 +61,7 @@ Until this is done the map fix is invisible, so it is the first thing to do.
 
 ### 2. Nothing is pushed, and the deploy path is unknown
 
-19 commits sit locally. Before pushing, work out how the site is actually built
+20 commits sit locally. Before pushing, work out how the site is actually built
 and released, because it is **not** in this repository:
 
 - No GitHub Actions workflow exists on `zabiny/bzl_web` (the API reports zero).
@@ -146,7 +146,7 @@ all read the newest season directory.
 ## Checks
 
 ```bash
-pytest                                    # 163 tests, no network
+pytest                                    # 195 tests, no network
 ruff check . && ruff format --check .
 mypy app.py src results_calculator
 docker build -f docker/Dockerfile -t bzl_web .
