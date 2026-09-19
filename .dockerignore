@@ -1,9 +1,23 @@
-# IDEs
+# Version control and tooling caches - these do not belong in the image.
+.git/
+.github/
+.gitignore
 .idea/
 .vscode/
 .devcontainer/
-
-# Python venv (probably will be removed after Docker setup)
-venv/
-
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
 __pycache__/
+*.egg-info/
+
+# Local virtualenvs
+venv/
+.venv/
+
+# Tests are not needed at runtime
+tests/
+
+# The data directory is mounted as a volume at runtime, and the ORIS cache is
+# regenerated on start.
+data/.oris_cache/
