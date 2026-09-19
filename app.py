@@ -14,6 +14,7 @@ from results_calculator.overall import count_best_n
 from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
+from src.race_stats import race_stats_by_event
 from src.results import load_season_results
 from src.site_config import load_site_config
 
@@ -166,8 +167,13 @@ def calendar(season: str) -> str:
 
     """
     _require_season(season)
-    events = em.get_all_events(season, as_dicts=True)
-    return render_template("calendar.html", season=season, events=events or {})
+    events = em.get_all_events(season, as_dicts=True) or {}
+    return render_template(
+        "calendar.html",
+        season=season,
+        events=events,
+        race_stats=race_stats_by_event(season, events),
+    )
 
 
 # Results
@@ -275,6 +281,23 @@ def _filter_date_from_datetime(input_datetime: str | None) -> str:
     except ValueError:
         logger.warning("Could not parse date from %r.", input_datetime)
         return ""
+
+
+@app.template_filter("racer_count")
+def _filter_racer_count(count: int) -> str:
+    """
+    Render a runner count with the right Czech plural, e.g. ``"244 závodníků"``.
+
+    Czech has three forms and picks by the number: one, two to four, and
+    everything else including zero. Every real race is in the hundreds, but a
+    cancelled race or a new season's first entry would otherwise read
+    "1 závodníků".
+    """
+    if count == 1:
+        return "1 závodník"
+    if 2 <= count <= 4:
+        return f"{count} závodníci"
+    return f"{count} závodníků"
 
 
 @app.template_filter("full_season")

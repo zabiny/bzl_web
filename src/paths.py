@@ -34,9 +34,18 @@ def results_dir(season: str) -> Path:
     return season_dir(season) / "results"
 
 
+#: Matches every per-race results file in a season's results directory.
+RACE_RESULTS_GLOB: Final = "points_*.csv"
+
+
 def overall_results_file(season: str, category: str) -> Path:
     """Return the path of the overall results CSV for one category."""
     return results_dir(season) / f"overall_{category}.csv"
+
+
+def race_results_file(season: str, oris_id: int) -> Path:
+    """Return the path of the per-race results CSV for one race."""
+    return results_dir(season) / f"points_{oris_id}.csv"
 
 
 def merge_decisions_file(season: str) -> Path:

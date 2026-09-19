@@ -82,6 +82,41 @@ FIXTURE_RESULTS = {
 
 RACE_IDS = (11111, 22222)
 
+# One race's own results, as results_calculator writes them. Between them these
+# rows cover everything the per-race statistics have to survive: a tie for the
+# best place, a disqualification, a runner out of competition, a category with
+# fewer than three finishers, and two classes the league does not score.
+#
+# ZV-other matters most: its Place values are the placings of the whole ZV
+# field, so its "2." is nobody's second place and it must never reach a podium.
+FIXTURE_RACE_ROWS = [
+    # ClassDesc, Place, Name, RegNo, UserID, Time, Points
+    ("H", "1.", "Novák Jan", "ZBM9001", "101", "14:47", 200),
+    ("H", "1.", "Dvořák Petr", "ZBM9102", "102", "14:47", 200),
+    ("H", "3.", "Černý Josef", "ZBM9203", "103", "15:56", 182),
+    ("H", "4.", "Veselý Karel", "ZBM9304", "104", "16:10", 176),
+    ("H", "DISK", "Diskvalifikovaný Dan", "ZBM9405", "105", "DISK", 0),
+    ("H", "MS", "Mimosoutěžní Milan", "ZBM9506", "106", "15:00", 0),
+    ("D", "1.", "Nováková Jana", "ZBM9051", "107", "16:36", 200),
+    ("D", "2.", "Dvořáková Petra", "ZBM9152", "108", "18:00", 190),
+    ("D", "3.", "Černá Hana", "ZBM9253", "109", "18:30", 182),
+    ("Z", "1.", "Malý Tomáš", "ZBM1501", "110", "13:25", 200),
+    ("Z", "2.", "Malá Tereza", "ZBM1551", "111", "13:53", 190),
+    ("V", "1.", "Starý Pavel", "ZBM6001", "112", "16:32", 200),
+    ("V", "2.", "Stará Marie", "ZBM6051", "113", "17:41", 190),
+    ("V", "3.", "Starý Milan", "ZBM6102", "114", "18:36", 182),
+    # Only two runners: the podium is as long as the category allows.
+    ("HDD", "1.", "Malý Ondřej", "ZBM2001", "115", "11:33", 200),
+    ("HDD", "2.", "Malá Anna", "ZBM2051", "116", "12:12", 190),
+    # Not scored by the league, but they were at the race and are counted.
+    ("Expert H", "1.", "Expert Emil", "ZBM7001", "117", "22:00", 0),
+    ("ZV-other", "2.", "Mimo Kategorii", "ZBM8001", "118", "19:00", 0),
+]
+
+RACE_HEADER_7 = "ClassDesc,Place,Name,RegNo,UserID,Time,Points"
+#: Files written since the Sex column was added carry an eighth column.
+RACE_HEADER_8 = RACE_HEADER_7 + ",Sex"
+
 # Deliberately not the real names, so a test asserting on them proves the page
 # is reading the configuration rather than a string baked into a template.
 FIXTURE_SITE = {
@@ -121,6 +156,28 @@ def _write_results(results_dir: Path) -> None:
         )
 
 
+def _write_race_results(results_dir: Path) -> None:
+    """
+    Write the per-race results files.
+
+    Race 11111 belongs to the ``s_mapou`` event and gets the seven-column
+    header the committed files use. Race 22222 has no event of its own, so it
+    doubles as the orphan-results case, and is written with the eight-column
+    header so that both shapes are exercised.
+    """
+    rows = [",".join(str(cell) for cell in row) for row in FIXTURE_RACE_ROWS]
+    (results_dir / "points_11111.csv").write_text(
+        "\n".join([RACE_HEADER_7, *rows]) + "\n", encoding="utf-8"
+    )
+    with_sex = [
+        ",".join(str(cell) for cell in row) + ("," + ("F" if "ová" in row[2] else "M"))
+        for row in FIXTURE_RACE_ROWS
+    ]
+    (results_dir / "points_22222.csv").write_text(
+        "\n".join([RACE_HEADER_8, *with_sex]) + "\n", encoding="utf-8"
+    )
+
+
 @pytest.fixture(scope="session")
 def data_root(tmp_path_factory: pytest.TempPathFactory) -> Path:
     """Build a self-contained data directory for one fictional season."""
@@ -138,6 +195,7 @@ def data_root(tmp_path_factory: pytest.TempPathFactory) -> Path:
             json.dumps(config, ensure_ascii=False), encoding="utf-8"
         )
     _write_results(results_dir)
+    _write_race_results(results_dir)
     return root
 
 
