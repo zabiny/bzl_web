@@ -5,8 +5,8 @@
 {% block page_title %}Informace{% endblock %}
 
 {% block body %}
-<div class="page-content">
-    <h2 class="mb-3 mt-5">Co je to {{ site.short_title }}?</h2>
+<div class="prose">
+    <h2>Co je to {{ site.short_title }}?</h2>
     <p>
         {{ site.title }} ({{ site.short_title }}) je společný projekt brněnských oddílů orientačního běhu pod
         záštitou {{ site.organizer.name }}.
@@ -23,7 +23,7 @@
 
     </p>
 
-    <h2 class="mb-3 mt-5" id="kategorie">Kategorie</h2>
+    <h2 id="kategorie">Kategorie</h2>
     <p>
         Na každý závod je nutné si vybrat správnou kategorii. Pokud je závod zařazen do {{ site.short_title }}, jsou kategorie
         následující:
@@ -35,11 +35,11 @@
         stále absolvovat kategorii HDD. V obou případech, kdy nesplňujete věkový limit, však poběžíte mimo soutěž a
         nebudete započítáni výsledků. U závodů, které nejsou zařazené do {{ site.short_title }}, se kategorie mohou lišit.
     </p>
-    <table>
+    <table class="info-table">
         <thead>
             <tr>
-                <th style="min-width: 7em;">Kategorie</th>
-                <th>Ročník</th>
+                <th scope="col">Kategorie</th>
+                <th scope="col">Ročník</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@
     </table>
     <p>Mimo soutěž je možno absolvovat i jinou kategorii, pro začátečníky doporučujeme kategorii ZV.</p>
 
-    <h2 class="mb-3 mt-5" id="pravidla-hodnoceni">Pravidla hodnocení</h2>
+    <h2 id="pravidla-hodnoceni">Pravidla hodnocení</h2>
     <p>
         Celkové výsledky se budou počítat z {{ counted_races }} nejlepších závodů
         z {{ total_races }} možných.
@@ -95,7 +95,7 @@
 
     <p>Běhejte fair play a podle pravidel OB.</p>
 
-    <h2 class="mb-3 mt-5">Startovné</h2>
+    <h2>Startovné</h2>
     <p>
         Startovné v termínu pomocí internetové přihlášky u většiny závodů stojí 100 Kč, v případě dohlášení až na místě
         závodu je startovné zvýšeno na 200 Kč (navýšení neplatí pro kategorii HDD). Pokud nemáte vlastní elektronický SI
@@ -104,7 +104,7 @@
         Uvedené ceny jsou pouze orientační, sledujte prosím pokyny jednotlivých pořadatelů.
     </p>
 
-    <h2 class="mb-3 mt-5">Přihlášky</h2>
+    <h2>Přihlášky</h2>
     <p>
         Pokud není určeno pořadetelem konkrétního závodu jinak, je pro přihlašování použit informační systém
         orientačního

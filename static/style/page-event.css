@@ -1,4 +1,4 @@
-/* Handle the short description wrapping */
+/* The short description wraps around the difficulty indicator. */
 #description {
     padding-right: 90px; /* Space for the difficulty icon */
     word-wrap: break-word;
@@ -11,7 +11,7 @@
     height: 40vh;
     min-height: 260px;
     margin-top: 60px;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
 }
 
 /* Mapy.com require their logo to stay visible, at least 30px tall. */
@@ -59,9 +59,7 @@
     }
 }
 
-#event-detail {
-    padding: 2em;
-}
+
 
 #logo {
     max-width: 100%;
@@ -83,3 +81,58 @@
 }
 
 
+
+/* --- redesign additions ------------------------------------------------- */
+
+.event-lead {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-5);
+}
+
+.event-facts {
+    width: 100%;
+    max-width: var(--measure);
+    border-collapse: collapse;
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+}
+
+.event-facts th,
+.event-facts td {
+    padding: var(--space-3) var(--space-2);
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: var(--border-hair) solid var(--border-subtle);
+}
+
+.event-facts th {
+    width: 9rem;
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+}
+
+.event-facts img {
+    height: 26px;
+    width: auto;
+    vertical-align: middle;
+    margin-right: var(--space-2);
+}
+
+.event-description {
+    max-width: var(--measure);
+    margin-bottom: var(--space-6);
+}
+
+.event-top {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+    margin-bottom: var(--space-2);
+}
+
+.event-top .difficulty {
+    margin-top: var(--space-2);
+}

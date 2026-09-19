@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/frog.svg') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="{{ site.description }}">
+    <meta name="theme-color" content="#1a1d23">
 
     <!-- Open Graph meta tags for social media sharing -->
     <meta property="og:type" content="website" />
@@ -20,16 +21,21 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    <!-- Inter font -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/styles.css') }}">
+    <!-- Design tokens, then base, then components. Order matters: components
+         may only use the semantic names tokens.css defines. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/tokens.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/components.css') }}">
 
     {% block head %}{% endblock %}
 </head>
@@ -37,130 +43,102 @@
 <body>
     <a class="skip-link" href="#body">Přeskočit na obsah</a>
 
-    <header class="d-flex align-items-center p-3">
-        <!-- Left: Title with hamburger on mobile -->
-        <div class="d-flex align-items-center">
-            <button class="navbar-toggler d-lg-none me-3" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
-                aria-label="Otevřít menu">
+    <header class="site-header">
+        <div class="shell">
+            <a class="brand" href="{{ url_for('home') }}">
+                <svg class="brand-mark" width="34" height="34" viewBox="0 0 40 40" aria-hidden="true"
+                    focusable="false">
+                    <polygon points="0,0 40,0 0,40" fill="#ffffff" />
+                    <polygon points="40,0 40,40 0,40" fill="#ff6d00" />
+                </svg>
+                <span>
+                    <span class="brand-name">{{ site.title }}</span>
+                    <span class="brand-tagline">{{ site.tagline }}</span>
+                </span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-label="Otevřít menu" aria-expanded="false"
+                aria-controls="site-nav" data-nav-open>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" aria-hidden="true" focusable="false">
                     <path d="M3 6h18M3 12h18M3 18h18" />
                 </svg>
             </button>
-            <h1 class="mb-0">
-                <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">{{ site.title }}</a>
-            </h1>
+
+            <nav class="site-nav" id="site-nav" aria-label="Hlavní navigace">
+                <button class="nav-close" type="button" aria-label="Zavřít menu" data-nav-close>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                </button>
+
+                <a class="nav-link {% if request.path == '/' or '/news' in request.path %}active{% endif %}"
+                    href="{{ url_for('home') }}">Novinky</a>
+                <a class="nav-link {% if request.path == '/info' %}active{% endif %}"
+                    href="{{ url_for('info') }}">Informace</a>
+                {% if current_season %}
+                <a class="nav-link {% if '/calendar' in request.path %}active{% endif %}"
+                    href="{{ url_for('calendar', season=current_season) }}">Kalendář</a>
+                <a class="nav-link {% if '/results' in request.path %}active{% endif %}"
+                    href="{{ url_for('results', season=current_season) }}">Výsledky</a>
+                {% endif %}
+
+                {% if site.partners %}
+                <div class="nav-partners">
+                    {% for partner in site.partners %}
+                    <a href="{{ partner.url }}" class="footer-logo" target="_blank" rel="noopener">
+                        <img src="{{ url_for('static', filename='images/' + partner.logo) }}" alt="{{ partner.name }}">
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </nav>
+
+            <div class="nav-backdrop" data-nav-close></div>
         </div>
-
-        <!-- Spacer to push lampion to the right -->
-        <div class="flex-grow-1"></div>
-
-        <!-- Right: Lampion -->
-        <img src="{{ url_for('static', filename='images/lampion.png') }}" alt="Orientační lampion"
-            style="height: 60px;" width="60" height="60">
     </header>
 
-
     <main>
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container">
-                <!-- Navigation items -->
-                <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
-                    <!-- Close button for mobile -->
-                    <div class="d-flex justify-content-end d-lg-none p-2">
-                        <button type="button" class="btn-close" data-bs-toggle="collapse"
-                            data-bs-target="#navbarContent" aria-label="Zavřít menu"></button>
-                    </div>
-
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/' or '/news' in request.path %}active{% endif %}"
-                                href="{{ url_for('home') }}">Novinky</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/info' %}active{% endif %}"
-                                href="{{ url_for('info') }}">Informace</a>
-                        </li>
-                        {% if current_season %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if '/calendar' in request.path %}active{% endif %}"
-                                href="{{ url_for('calendar', season=current_season) }}">Kalendář závodů</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if '/results' in request.path %}active{% endif %}"
-                                href="{{ url_for('results', season=current_season) }}">Výsledky</a>
-                        </li>
-                        {% endif %}
-                        <!-- Mobile-only partner logos -->
-                        {% for partner in site.partners %}
-                        <li class="nav-item d-lg-none mt-3">
-                            <a href="{{ partner.url }}" class="nav-link" target="_blank" rel="noopener">
-                                <img src="{{ url_for('static', filename='images/' + partner.logo) }}"
-                                    alt="{{ partner.name }}" style="height: 40px;">
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+        <div class="shell">
+            <div class="page-head">
+                <h1>{% block page_title %}{% endblock %}</h1>
+                <span class="page-sub">{% block page_sub %}{% endblock %}</span>
+                <span class="spacer"></span>
+                {% block page_head_extra %}{% endblock %}
             </div>
-        </nav>
 
-        <!-- Add page title section -->
-        <div class="page-title-container">
-            <div class="container text-center">
-                <h2 class="page-title">{% block page_title %}{% endblock %}</h2>
+            <div id="body" tabindex="-1">
+                {% block body %}{% endblock %}
             </div>
-        </div>
-
-        <!-- Backdrop for mobile menu -->
-        <div class="navbar-backdrop" data-bs-toggle="collapse" data-bs-target="#navbarContent"></div>
-
-        <!-- Main content -->
-        <div id="body" tabindex="-1">
-            {% block body %}{% endblock %}
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer mt-auto py-4">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Left side: Basic info -->
-                <div class="col-12 col-md-8 mb-3 mb-md-0">
-                    <p class="mb-1"><i>{{ site.title }}</i> je seriál závodů v orientačním běhu.</p>
-                    <p class="mb-1">Kontakt:
-                        <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a>
-                    </p>
-                    <p class="mb-0">© {{ current_year }} {{ site.organizer.name }}</p>
-                </div>
+    <footer class="site-footer">
+        <div class="shell">
+            <div class="footer-text">
+                <p><i>{{ site.title }}</i> je seriál závodů v orientačním běhu.</p>
+                <p>Kontakt: <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a></p>
+                <p>© {{ current_year }} {{ site.organizer.name }}</p>
+            </div>
 
-                <!-- Right side: Logos -->
-                <div
-                    class="col-12 col-md-4 text-md-end d-flex justify-content-center justify-content-md-end align-items-center">
-                    <div class="footer-logos">
-                        <a href="{{ site.organizer.url }}" target="_blank" rel="noopener" class="footer-logo">
-                            <img src="{{ url_for('static', filename='images/' + site.organizer.logo) }}"
-                                alt="{{ site.organizer.name }}" style="height: 45px;">
-                        </a>
-                        {% for partner in site.partners %}
-                        <a href="{{ partner.url }}" target="_blank" rel="noopener" class="footer-logo">
-                            <img src="{{ url_for('static', filename='images/' + partner.logo) }}"
-                                alt="{{ partner.name }}" style="height: 35px;">
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
+            <div class="footer-logos">
+                <a href="{{ site.organizer.url }}" target="_blank" rel="noopener" class="footer-logo">
+                    <img src="{{ url_for('static', filename='images/' + site.organizer.logo) }}"
+                        alt="{{ site.organizer.name }}">
+                </a>
+                {% for partner in site.partners %}
+                <a href="{{ partner.url }}" target="_blank" rel="noopener" class="footer-logo">
+                    <img src="{{ url_for('static', filename='images/' + partner.logo) }}" alt="{{ partner.name }}">
+                </a>
+                {% endfor %}
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     {% block scripts %}{% endblock %}

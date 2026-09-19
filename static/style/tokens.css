@@ -1,0 +1,268 @@
+/* ===========================================================================
+ * BZL design tokens
+ *
+ * Two layers, and one rule that holds the whole thing together:
+ *
+ *   NOTHING OUTSIDE THIS FILE MAY CONTAIN A COLOUR LITERAL,
+ *   AND NO COMPONENT MAY REFERENCE A PRIMITIVE.
+ *
+ * Components use the semantic names in section 2 and nothing else. That is
+ * what makes a dark mode a drop-in later (section 6) and what the previous
+ * stylesheet violated by hard-coding #4a90e2, #0d6efd and the medal colours
+ * in three different files.
+ *
+ * The palette is the ISOM 2017-2 map palette - the colours an orienteering
+ * map is printed in. Purple is the course overprint, which is the one colour
+ * in the set that means "a race was planned here"; it carries everything
+ * interactive. Green is vegetation, and carries terrain and difficulty.
+ * White is runnable forest, which is why the content sits on white.
+ * ======================================================================== */
+
+:root {
+    /* -------------------------------------------------------------------
+     * 1. PRIMITIVES - the map inks. Never referenced by a component.
+     *
+     * The map inks are printed colours, chosen to be legible as large flat
+     * areas. Most of them fail as text: the real course purple is 4.7:1 on
+     * white, the water blue 2.9:1, the open-land yellow 1.7:1. So each ink
+     * that ever has to carry meaning has a darkened sibling, and the -500
+     * step is kept for fills and graphics only.
+     * ---------------------------------------------------------------- */
+
+    /* Course overprint (PMS Purple) */
+    --isom-purple-500: #b14fa0;
+    --isom-purple-700: #8e2f7e;   /* 7.35:1 on white */
+    --isom-purple-900: #6d2261;   /* 10.24:1 */
+    --isom-purple-050: #faf2f8;
+    --isom-purple-100: #ecd9e8;
+
+    /* Vegetation (PMS 361) */
+    --isom-green-500: #00a03c;
+    --isom-green-700: #007a2e;    /* 5.49:1 */
+    --isom-green-800: #4e7a5c;    /* 4.93:1, for quiet text on the terrain panel */
+    --isom-green-050: #f2f8f3;
+    --isom-green-100: #dbeadf;
+    --isom-green-200: #b6dcc2;
+
+    /* Open land (PMS 136) */
+    --isom-yellow-400: #e8b43a;
+    --isom-yellow-500: #d99b00;
+    --isom-yellow-800: #8a6200;   /* 5.49:1 */
+    --isom-yellow-050: #fff6e0;
+
+    /* Contours (PMS 471) */
+    --isom-bistre-400: #d79366;
+    --isom-bistre-500: #bf6e3b;
+    --isom-bistre-700: #8a4e28;   /* 6.56:1 */
+    --isom-bistre-050: #f7ece2;
+
+    /* Out of bounds / impassable */
+    --isom-red-600: #c0392b;
+
+    /* Paper: the unprinted map. A warm ground, which is where the "not a
+       blue Bootstrap theme" feeling actually comes from. */
+    --paper-050: #f5f1e8;
+    --paper-200: #ece5d9;
+    --paper-300: #e3d9c8;
+    --paper-400: #ded6c6;
+
+    /* Neutrals, warm-cast to sit on the paper rather than fight it. */
+    --ink-950: #1a1d23;           /* 16.88:1 */
+    --ink-600: #6b6459;           /* 5.85:1 */
+    --ink-500: #7a7266;           /* 4.74:1 - the AA floor, for de-emphasis */
+    --ink-300: #a9a396;           /* only ever on --ink-950 */
+    --ink-200: #b5afa2;           /* 7.73:1 on --ink-950 */
+    --silver-300: #b8b8b0;
+    --silver-500: #8d8d86;
+    --silver-700: #6b6b64;        /* 5.37:1 */
+    --paper-white: #ffffff;
+
+    /* -------------------------------------------------------------------
+     * 2. SEMANTICS - the only names components may use.
+     *
+     * Named for the job, never for the appearance: --surface-raised, not
+     * --surface-white, because in dark mode "raised" is lighter than base
+     * while "white" would be a lie. This block is the one dark mode
+     * re-values; nothing else moves.
+     * ---------------------------------------------------------------- */
+
+    /* Surfaces */
+    --surface-page: var(--paper-050);
+    --surface-base: var(--paper-white);
+    --surface-raised: var(--paper-white);
+    --surface-sunken: var(--paper-050);
+    --surface-inverse: var(--ink-950);
+    --surface-terrain: var(--isom-green-050);
+    --surface-quiet: var(--isom-purple-050);
+
+    /* Text */
+    --text-primary: var(--ink-950);
+    --text-secondary: var(--ink-600);
+    --text-faded: var(--ink-500);
+    --text-on-inverse: var(--ink-200);
+    --text-on-accent: var(--paper-white);
+    --text-terrain: var(--isom-green-700);
+    --text-terrain-quiet: var(--isom-green-800);
+
+    /* Borders */
+    --border-subtle: var(--paper-200);
+    --border-default: var(--paper-300);
+    --border-terrain: var(--isom-green-100);
+    --border-terrain-strong: var(--isom-green-200);
+    --border-quiet: var(--isom-purple-100);
+
+    /* Accent: the course. Everything clickable, and the course itself. */
+    --color-accent: var(--isom-purple-700);
+    --color-accent-hover: var(--isom-purple-900);
+    --color-accent-strong: var(--isom-purple-900);
+    --color-focus: var(--isom-purple-700);
+
+    /* Medals. Badge fills take --text-primary, not white: the real map
+       yellow under white text is 2.4:1. The -text variants are for a numeral
+       standing on its own, the -row variants tint a whole table row. */
+    --medal-gold-badge: var(--isom-yellow-400);
+    --medal-gold-row: var(--isom-yellow-050);
+    --medal-gold-text: var(--isom-yellow-800);
+    --medal-silver-badge: var(--silver-300);
+    --medal-silver-row: #f0f0ee;
+    --medal-silver-text: var(--silver-700);
+    --medal-bronze-badge: var(--isom-bistre-400);
+    --medal-bronze-row: var(--isom-bistre-050);
+    --medal-bronze-text: var(--isom-bistre-700);
+
+    /* Difficulty. The level is carried by how many pips are filled, not by
+       the hue alone, so the scale still reads without colour vision; the
+       colour is reinforcement and each group carries a text label. */
+    --difficulty-easy: var(--isom-green-500);
+    --difficulty-medium: var(--isom-yellow-500);
+    --difficulty-hard: var(--isom-red-600);
+    --difficulty-empty: var(--paper-400);
+
+    /* -------------------------------------------------------------------
+     * 3. COMPONENT TOKENS
+     *
+     * Custom properties resolve where they are USED, not where they are
+     * declared - so re-valuing a semantic in section 2 re-values all of
+     * these without this block being touched. Do not "optimise" these by
+     * inlining the values; that is what would break dark mode.
+     * ---------------------------------------------------------------- */
+    --nav-bg: var(--surface-inverse);
+    --nav-fg: var(--text-on-inverse);
+    --nav-fg-active: var(--surface-inverse);
+    --nav-pill-active: var(--surface-base);
+
+    --card-bg: var(--surface-raised);
+    --card-border: var(--border-default);
+    --card-radius: var(--radius-lg);
+
+    --course-line: var(--color-accent);
+    --course-symbol: var(--color-accent);
+
+    --footer-bg: var(--surface-inverse);
+    --footer-fg: var(--text-on-inverse);
+
+    /* -------------------------------------------------------------------
+     * 4. SPACE, TYPE, SHAPE, MOTION
+     * ---------------------------------------------------------------- */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+
+    /* One declaration replacing a fixed 5em padding plus its own media
+       query. The old value made desktop lines ~118 characters. */
+    --gutter: clamp(1rem, 4vw, 3.25rem);
+    --measure: 68ch;
+    --content-max: 75rem;
+
+    --font-display: 'Outfit', system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    /* Fluid, which is what retires the four competing .page-title rules and
+       the two conflicting nav rules the old stylesheet had. */
+    --text-xs: 0.75rem;
+    --text-sm: 0.8125rem;
+    --text-base: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+    --text-md: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+    --text-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
+    --text-xl: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+    --text-2xl: clamp(1.625rem, 1.3rem + 1.2vw, 2rem);
+    --text-3xl: clamp(1.75rem, 1.35rem + 1.6vw, 2.25rem);
+
+    --leading-tight: 1.15;
+    --leading-normal: 1.55;
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.875rem;
+    --radius-pill: 999px;
+
+    --border-hair: 1px;
+    --shadow-1: 0 1px 2px rgb(26 29 35 / 6%);
+    --shadow-2: 0 4px 16px rgb(26 29 35 / 10%);
+
+    --duration-fast: 120ms;
+    --duration-base: 200ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --z-nav: 100;
+    --z-backdrop: 900;
+    --z-menu: 1000;
+    --z-skip: 1100;
+}
+
+/* ===========================================================================
+ * 5. THE COURSE
+ *
+ * Geometry for the calendar's course symbols, in one place because they have
+ * to agree with each other: the rail is as wide as a symbol plus its margin,
+ * the connecting line sits on the symbol's centre line, and the line stops
+ * short of every symbol by the same gap.
+ *
+ * Simplifications from ISOM, taken deliberately and knowingly: control
+ * numbers sit INSIDE the circles (a real course puts them beside), and the
+ * course runs straight down the page. The rules kept are the ones that would
+ * look wrong to an orienteer if broken - the start triangle points along the
+ * line at the first control, the connecting line is solid (a dashed line is
+ * a marked route, symbol 707), and the line never touches a symbol.
+ * ======================================================================== */
+:root {
+    --course-rail: 4.875rem;      /* 78px: symbol + its left margin + number room */
+    --course-symbol-size: 2.25rem; /* 36px */
+    --course-symbol-inset: 0.75rem;
+    --course-stroke: 2px;
+    --course-gap: 6px;            /* line to symbol, everywhere */
+    --course-symbol-top: 1.5rem;  /* aligns the symbol with a card's title row */
+}
+
+/* ===========================================================================
+ * 6. DARK MODE - not built. Read this before building it.
+ *
+ * When it is built it is a copy of SECTION 2 ONLY, re-valued.
+ *   - Section 1 is NOT duplicated: the map inks do not change.
+ *   - Section 3 is NOT duplicated: those resolve at the point of use, so
+ *     re-valuing section 2 re-values them for free.
+ *   - Section 4 is NOT duplicated.
+ *
+ * Also needed at that time, and nowhere else:
+ *   :root { color-scheme: light dark; }        form controls and scrollbars
+ *   a plate colour behind the partner logos     they are dark-on-transparent
+ *   <html data-bs-theme="dark">                 Bootstrap's own switch
+ *
+ * The selector shape below is written now so that adding a manual toggle
+ * later means appending a second selector group, not rewriting the first:
+ *
+ *   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ... } }
+ *   :root[data-theme="dark"] { ... }
+ *
+ * Light stays unconditional so a browser with no support, or a forced-colours
+ * context, still gets a working theme.
+ * ======================================================================== */

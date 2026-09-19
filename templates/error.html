@@ -5,12 +5,9 @@
 {% block page_title %}Chyba {{ code }}{% endblock %}
 
 {% block body %}
-<div class="page-content">
-    <div class="text-center my-5">
-        <p class="fs-5">{{ message }}</p>
-        <p class="mt-4">
-            <a href="{{ url_for('home') }}" class="btn btn-primary">Zpět na úvodní stránku</a>
-        </p>
-    </div>
+<div class="error-page">
+  <p class="error-code">{{ code }}</p>
+  <p>{{ message }}</p>
+  <p><a class="btn-accent" href="{{ url_for('home') }}">Zpět na úvodní stránku</a></p>
 </div>
 {% endblock %}

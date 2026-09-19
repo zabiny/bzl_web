@@ -4,6 +4,7 @@ import atexit
 import logging
 import os
 from datetime import date, datetime
+from typing import Any
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, abort, render_template, url_for
@@ -85,6 +86,19 @@ def _require_season(season: str) -> None:
     """Abort with 404 for a season that does not exist, instead of a 500."""
     if not em.season_exists(season):
         abort(404)
+
+
+def _next_event_id(events: dict[str, Any]) -> str | None:
+    """
+    Return the id of the next race to be run, or ``None`` once a season is over.
+
+    Events are already in date order, so this is the first one that has a date
+    and has not happened yet. A race is still "next" on the day it is run.
+    """
+    for event_id, event in events.items():
+        if event.get("date") and not event.get("is_past"):
+            return event_id
+    return None
 
 
 @app.context_processor
@@ -173,6 +187,7 @@ def calendar(season: str) -> str:
         season=season,
         events=events,
         race_stats=race_stats_by_event(season, events),
+        next_event_id=_next_event_id(events),
     )
 
 

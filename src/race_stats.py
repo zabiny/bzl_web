@@ -67,12 +67,15 @@ class RaceStats:
     podium
         Category to its first three placings, in :data:`CATEGORIES` order.
         A category nobody entered is absent rather than empty.
+    category_counts
+        How many ran in each category on the podium, for the same keys.
 
     """
 
     oris_id: int
     participants: int
     podium: dict[str, list[PodiumEntry]]
+    category_counts: dict[str, int]
 
 
 def _place_number(place: str) -> int | None:
@@ -136,6 +139,7 @@ def _read_race_file(path: Path, oris_id: int) -> RaceStats | None:
         by_category.setdefault((row.get("ClassDesc") or "").strip(), []).append(row)
 
     podium = {}
+    counts = {}
     for category in CATEGORIES:
         # Only the five BZL categories. A race can also carry classes the
         # league does not score - "Expert H", and the "ZV-other" bucket for
@@ -143,11 +147,18 @@ def _read_race_file(path: Path, oris_id: int) -> RaceStats | None:
         # on correctness grounds rather than taste: its Place values are the
         # placings of the whole ZV field, so its "1." is not a winner of
         # anything.
-        entries = _podium_from(by_category.get(category, []))
+        rows_in_category = by_category.get(category, [])
+        entries = _podium_from(rows_in_category)
         if entries:
             podium[category] = entries
+            counts[category] = len(rows_in_category)
 
-    return RaceStats(oris_id=oris_id, participants=len(rows), podium=podium)
+    return RaceStats(
+        oris_id=oris_id,
+        participants=len(rows),
+        podium=podium,
+        category_counts=counts,
+    )
 
 
 def _signature(directory: Path) -> tuple[tuple[str, int, int], ...]:

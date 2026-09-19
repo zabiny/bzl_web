@@ -1,0 +1,231 @@
+/* ===========================================================================
+ * Season standings.
+ *
+ * One table per category above 780px, one card per runner below it. That is
+ * what removes the rotate-your-phone banner, the frozen columns and the
+ * horizontal scrolling - a five-race season renders nine columns, which never
+ * fitted a phone and did not reliably fit 1440px either.
+ *
+ * Both layouts are rendered from the same markup: the cells carry a
+ * data-label and become a stacked card, so there is no duplicated content and
+ * nothing to keep in sync.
+ * ======================================================================== */
+
+.season-picker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.season-picker select {
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-hair) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-base);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+}
+
+.category-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    padding-block: var(--space-3);
+    background-color: var(--surface-page);
+}
+
+.results-category {
+    margin-bottom: var(--space-7);
+}
+
+.results-category h2 {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.results-category .category-size {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-regular);
+    color: var(--text-secondary);
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.results-table th,
+.results-table td {
+    padding: var(--space-3) var(--space-2);
+    text-align: right;
+    vertical-align: middle;
+}
+
+.results-table th[scope="col"] {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faded);
+    border-bottom: var(--border-hair) solid var(--border-subtle);
+    white-space: nowrap;
+}
+
+.results-table .col-rank,
+.results-table .col-name {
+    text-align: left;
+}
+
+.results-table .col-rank {
+    width: 3rem;
+}
+
+.results-table td.col-name {
+    font-weight: var(--weight-semibold);
+    color: var(--text-primary);
+}
+
+.results-table td.col-total {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    font-weight: var(--weight-bold);
+    font-variant-numeric: tabular-nums;
+}
+
+.results-table tbody td {
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    border-bottom: var(--border-hair) solid var(--border-subtle);
+}
+
+.results-table tbody th {
+    border-bottom: var(--border-hair) solid var(--border-subtle);
+}
+
+.results-table .missing {
+    color: var(--text-faded);
+}
+
+.results-table tbody tr:hover td,
+.results-table tbody tr:hover th {
+    background-color: var(--surface-sunken);
+}
+
+.results-table .medal-gold:hover td,
+.results-table .medal-silver:hover td,
+.results-table .medal-bronze:hover td {
+    filter: brightness(0.98);
+}
+
+.results-empty {
+    padding-block: var(--space-7);
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* ---------------------------------------------------------------------------
+ * Phones: the same rows, as cards.
+ * ------------------------------------------------------------------------ */
+@media (max-width: 780px) {
+    .results-table,
+    .results-table tbody,
+    .results-table tr,
+    .results-table td,
+    .results-table th {
+        display: block;
+    }
+
+    .results-table thead {
+        display: none;
+    }
+
+    .results-table tr {
+        position: relative;
+        margin-bottom: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        border: var(--border-hair) solid var(--border-default);
+        border-radius: var(--radius-md);
+        background-color: var(--surface-base);
+    }
+
+    .results-table tbody td,
+    .results-table tbody th,
+    .results-table td,
+    .results-table th {
+        border: 0;
+        padding: 0;
+        text-align: left;
+    }
+
+    /* Rank, name and total form the card's headline row. */
+    .results-table .col-rank {
+        position: absolute;
+        top: var(--space-3);
+        left: var(--space-4);
+        width: auto;
+    }
+
+    .results-table td.col-name {
+        padding-left: 2.25rem;
+        padding-right: 3.5rem;
+        font-size: var(--text-md);
+        min-height: 1.5rem;
+    }
+
+    .results-table td.col-total {
+        position: absolute;
+        top: var(--space-3);
+        right: var(--space-4);
+    }
+
+    /* Everything else becomes a labelled chip beneath. */
+    .results-table td.col-race {
+        display: inline-flex;
+        align-items: baseline;
+        gap: var(--space-1);
+        margin: var(--space-2) var(--space-2) 0 0;
+        font-size: var(--text-xs);
+    }
+
+    .results-table td.col-race {
+        color: var(--text-primary);
+        font-weight: var(--weight-medium);
+    }
+
+    .results-table td.col-race::before {
+        content: attr(data-label);
+        color: var(--text-faded);
+        font-weight: var(--weight-regular);
+    }
+
+    .results-table td.col-reg {
+        margin-top: var(--space-1);
+        font-size: var(--text-xs);
+        color: var(--text-faded);
+        padding-left: 2.25rem;
+    }
+
+    .results-table .medal-gold,
+    .results-table .medal-gold td,
+    .results-table .medal-gold th {
+        background-color: var(--medal-gold-row);
+    }
+
+    .results-table .medal-silver,
+    .results-table .medal-silver td,
+    .results-table .medal-silver th {
+        background-color: var(--medal-silver-row);
+    }
+
+    .results-table .medal-bronze,
+    .results-table .medal-bronze td,
+    .results-table .medal-bronze th {
+        background-color: var(--medal-bronze-row);
+    }
+}

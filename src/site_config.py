@@ -25,6 +25,7 @@ CONFIG_FILENAME = "site.json"
 DEFAULTS: dict[str, Any] = {
     "title": "Brněnská zimní liga",
     "short_title": "BZL",
+    "tagline": "Zimní seriál závodů v orientačním běhu · Brno",
     "description": (
         "Brněnská zimní liga je zimní seriál závodů v orientačním běhu v Brně "
         "a okolí. Kalendář závodů, průběžné výsledky a novinky."

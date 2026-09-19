@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 {% endif %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style/eventStyle.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/page-event.css') }}">
 {% endblock %}
 
 {% block page_title %}
@@ -25,28 +25,25 @@
 <div class="position-relative">
     <div id="event-detail">
 
-        <!-- Difficulty Icon -->
-        {% set difficulty_image = {'easy': 'easy.png', 'medium': 'medium.png', 'hard': 'hard.png'} %}
         {% set difficulty_label = {'easy': 'Lehká trať', 'medium': 'Středně těžká trať', 'hard': 'Těžká trať'} %}
-        {% if event_data['difficulty'] in difficulty_image %}
-        <img src="{{ url_for('static', filename='images/' + difficulty_image[event_data['difficulty']]) }}"
-            class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
-            alt="{{ difficulty_label[event_data['difficulty']] }}">
-        {% endif %}
+        {% set level = event_data['difficulty'] if event_data['difficulty'] in difficulty_label else 'medium' %}
 
-        <!-- Short Description -->
-        {% if event_data['desc_short'] %}
-        <h2 id="description">
-            {{ event_data['desc_short'] }}
-        </h2>
-        {% endif %}
+        <div class="event-top">
+            {% if event_data['desc_short'] %}
+            <p class="event-lead">{{ event_data['desc_short'] }}</p>
+            {% endif %}
+            <span class="difficulty difficulty-{{ level }}">
+                <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                <span class="visually-hidden">{{ difficulty_label[level] }}</span>
+            </span>
+        </div>
 
         <!-- Table with basic info -->
-        <table class="table mt-4">
+        <table class="event-facts">
             <!-- Date -->
             {% if event_data['date'] %}
             <tr>
-                <td>Datum:</td>
+                <th scope="row">Datum:</th>
                 <td>{{ event_data['date'] | czech_date_from_date }}</td>
             </tr>
             {% endif %}
@@ -55,11 +52,10 @@
             {% if event_data['organizer'] %}
             {% set organizer_logo = event_data['organizer_logo_large'] or event_data['organizer_logo'] %}
             <tr>
-                <td>Pořadatel:</td>
+                <th scope="row">Pořadatel:</th>
                 <td>
                     {% if organizer_logo %}
-                    <img src="{{ url_for('static', filename='images/logos/' + organizer_logo) }}" alt="" class="me-2"
-                        style="height: 30px;">
+                    <img src="{{ url_for('static', filename='images/logos/' + organizer_logo) }}" alt="">
                     {% endif %}
                     {{ event_data['organizer'] }}
                 </td>
@@ -69,7 +65,7 @@
             <!-- Entry Date -->
             {% if event_data['entry_date'] %}
             <tr>
-                <td>Přihlášky do:</td>
+                <th scope="row">Přihlášky do:</th>
                 <td>{{ event_data['entry_date'] | czech_date_from_datetime }}</td>
             </tr>
             {% endif %}
@@ -77,7 +73,7 @@
             <!-- Web -->
             {% if event_data['web'] %}
             <tr>
-                <td>Web:</td>
+                <th scope="row">Web:</th>
                 <td>
                     <a href="{{ event_data['web'] }}" target="_blank" rel="noopener">{{ event_data['web'] }}</a>
                 </td>
@@ -87,7 +83,7 @@
             <!-- Place -->
             {% if event_data['place_desc'] %}
             <tr>
-                <td>Místo:</td>
+                <th scope="row">Místo:</th>
                 <td>{{ event_data['place_desc'] }}</td>
             </tr>
             {% endif %}
