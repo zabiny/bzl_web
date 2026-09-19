@@ -11,7 +11,7 @@ import typer
 from pandas._libs.missing import NAType
 
 from results_calculator.cli import app
-from results_calculator.gender import gender_of
+from results_calculator.sex import sex_of
 
 #: The BZL season turns over in the summer, so the age categories shift on 1 July.
 SEASON_ROLLOVER_MONTH = 6
@@ -142,11 +142,17 @@ def race(
     # Assign points
     df_results["Points"] = df_results["Place"].apply(_get_points)
 
-    # Record gender, so that medals in the mixed-gender Z and V categories can
-    # be awarded without the website having to re-derive it.
-    df_results["Gender"] = [
-        gender_of(reg_no, name)
-        for reg_no, name in zip(df_results["RegNo"], df_results["Name"], strict=True)
+    # Record sex, so that medals in the mixed Z and V categories can be awarded
+    # without the website having to re-derive it. H and D are single-sex
+    # categories, so there the category itself settles it.
+    df_results["Sex"] = [
+        sex_of(reg_no, name, category)
+        for reg_no, name, category in zip(
+            df_results["RegNo"],
+            df_results["Name"],
+            df_results["ClassDesc"],
+            strict=True,
+        )
     ]
 
     # Export to .csv

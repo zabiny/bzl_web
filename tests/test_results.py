@@ -26,7 +26,7 @@ def test_every_category_is_present(season):
 def test_internal_columns_are_not_rendered(season):
     for table in season.tables.values():
         assert "category" not in table.columns
-        assert "Gender" not in table.columns
+        assert "Sex" not in table.columns
 
 
 def test_registration_numbers_stay_visible(season):
@@ -45,8 +45,8 @@ def test_top_three_get_medals(season):
     assert (4, "Veselý Karel") not in medals
 
 
-def test_mixed_categories_award_medals_per_gender(season):
-    """In V the two leading men and the leading women both get gold."""
+def test_mixed_categories_award_medals_per_sex(season):
+    """In V the leading man and the leading woman both get gold."""
     medals = season.medals["V"]
     assert medals[(1, "Starý Pavel")] == "medal-gold"
     assert medals[(2, "Starý Milan")] == "medal-silver"
@@ -69,7 +69,7 @@ def test_a_tie_gives_both_runners_the_same_medal(season):
         ([1, 2, 3], [1, 2, 3]),
         ([1, 1, 3], [1, 1, 3]),  # standard competition ranking
         ([1, 1, 1, 4], [1, 1, 1, 4]),
-        ([3, 3, 5], [1, 1, 3]),  # re-ranked inside a gender group
+        ([3, 3, 5], [1, 1, 3]),  # re-ranked inside a sex group
         ([2, 4, 4, 7], [1, 2, 2, 4]),
     ],
 )

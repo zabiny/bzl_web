@@ -10,8 +10,8 @@ import unidecode as udc
 
 from results_calculator.cli import app
 from results_calculator.decisions import MERGE, SEPARATE, MergeDecisions
-from results_calculator.gender import gender_of
 from results_calculator.race import get_yob
+from results_calculator.sex import sex_of
 from src.paths import merge_decisions_file, overall_results_file, results_dir
 
 CATEGORIES = ["H", "D", "Z", "V", "HDD"]
@@ -68,9 +68,9 @@ def overall(
     # Assign overall place
     final_results = _assign_overall_place(final_results)
 
-    # Record gender, so medals in the mixed-gender Z and V categories can be
-    # awarded without the website having to re-derive it from the RegNo.
-    final_results = _add_gender(final_results)
+    # Record sex, so medals in the mixed Z and V categories can be awarded
+    # without the website having to re-derive it.
+    final_results = _add_sex(final_results)
 
     # Export results
     for class_desc in CATEGORIES:
@@ -570,17 +570,17 @@ def _merge_runners(
     return pd.DataFrame(merged_runner_data, index=[0])
 
 
-def _add_gender(results: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
-    """Add a Gender column right after Name and RegNo."""
+def _add_sex(results: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    """Add a Sex column right after Name and RegNo."""
     for class_desc in CATEGORIES:
         df = results[class_desc]
-        if "Gender" in df.columns:
+        if "Sex" in df.columns:
             continue
         df.insert(
             2,
-            "Gender",
+            "Sex",
             [
-                gender_of(reg_no, name)
+                sex_of(reg_no, name, class_desc)
                 for reg_no, name in zip(df["RegNo"], df["Name"], strict=True)
             ],
         )

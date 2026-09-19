@@ -185,7 +185,7 @@ src/
 results_calculator/        Standalone CLI, imports no Flask
   race.py                  ORIS results -> points_<id>.csv
   overall.py               points_*.csv -> overall_<category>.csv
-  gender.py                Gender from the registration number
+  sex.py                   Sex, for medals in the mixed Z and V categories
   decisions.py             Remembers duplicate-runner answers
 data/<season>/
   events/*.json            One file per race

@@ -41,9 +41,9 @@ FIXTURE_EVENTS = {
     },
 }
 
-# Overall standings for the fixture season. H has a plain 1-2-3; V is
-# mixed-gender with a tie for the best female place, so medal handling for ties
-# is exercised.  RegNo third digit >= 5 means female.
+# Overall standings for the fixture season. H has a plain 1-2-3; V is mixed
+# with a tie for the best female place, so medal handling for ties is
+# exercised. A registration-number serial of 50 or more means female.
 FIXTURE_RESULTS = {
     "H": [
         # Name, RegNo, r1 place, r1 points, r2 place, r2 points, total, place

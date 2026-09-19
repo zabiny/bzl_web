@@ -11,8 +11,8 @@ from typing import Any
 
 import pandas as pd
 
-from results_calculator.gender import FEMALE, gender_of
 from results_calculator.overall import CATEGORIES
+from results_calculator.sex import FEMALE, sex_of
 from src.paths import overall_results_file
 
 logger = logging.getLogger(__name__)
@@ -20,14 +20,14 @@ logger = logging.getLogger(__name__)
 #: Shown instead of a score for a race the runner did not start.
 MISSING_CELL = "---"
 
-#: Categories that are mixed-gender, and therefore get medals per gender.
+#: Categories that are mixed, and therefore get medals per sex.
 MIXED_GENDER_CATEGORIES = ("Z", "V")
 
 #: CSS classes for the first three places, in order.
 MEDAL_CLASSES = ("medal-gold", "medal-silver", "medal-bronze")
 
 #: Columns used for bookkeeping that must not be rendered as table cells.
-INTERNAL_COLUMNS = ("category", "Gender")
+INTERNAL_COLUMNS = ("category", "Sex")
 
 
 @dataclass
@@ -123,13 +123,13 @@ def _read_all_categories(season: str) -> pd.DataFrame:
     for category in CATEGORIES:
         frame = pd.read_csv(overall_results_file(season, category), index_col=0)
         frame["category"] = category
-        if "Gender" not in frame.columns:
-            # Older CSVs predate the Gender column; derive it on the fly so the
+        if "Sex" not in frame.columns:
+            # Older CSVs predate the Sex column; derive it on the fly so the
             # page still works before the files are regenerated.
             reg_nos = frame["RegNo"] if "RegNo" in frame else [None] * len(frame)
             names = frame["Name"] if "Name" in frame else [None] * len(frame)
-            frame["Gender"] = [
-                gender_of(reg_no, name)
+            frame["Sex"] = [
+                sex_of(reg_no, name, category)
                 for reg_no, name in zip(reg_nos, names, strict=True)
             ]
         frames.append(frame)
@@ -209,8 +209,8 @@ def _medals_by_category(df: pd.DataFrame) -> dict[str, dict[tuple[int, str], str
     Work out which rows get a gold, silver or bronze highlight.
 
     In H, D and HDD the first three places are medalled directly. Z and V are
-    mixed-gender categories, so the top three of each gender are medalled and
-    the ranking is recomputed within the gender group.
+    mixed categories, so the top three of each sex are medalled and the ranking
+    is recomputed within that group.
     """
     medals: dict[str, dict[tuple[int, str], str]] = {}
 
@@ -220,8 +220,8 @@ def _medals_by_category(df: pd.DataFrame) -> dict[str, dict[tuple[int, str], str
 
         if category in MIXED_GENDER_CATEGORIES:
             groups = [
-                category_rows[category_rows["Gender"] == FEMALE],
-                category_rows[category_rows["Gender"] != FEMALE],
+                category_rows[category_rows["Sex"] == FEMALE],
+                category_rows[category_rows["Sex"] != FEMALE],
             ]
         else:
             groups = [category_rows]
