@@ -556,7 +556,10 @@ def _merge_runners(
     group: pd.DataFrame, ids_2_merge: pd.Index, main_id: int
 ) -> pd.DataFrame:
     """Merge multiple runner records into one."""
-    merged_runner_data = {}
+    # Annotated, because the values are a mix of whatever the cells hold and
+    # pd.NA for a race nobody in the group ran. Without it mypy infers the value
+    # type from the first assignment and then rejects the NA.
+    merged_runner_data: dict[Any, Any] = {}
     merged_runner_data["Name"] = group.loc[main_id, "Name"]
     merged_runner_data["RegNo"] = group.loc[main_id, "RegNo"]
     for col in group.columns[2:-1]:  # without Name, RegNo and name_unified
