@@ -298,21 +298,30 @@ def _filter_date_from_datetime(input_datetime: str | None) -> str:
         return ""
 
 
-@app.template_filter("racer_count")
-def _filter_racer_count(count: int) -> str:
+def _czech_plural(count: int, one: str, few: str, many: str) -> str:
     """
-    Render a runner count with the right Czech plural, e.g. ``"244 závodníků"``.
+    Pick the Czech plural for a count: one, two to four, and everything else.
 
-    Czech has three forms and picks by the number: one, two to four, and
-    everything else including zero. Every real race is in the hundreds, but a
-    cancelled race or a new season's first entry would otherwise read
-    "1 závodníků".
+    Zero takes the ``many`` form, which is also what the genitive after a
+    number needs.
     """
     if count == 1:
-        return "1 závodník"
+        return f"{count} {one}"
     if 2 <= count <= 4:
-        return f"{count} závodníci"
-    return f"{count} závodníků"
+        return f"{count} {few}"
+    return f"{count} {many}"
+
+
+@app.template_filter("racer_count")
+def _filter_racer_count(count: int) -> str:
+    """Render a runner count, e.g. ``"244 závodníků"``."""
+    return _czech_plural(count, "závodník", "závodníci", "závodníků")
+
+
+@app.template_filter("race_count")
+def _filter_race_count(count: int) -> str:
+    """Render a race count, e.g. ``"5 závodů"`` but ``"2 závody"``."""
+    return _czech_plural(count, "závod", "závody", "závodů")
 
 
 @app.template_filter("full_season")
