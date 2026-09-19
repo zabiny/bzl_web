@@ -239,6 +239,22 @@ registration number. The age cut-offs move on 1 July each year.
 at 175th. A runner's total is their best `N` races, where `N` is just over half
 the season's races (3 of 5, 4 of 7).
 
+### Medals
+
+The results page highlights the first three places of every category. H, D and
+HDD get one podium; **Z and V get one per sex**, because they are mixed
+categories and a single podium there would in practice exclude the women. Ties
+share a medal — two runners tied for the best place both take gold, and the
+next one takes bronze.
+
+This is the only reason the `Sex` column exists. It is inferred rather than
+recorded: from the serial number of a ČSOS registration number where there is
+one (women are 50 and above), and from the surname otherwise. That is about
+99.7% accurate on the published results, so a handful of runners in a season
+are labelled wrong; `tests/test_sex.py` measures it against every runner in
+the H and D tables and fails below 99%. If the per-sex podium is ever dropped,
+the column and `results_calculator/sex.py` go with it.
+
 ---
 
 ## Development
