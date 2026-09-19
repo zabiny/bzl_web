@@ -3,14 +3,14 @@
 {% block page_title %}Novinky{% endblock %}
 
 {% block body %}
-<div id="border">
+<div class="page-content">
     {% for news_item in news %}
     <article class="news-item">
         {% if news_item.title %}
         <h2 class="mb-3 mt-5">{{ news_item.title }}</h2>
         {% endif %}
         <div class="news-meta">
-            <time class="date" datetime="{{ news_item.created_at.isoformat() }}">
+            <time class="news-date" datetime="{{ news_item.created_at.isoformat() }}">
                 {{ news_item.created_at.strftime('%d.%m.%Y') }}
             </time>
         </div>

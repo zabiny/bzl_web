@@ -1,7 +1,7 @@
 :root {
     /* Primary colors */
-    --winter-primary: #2d7dd2;      /* Lighter bright blue (was #1b3b6f) */
-    --winter-secondary: #6ba4e9;    /* Soft blue for accents */
+    --winter-primary: #1f6fc4;      /* 5.09:1 on white - safe for text and as a fill behind white */
+    --winter-secondary: #6ba4e9;    /* Soft blue, decorative only - too light for text */
 
     /* Background colors */
     --winter-bg-light: #f0f5fa;     /* Very light icy blue */
@@ -9,11 +9,11 @@
 
     /* Text colors */
     --text-dark: #1a1a1a;           /* Almost black for main text */
-    --text-muted: #4a5568;          /* Darker gray for secondary text */
+    --text-muted: #4a5568;          /* Secondary text, 7.5:1 on white */
+    --text-faded: #64748b;          /* Past events, 4.76:1 on white - the AA floor */
 
     /* Typography */
     --font-primary: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-size-base: 1rem;
     --line-height-base: 1.5;
 
     /* Font sizes */
@@ -23,36 +23,61 @@
     --font-size-lg: 1.125rem;   /* 18px */
     --font-size-xl: 1.25rem;    /* 20px */
     --font-size-2xl: 1.5rem;    /* 24px */
-    --font-size-3xl: 1.75rem;   /* 28px - smaller for mobile */
+    --font-size-3xl: 1.75rem;   /* 28px - grows at the breakpoints below */
 }
 
 /* Mobile first base styles */
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-base);
-    line-height: 1.5;
+    line-height: var(--line-height-base);
     color: var(--text-dark);
+
+    /* A column so the footer's mt-auto can push it to the bottom. Without
+       this the footer sat wherever the content ended, leaving short pages
+       (the calendar, any event) ending mid-screen above empty background. */
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
 /* Site title */
 h1 {
-    font-size: var(--font-size-xl);  /* Smaller on mobile */
+    font-size: var(--font-size-xl);
     font-weight: 600;
     line-height: 1.2;
 }
 
-/* Page title */
-.page-title {
-    font-size: var(--font-size-2xl);  /* Smaller on mobile */
-    font-weight: 500;
-    padding: 1rem 0.5rem;
+/* Links. Underlines are removed only where the surrounding shape already
+   says "clickable" - navigation, buttons, cards, logos. Inside running prose
+   they stay, because colour alone is not an accessible affordance (WCAG
+   1.4.1) and this site's links sit in long Czech paragraphs. */
+.nav-link,
+.navbar-brand,
+.btn,
+.card a,
+.footer-logo,
+header a,
+#calendar a,
+#results-summary a {
+    text-decoration: none;
 }
 
-/* Navigation */
-.navbar-nav .nav-link {
-    font-size: var(--font-size-base);
-    padding: 0.75rem 1rem;
+/* Keyboard users land on the navigation on every page; this lets them past
+   it. Hidden until focused. */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1100;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--winter-primary);
+    color: white;
+    border-radius: 0 0 0.375rem 0;
+}
+
+.skip-link:focus {
+    left: 0;
 }
 
 /* Content spacing for mobile */
@@ -64,96 +89,28 @@ h1 {
     padding-right: 1rem;
 }
 
-/* Tablet and up (≥768px) */
-@media (min-width: 768px) {
-    :root {
-        --font-size-3xl: 2rem;      /* 32px */
-    }
-
-    .page-title {
-        font-size: var(--font-size-3xl);
-        padding: 1.5rem 1rem;
-    }
-
-    h1 {
-        font-size: var(--font-size-2xl);
-    }
-}
-
-/* Desktop (≥992px) */
-@media (min-width: 992px) {
-    :root {
-        --font-size-3xl: 2.25rem;   /* 36px */
-    }
-
-    .navbar-nav .nav-link {
-        font-size: var(--font-size-lg);
-        padding: 1.25rem 2rem;
-    }
-
-    .page-title {
-        padding: 1.5rem;
-    }
-
-    /* Larger spacing for desktop */
-    .container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
-}
-
-/* Large desktop (≥1200px) */
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
-        margin: 0 auto;
-    }
-}
-
-/* Handle extremely small screens */
-@media (max-width: 320px) {
-    :root {
-        --font-size-base: 0.9375rem;  /* 15px */
-    }
-
-    .page-title {
-        font-size: var(--font-size-xl);
-    }
-}
-
-/* Ensure text remains readable on landscape mobile */
-@media (max-height: 480px) and (orientation: landscape) {
-    .navbar-nav .nav-link {
-        padding: 0.5rem 1rem;
-    }
-}
-
-a {
-    text-decoration: none !important;
-}
-
 /* Layout */
 header {
-    text-align: center;
-    padding: 3rem 0;
     margin-inline: auto;
     max-width: 70em;
+    width: 100%;
 }
 
 main {
     margin-inline: auto;
     max-width: 70em;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    width: 100%;
+
+    /* Four sides. It used to have three, so the frame ran down the page and
+       simply stopped. Growing to fill the column also means the box closes at
+       the bottom of the viewport on short pages instead of mid-screen. */
+    border: 1px solid black;
     background-color: white;
-    min-height: 100%;
+    flex: 1 0 auto;
 }
 
 #body {
     padding: 15px 5em 50px;
-    position: relative;
-    min-height: 100%;
 }
 
 .page-header {
@@ -175,19 +132,18 @@ main {
 }
 
 .navbar-nav .nav-link {
-    padding: 1rem 1.5rem;
+    font-size: var(--font-size-base);
+    padding: 0.75rem 1rem;
     font-weight: 500;
     color: var(--text-dark);
     transition: all 0.2s ease-in-out;
 }
 
-/* Hover effect */
 .navbar-nav .nav-link:hover {
     color: var(--winter-primary);
     background-color: var(--winter-bg-medium);
 }
 
-/* Active state */
 .navbar-nav .nav-link.active {
     color: var(--winter-primary);
     font-weight: 600;
@@ -205,66 +161,94 @@ main {
     background-color: var(--winter-primary);
 }
 
-/* Runner Images */
-.runner-column {
-    position: absolute;
-    top: 216px;
-    width: 22vw;
-    z-index: -1;
-}
-
-.runner-column-left {
-    left: 0;
-    min-height: 100%;
-}
-
-.runner-column-right {
-    right: 0;
-    bottom: 0;
-    height: 100%;
-}
-
-.runner-image {
-    width: 8vw;
-    min-width: 100px;
-    height: auto;
-    z-index: -1;
-    margin: 0;
-}
-
-/* Particles Background */
-#particles-js {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: -1;
-}
-
 .navbar-toggler {
     border: none;
     padding: 0.5rem;
-    transition: none;  /* Remove any transition from the button itself */
+    transition: none;
 }
 
+/* Bootstrap's focus ring is suppressed because it is a large blue glow that
+   looks wrong here - but something must replace it. This used to be
+   `box-shadow: none` with nothing after it, which left the first interactive
+   element on every mobile page with no visible focus at all. */
 .navbar-toggler:focus {
     box-shadow: none;
 }
 
-/* Desktop and Mobile Responsive Styles */
-@media (min-width: 992px) {
-    .navbar-nav .nav-link {
-        padding: 1.25rem 2rem;  /* Increased padding */
-        font-size: 1.2rem;      /* Larger font size */
-        font-weight: 500;
+:focus-visible {
+    outline: 2px solid var(--winter-primary);
+    outline-offset: 2px;
+}
+
+/* Page title band */
+.page-title-container {
+    background-color: var(--winter-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 500;
+    color: white;
+    margin: 0;
+    padding: 1rem 0.5rem;
+}
+
+/* News. Renamed from .date, which collided with the calendar's own .date -
+   harmless only because calendarStyle.css is not loaded on /news. */
+.news-date {
+    display: block;
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    margin-bottom: 0.75rem;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--winter-bg-light);
+    border-top: 1px solid var(--winter-bg-medium);
+    margin-top: 3rem;
+}
+
+.footer p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer a {
+    color: var(--winter-primary);
+}
+
+.footer-logo img {
+    height: 50px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.footer-logos {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive. One block per breakpoint: the sizes below used to be spread
+   over four competing .page-title rules and two conflicting nav-link rules.
+   --------------------------------------------------------------------------- */
+
+/* Handle extremely small screens */
+@media (max-width: 320px) {
+    :root {
+        --font-size-base: 0.9375rem;  /* 15px */
     }
 
-    .navbar-nav .nav-item {
-        margin: 0 0.75rem;      /* Slightly more space between items */
+    .page-title {
+        font-size: var(--font-size-xl);
     }
 }
 
+/* Phones and small tablets: the off-canvas menu */
 @media (max-width: 991px) {
     h1 {
         font-size: 1.5rem;
@@ -288,7 +272,6 @@ main {
         transform: translateX(0);
     }
 
-    /* Backdrop styling */
     .navbar-backdrop {
         display: none;
         position: fixed;
@@ -300,7 +283,6 @@ main {
         z-index: 999;  /* Just below the menu */
     }
 
-    /* Show backdrop when menu is open */
     .navbar-collapse.show + .navbar-backdrop {
         display: block;
     }
@@ -315,11 +297,13 @@ main {
     }
 
     .navbar-nav .nav-link.active::after {
-        display: none;  /* Remove underline effect on mobile */
+        display: none;
     }
+}
 
-    .navbar-nav .nav-link.active {
-        background-color: var(--winter-bg-medium);
+@media (max-width: 768px) {
+    .footer-logo img {
+        height: 40px !important;
     }
 }
 
@@ -328,79 +312,104 @@ main {
         padding-left: 2em;
         padding-right: 2em;
     }
-
-    .runner-image {
-        display: none;
-    }
 }
 
-/* Page title styling */
-.page-title-container {
-    background-color: #4a90e2;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-/* Page title - Mobile first */
-.page-title {
-    font-size: var(--font-size-2xl);
-    font-weight: 500;
-    color: white;
-    margin: 0;
-    padding: 1rem 0;  /* Reduced padding */
-}
-
-/* Tablet and up (≥768px) */
+/* Tablet and up */
 @media (min-width: 768px) {
-    .page-title {
-        font-size: var(--font-size-2xl);
-        padding: 1.25rem 0;  /* Slightly more padding on tablet */
+    :root {
+        --font-size-3xl: 2rem;      /* 32px */
     }
-}
 
-/* Desktop (≥992px) */
-@media (min-width: 992px) {
+    h1 {
+        font-size: var(--font-size-2xl);
+    }
+
     .page-title {
         font-size: var(--font-size-3xl);
-        padding: 1.5rem 0;  /* Standard padding on desktop */
+        padding: 1.25rem 1rem;
     }
 }
 
-.footer {
-    background-color: var(--winter-bg-light);
-    border-top: 1px solid var(--winter-bg-medium);
-    margin-top: 3rem;
+/* Desktop */
+@media (min-width: 992px) {
+    :root {
+        --font-size-3xl: 2.25rem;   /* 36px */
+    }
+
+    .navbar-nav .nav-link {
+        padding: 1.25rem 2rem;
+        font-size: var(--font-size-lg);
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0 0.75rem;
+    }
+
+    .page-title {
+        padding: 1.5rem;
+    }
+
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
 
-.footer p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
+/* Keep the navigation usable on a phone held sideways */
+@media (max-height: 480px) and (orientation: landscape) {
+    .navbar-nav .nav-link {
+        padding: 0.5rem 1rem;
+    }
 }
 
-.footer a {
-    color: var(--winter-primary);
-    text-decoration: none;
+/* Calendars and start lists get printed and taken to races, so the paper
+   version is worth having: drop the furniture, keep the content, and spell
+   out link targets that a sheet of paper cannot follow. */
+@media print {
+    body {
+        display: block;
+        color: black;
+    }
+
+    .navbar,
+    .navbar-backdrop,
+    .page-title-container,
+    .footer-logos,
+    .rotation-hint {
+        display: none !important;
+    }
+
+    main {
+        border: none;
+        max-width: none;
+    }
+
+    #body {
+        padding: 0;
+    }
+
+    .news-content a[href^="http"]::after,
+    #body p a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        word-break: break-all;
+    }
+
+    tr,
+    .calendar-row {
+        break-inside: avoid;
+    }
 }
 
-.footer a:hover {
-    text-decoration: underline;
-}
-
-.footer-logo img {
-    height: 50px;
-    max-width: 100%;
-    object-fit: contain;
-}
-
-
-.footer-logos {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-@media (max-width: 768px) {
-    .footer-logo img {
-        height: 40px !important;
+/* The site animates almost nothing, but what it does animate should stop
+   when asked. This used to live in main.js, guarding the snow. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

@@ -27,7 +27,7 @@
 {% set medal_label = {'medal-gold': '1. místo', 'medal-silver': '2. místo', 'medal-bronze': '3. místo'} %}
 
 {% block body %}
-<div id="border">
+<div class="page-content">
   <!-- Season selector -->
   <label for="season-selector" class="visually-hidden">Sezóna</label>
   <select id="season-selector" onchange="window.location.href = '/' + this.value + '/results'">
@@ -52,7 +52,11 @@
   <!-- Mobile rotation hint -->
   <div class="rotation-hint d-md-none">
     <div class="hint-content">
-      <i class="fas fa-mobile-alt fa-rotate-90" aria-hidden="true"></i>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="2" y="7" width="20" height="10" rx="2" />
+        <path d="M6 12h.01M18 12h.01" />
+      </svg>
       <span>Pro lepší zobrazení otočte telefon na šířku</span>
     </div>
   </div>

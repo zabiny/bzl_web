@@ -12,18 +12,17 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style/eventStyle.css') }}">
 {% endblock %}
 
+{% block page_title %}
+{%- if event_data['bzl_order'] -%}
+{{ event_data['bzl_order'] }}. {{ event_data['name'] }}
+{%- else -%}
+{{ event_data['name'] }}
+{%- endif -%}
+{% endblock %}
+
 {% block body %}
 
-<!-- Event Name -->
-<h1 class="page-header text-center">
-    {% if event_data['bzl_order'] %}
-    {{ event_data['bzl_order'] }}. {{ event_data['name'] }}
-    {% else %}
-    {{ event_data['name'] }}
-    {% endif %}
-</h1>
-
-<div class="position-relative" id="border">
+<div class="position-relative">
     <div id="event-detail">
 
         <!-- Difficulty Icon -->

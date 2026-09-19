@@ -101,16 +101,26 @@
     }
 }
 
-/* Past events styling */
-.past-event {
-    color: lightslategray;
+/* The day of the month. Used to be an <h3>, which outranked the race name
+   below it - the date is not a section heading, the race is. Kept at the same
+   size so nothing moves. */
+.day-number {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.2;
 }
 
-/* Keep vertical layout on very narrow screens */
-@media (max-width: 499px) {
-    .first-col-content {
-        flex-direction: column;
-    }
+.race-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+/* Past events styling. Was `lightslategray`, 3.6:1 on white - below AA for
+   body text, and for most of the year most of this page is past events. */
+.past-event {
+    color: var(--text-faded);
 }
 
 

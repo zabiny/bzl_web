@@ -5,7 +5,7 @@
 {% block page_title %}Informace{% endblock %}
 
 {% block body %}
-<div id="border">
+<div class="page-content">
     <h2 class="mb-3 mt-5">Co je to {{ site.short_title }}?</h2>
     <p>
         {{ site.title }} ({{ site.short_title }}) je společný projekt brněnských oddílů orientačního běhu pod
@@ -69,6 +69,7 @@
         z {{ total_races }} možných.
         <br>
         Bodování závodníků je následovně:
+    </p>
 
     <ul>
         <li>1. místo: 200 bodů</li>
@@ -82,23 +83,24 @@
         <li>...</li>
     </ul>
 
-    V případě rovnosti bodů mezi prvními 3 závodníky rozhoduje větší počet prvních, resp. druhých, třetích a dalších
-    umístění v závodech. Obdobně jako medailové pořadí zemí na olympiádě.
-    {% if site.main_partner %}
-    Díky našemu hlavnímu sponzorovi <i>{{ site.main_partner.name }}</i>
-    obdrží první tři závodníci celkového pořadí z každé kategorie poukazy do
-    <a href="{{ site.main_partner.url }}" target="_blank" rel="noopener">jejího e-obchodu</a>.
-    {% endif %}
-    <br><br>
-    Běhejte fair play a podle pravidel OB.
+    <p>
+        V případě rovnosti bodů mezi prvními 3 závodníky rozhoduje větší počet prvních, resp. druhých, třetích a dalších
+        umístění v závodech. Obdobně jako medailové pořadí zemí na olympiádě.
+        {% if site.main_partner %}
+        Díky našemu hlavnímu sponzorovi <i>{{ site.main_partner.name }}</i>
+        obdrží první tři závodníci celkového pořadí z každé kategorie poukazy do
+        <a href="{{ site.main_partner.url }}" target="_blank" rel="noopener">jejího e-obchodu</a>.
+        {% endif %}
     </p>
+
+    <p>Běhejte fair play a podle pravidel OB.</p>
 
     <h2 class="mb-3 mt-5">Startovné</h2>
     <p>
         Startovné v termínu pomocí internetové přihlášky u většiny závodů stojí 100 Kč, v případě dohlášení až na místě
         závodu je startovné zvýšeno na 200 Kč (navýšení neplatí pro kategorii HDD). Pokud nemáte vlastní elektronický SI
         čip, bez kterého nelze závod absolvovat, lze si jej zapůjčit na prezentaci (20 Kč). Před cestou na start je
-        nutné dostavit se na prezentaci v centru závodu a zaplatit startovné. </br>
+        nutné dostavit se na prezentaci v centru závodu a zaplatit startovné.<br>
         Uvedené ceny jsou pouze orientační, sledujte prosím pokyny jednotlivých pořadatelů.
     </p>
 

@@ -9,7 +9,7 @@
 {% block page_title %}Kalendář závodů ({{ season | full_season }}){% endblock %}
 
 {% block body %}
-<div id="border">
+<div class="page-content">
     <div id="calendar">
         {% if not events %}
         <p class="text-center my-5">Pro tuto sezónu zatím nejsou naplánované žádné závody.</p>
@@ -25,9 +25,9 @@
                 <div class="date">
                     {% if event['date'] %}
                     <div>
-                        <h3 class="{{ 'past-event' if event['is_past'] }}" style="margin-bottom: 0">
+                        <span class="day-number {{ 'past-event' if event['is_past'] }}">
                             {{ event['date'] | day_from_date }}
-                        </h3>
+                        </span>
                     </div>
                     <div>{{ event['date'] | month_and_year_from_date | upper }}</div>
                     {% else %}
@@ -47,12 +47,12 @@
             <div class="description">
                 <div>
                     <a href="{{ url_for('event', season=season, event_id=event_id) }}">
-                        <h4 class="{{ 'past-event' if event['is_past'] }}">
+                        <h3 class="race-name {{ 'past-event' if event['is_past'] }}">
                             {% if event['is_bzl'] %}
                             {{ event['bzl_order'] }}.
                             {% endif %}
                             {{ event['name'] }}
-                        </h4>
+                        </h3>
                     </a>
                 </div>
                 <div>{{ event['desc_short'] }}</div>

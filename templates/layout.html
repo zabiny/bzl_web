@@ -23,9 +23,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <!-- Font Awesome (hamburger icon, results page hints) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
     <!-- Inter font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,26 +35,7 @@
 </head>
 
 <body>
-    <!-- Decorative runner images -->
-    <div class="runner-column runner-column-left" aria-hidden="true">
-        <img src="{{ url_for('static', filename='images/runner4.svg') }}" class="position-absolute runner-image"
-            style="bottom: 80%; left: 65%;" alt="">
-        <img src="{{ url_for('static', filename='images/runner3.svg') }}" class="position-absolute runner-image"
-            style="bottom: 45%; left: min(15%, 100px);" alt="">
-        <img src="{{ url_for('static', filename='images/runner5.svg') }}" class="position-absolute runner-image"
-            style="bottom: 0; left: min(40%, 100px);" alt="">
-    </div>
-
-    <div class="runner-column runner-column-right" aria-hidden="true">
-        <img src="{{ url_for('static', filename='images/runner1.svg') }}" class="position-absolute runner-image"
-            style="bottom: 95%; right: min(30%, calc(30% + 100px));" alt="">
-        <img src="{{ url_for('static', filename='images/runner2.svg') }}" class="position-absolute runner-image"
-            style="bottom: 60%; right: min(5%, 100px);" alt="">
-        <img src="{{ url_for('static', filename='images/runner6.svg') }}" class="position-absolute runner-image"
-            style="bottom: 30%; right: min(10%, 100px);" alt="">
-        <img src="{{ url_for('static', filename='images/runner7.svg') }}" class="position-absolute runner-image"
-            style="bottom: 0; right: min(45%, 100px);" alt="">
-    </div>
+    <a class="skip-link" href="#body">Přeskočit na obsah</a>
 
     <header class="d-flex align-items-center p-3">
         <!-- Left: Title with hamburger on mobile -->
@@ -65,7 +43,10 @@
             <button class="navbar-toggler d-lg-none me-3" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
                 aria-label="Otevřít menu">
-                <i class="fas fa-bars" aria-hidden="true"></i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" aria-hidden="true" focusable="false">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
             </button>
             <h1 class="mb-0">
                 <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">{{ site.title }}</a>
@@ -137,7 +118,7 @@
         <div class="navbar-backdrop" data-bs-toggle="collapse" data-bs-target="#navbarContent"></div>
 
         <!-- Main content -->
-        <div id="body">
+        <div id="body" tabindex="-1">
             {% block body %}{% endblock %}
         </div>
     </main>
@@ -175,16 +156,11 @@
         </div>
     </footer>
 
-    <!-- Particles.js container -->
-    <div id="particles-js" aria-hidden="true"></div>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <!-- Particles.js script -->
-    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     {% block scripts %}{% endblock %}

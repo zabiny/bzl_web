@@ -1,31 +1,22 @@
-/* Site-wide behaviour: mobile menu, snow background, and one small joke. */
+/* Site-wide behaviour: the mobile menu. */
 
 // Close the mobile navigation with the Escape key.
+//
+// Goes through Bootstrap rather than stripping the class directly. Removing
+// `.show` by hand hides the menu but leaves `aria-expanded="true"` on the
+// toggler, so the button then tells screen readers the menu is open when it
+// is not.
 document.addEventListener('keydown', function (event) {
     if (event.key !== 'Escape') {
         return;
     }
     const menu = document.querySelector('.navbar-collapse');
-    if (menu && menu.classList.contains('show')) {
+    if (!menu || !menu.classList.contains('show')) {
+        return;
+    }
+    if (window.bootstrap && window.bootstrap.Collapse) {
+        window.bootstrap.Collapse.getOrCreateInstance(menu).hide();
+    } else {
         menu.classList.remove('show');
     }
 });
-
-// Falling snow. Skipped for visitors who asked for reduced motion, and if the
-// library failed to load the page must still work.
-document.addEventListener('DOMContentLoaded', function () {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion || typeof particlesJS === 'undefined') {
-        return;
-    }
-    particlesJS.load('particles-js', '/static/js/particles.json');
-});
-
-// Easter egg: on roughly one page view in two hundred, every runner is replaced.
-if (Math.random() < 0.005) {
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.runner-image').forEach(function (image) {
-            image.src = '/static/images/runner8.svg';
-        });
-    });
-}
