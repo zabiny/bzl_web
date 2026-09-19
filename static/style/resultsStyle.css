@@ -82,40 +82,7 @@
     color: white;
 }
 
-/* Medal styles */
-.table-warning td {  /* First place - Gold */
-    background-color: #fff2cc !important;
-}
-
-.table-light td {   /* Second place - Silver */
-    background-color: #e8eaed !important;
-}
-
-.table-danger td {  /* Third place - Bronze */
-    background-color: #ffe5d9 !important;
-}
-
-/* Fixed columns medal styles */
-.dtfc-fixed-left .table-warning {
-    background-color: #fff2cc !important;
-}
-
-.dtfc-fixed-left .table-light {
-    background-color: #e8eaed !important;
-}
-
-.dtfc-fixed-left .table-danger {
-    background-color: #ffe5d9 !important;
-}
-
-/* Add bold text for medal positions */
-.table-warning td,
-.table-light td,
-.table-danger td {
-    font-weight: bold !important;
-}
-
-/* Z/V top 3 by gender (medal-gold, medal-silver, medal-bronze) */
+/* Medals: top three of each category (and of each gender in Z and V) */
 .medal-gold td {
     background-color: #fff2cc !important;
     font-weight: bold !important;

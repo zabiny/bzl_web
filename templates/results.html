@@ -1,48 +1,50 @@
 {% extends 'layout.html' %}
 
+{% block title %}Celkové výsledky {{ season | full_season }} - Sportega BZL{% endblock %}
+
 {% block head %}
 <!-- jQuery first -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<!-- Add DataTables CSS and JS -->
+<!-- DataTables CSS and JS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
-<!-- Add FixedColumns extension -->
+<!-- FixedColumns extension -->
 <link rel="stylesheet" type="text/css"
   href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
 <script type="text/javascript"
   src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
 <!-- Custom CSS -->
-<link rel="stylesheet" href="/static/style/resultsStyle.css">
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/resultsStyle.css') }}">
 {% endblock %}
 
 {% block page_title %}Celkové výsledky ({{ season | full_season }}){% endblock %}
 
+{% set medal_emoji = {'medal-gold': '🥇', 'medal-silver': '🥈', 'medal-bronze': '🥉'} %}
+{% set medal_label = {'medal-gold': '1. místo', 'medal-silver': '2. místo', 'medal-bronze': '3. místo'} %}
+
 {% block body %}
 <div id="border">
   <!-- Season selector -->
-  <select id="season-selector" aria-label="select season"
-    onchange="window.location.href = '/' + this.value + '/results'">
-    {% for s in seasons|sort(reverse=True) %}
-    <option value="{{ s }}" {% if s==season %} selected {% endif %}>{{ s | full_season }}</option>
+  <label for="season-selector" class="visually-hidden">Sezóna</label>
+  <select id="season-selector" onchange="window.location.href = '/' + this.value + '/results'">
+    {% for s in all_seasons | sort(reverse=True) %}
+    <option value="{{ s }}" {% if s==season %}selected{% endif %}>{{ s | full_season }}</option>
     {% endfor %}
   </select>
 
   {% if not results %}
   <p class="text-center mt-5">Výsledky pro tuto sezónu nejsou k dispozici.</p>
-  {% endif %}
+  {% else %}
 
   <!-- Category navigation -->
   <div id="results-summary">
     {% for category in results.keys() %}
     <div class="col-sm-1">
-      <a href="#{{category}}" class="link-primary">{{ category }}</a>
+      <a href="#{{ category }}" class="link-primary">{{ category }}</a>
     </div>
     {% endfor %}
   </div>
@@ -50,7 +52,7 @@
   <!-- Mobile rotation hint -->
   <div class="rotation-hint d-md-none">
     <div class="hint-content">
-      <i class="fas fa-mobile-alt fa-rotate-90"></i>
+      <i class="fas fa-mobile-alt fa-rotate-90" aria-hidden="true"></i>
       <span>Pro lepší zobrazení otočte telefon na šířku</span>
     </div>
   </div>
@@ -60,30 +62,31 @@
     {% for category, df in results.items() %}
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 id="{{category}}" class="mb-0">{{ category }}</h3>
+        <h3 id="{{ category }}" class="mb-0">{{ category }}</h3>
         <a href="#results-summary" class="btn btn-sm btn-outline-secondary">↑ TOP</a>
       </div>
       <div class="card-body">
         <table class="table table-striped table-hover">
           <thead class="table-dark">
             <tr>
-              <th>Pořadí</th>
+              <th scope="col">Pořadí</th>
               {% for column in df.columns %}
-              <th>{{ column }}</th>
+              <th scope="col">{{ column }}</th>
               {% endfor %}
             </tr>
           </thead>
           <tbody>
-            {% for index, row in df.iterrows() %}
-            {% set medal_key = (index, row['Jméno']) if category in ['Z', 'V'] else (0, '') %}
-            {% set medal_class = medal_class_by_category.get(category, {}).get(medal_key, '') %}
-            {% if category not in ['Z', 'V'] %}
-              {% set medal_class = 'table-warning' if index == 1 else ('table-light' if index == 2 else ('table-danger' if index == 3 else '')) %}
-            {% endif %}
+            {% for place, row in df.iterrows() %}
+            {% set medal_class = medals.get(category, {}).get((place, row['Jméno']), '') %}
             <tr class="{{ medal_class }}">
-              <td><strong>{{ index }}</strong></td>
+              <th scope="row">{{ place }}</th>
               {% for cell in row %}
-              <td>{% if loop.first %}{% if medal_class == 'medal-gold' or (category not in ['Z', 'V'] and index == 1) %}🥇 {% elif medal_class == 'medal-silver' or (category not in ['Z', 'V'] and index == 2) %}🥈 {% elif medal_class == 'medal-bronze' or (category not in ['Z', 'V'] and index == 3) %}🥉 {% endif %}{% endif %}{{ cell }}</td>
+              <td>
+                {%- if loop.first and medal_class -%}
+                <span role="img" aria-label="{{ medal_label[medal_class] }}">{{ medal_emoji[medal_class] }}</span>
+                {% endif -%}
+                {{ cell }}
+              </td>
               {% endfor %}
             </tr>
             {% endfor %}
@@ -93,30 +96,35 @@
     </div>
     {% endfor %}
   </div>
-
-  <script>
-    $(document).ready(function () {
-      $('.table').DataTable({
-        responsive: false,
-        pageLength: 25,
-        language: {
-          url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/cs.json'
-        },
-        dom: '<"d-flex justify-content-between align-items-center"lf>rt<"d-flex justify-content-between align-items-center"ip>',
-        scrollCollapse: true,
-        paging: true,
-        autoWidth: false,
-        fixedHeader: false,
-        scrollX: true,
-        fixedColumns: {
-          left: 2
-        },
-        columnDefs: [
-          { width: '11px', targets: 0 },
-          { width: '150px', targets: 1 }
-        ]
-      });
-    });
-  </script>
+  {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+{% if results %}
+<script>
+  $(document).ready(function () {
+    $('.table').DataTable({
+      responsive: false,
+      pageLength: 25,
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/cs.json'
+      },
+      dom: '<"d-flex justify-content-between align-items-center"lf>rt<"d-flex justify-content-between align-items-center"ip>',
+      scrollCollapse: true,
+      paging: true,
+      autoWidth: false,
+      fixedHeader: false,
+      scrollX: true,
+      fixedColumns: {
+        left: 2
+      },
+      columnDefs: [
+        { width: '11px', targets: 0 },
+        { width: '150px', targets: 1 }
+      ]
+    });
+  });
+</script>
+{% endif %}
 {% endblock %}

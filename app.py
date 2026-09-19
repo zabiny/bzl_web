@@ -4,15 +4,14 @@ import logging
 import os
 from datetime import date, datetime
 
-import pandas as pd
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, redirect, render_template, url_for
 from werkzeug import Response
 
-from results_calculator.overall import CATEGORIES
 from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
+from src.results import load_season_results
 
 logging.basicConfig(
     level=os.environ.get("BZL_LOG_LEVEL", "INFO").upper(),
@@ -138,172 +137,6 @@ def calendar(season: str) -> str:
     return render_template("calendar.html", season=season, events=events)
 
 
-def _format_results_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Format place and points columns in results dataframe.
-
-    Parameters
-    ----------
-    df
-        DataFrame with place and points columns.
-
-    Returns
-    -------
-    DataFrame with formatted columns.
-
-    """
-    for place_col in df.filter(regex=r".*-Place"):
-        if df[place_col].dtype == float:
-            df[place_col] = df[place_col].apply(lambda x: f"{x:.0f}.")
-    for points_col in df.filter(regex=r".*-Points"):
-        if df[points_col].dtype == float:
-            df[points_col] = df[points_col].apply(
-                lambda x: f"{x:.0f}"
-            )  # contains nans -> can't be casted to int
-    return df
-
-
-def _build_oris_name_mapping(events: dict) -> dict:
-    """
-    Build mapping from ORIS IDs to event names.
-
-    Parameters
-    ----------
-    events
-        Dictionary of event objects.
-
-    Returns
-    -------
-    Dictionary mapping ORIS IDs to event names.
-
-    """
-    oris_id_to_name_mapping = {}
-    for ev in events.values():
-        if ev.oris_id and ev.name is not None:
-            if "BZL" in ev.name:
-                name = ev.name.split("BZL: ")[1]
-            else:
-                name = ev.name
-            oris_id_to_name_mapping[ev.oris_id] = name
-    return oris_id_to_name_mapping
-
-
-def _combine_points_and_places(
-    df: pd.DataFrame, oris_id_to_name_mapping: dict, oris_ids_in_results: set
-) -> tuple[pd.DataFrame, list]:
-    """
-    Combine points and places columns into single columns per event.
-
-    Parameters
-    ----------
-    df
-        DataFrame with separate points and places columns.
-    oris_id_to_name_mapping
-        Mapping from ORIS IDs to event names.
-    oris_ids_in_results
-        Set of ORIS IDs present in results.
-
-    Returns
-    -------
-    Tuple of modified DataFrame and list of columns to drop.
-
-    """
-    cols_to_drop = []
-    for oris_id, name in oris_id_to_name_mapping.items():
-        if oris_id in oris_ids_in_results:
-            df[name] = (
-                df[f"{oris_id}-Points"].astype(str)
-                + " ("
-                + df[f"{oris_id}-Place"].astype(str)
-                + ")"
-            )
-            cols_to_drop.extend([f"{oris_id}-Points", f"{oris_id}-Place"])
-    return df, cols_to_drop
-
-
-def _is_female(regno: str, name: str) -> bool:
-    """
-    Infer female from RegNo (third digit >= 5) or fallback to surname.
-
-    Never raises; invalid RegNo (nereg., wrong format) falls back to
-    surname (-ová, -á). Returns False if undetermined.
-    """
-    try:
-        if regno is None or pd.isna(regno):
-            regno = ""
-        s = str(regno).strip()
-        digits = [c for c in s if c.isdigit()]
-        if len(digits) >= 3:
-            return int(digits[2]) >= 5
-    except (ValueError, IndexError, TypeError):
-        pass
-    try:
-        if name is None or pd.isna(name):
-            return False
-        parts = str(name).strip().split()
-        if not parts:
-            return False
-        surname = parts[0]
-        return surname.endswith(("ová", "á"))
-    except (TypeError, AttributeError):
-        return False
-
-
-def _medal_class_by_category(df: pd.DataFrame) -> dict[str, dict[tuple, str]]:
-    """
-    For categories Z and V, map (place, name) -> medal class for top 3 per gender.
-
-    Keys are (place, name) so tied places get correct medals. Returns
-    dict category -> {(place, name): "medal-gold"|"medal-silver"|"medal-bronze"}.
-    """
-    out: dict[str, dict[tuple, str]] = {}
-    for cat in ["Z", "V"]:
-        if cat not in df["category"].values:
-            out[cat] = {}
-            continue
-        sub = df[df["category"] == cat]
-        if (
-            "RegNo" not in sub.columns
-            or "Jméno" not in sub.columns
-            or "place" not in sub.columns
-        ):
-            out[cat] = {}
-            continue
-        male_rows: list[tuple[int, str]] = []
-        female_rows: list[tuple[int, str]] = []
-        for _, row in sub.iterrows():
-            try:
-                place = row["place"]
-                regno = row["RegNo"]
-                name = row["Jméno"]
-            except (KeyError, TypeError):
-                continue
-            key = (int(place), str(name))
-            if _is_female(regno, name):
-                female_rows.append(key)
-            else:
-                male_rows.append(key)
-        medal_map: dict[tuple, str] = {}
-        for rank, (place, name) in enumerate(
-            sorted(male_rows, key=lambda x: x[0])[:3], start=1
-        ):
-            medal_map[(int(place), str(name))] = [
-                "medal-gold",
-                "medal-silver",
-                "medal-bronze",
-            ][rank - 1]
-        for rank, (place, name) in enumerate(
-            sorted(female_rows, key=lambda x: x[0])[:3], start=1
-        ):
-            medal_map[(int(place), str(name))] = [
-                "medal-gold",
-                "medal-silver",
-                "medal-bronze",
-            ][rank - 1]
-        out[cat] = medal_map
-    return out
-
-
 # Results
 @app.route("/<string:season>/results")
 def results(season: str) -> str:
@@ -320,65 +153,13 @@ def results(season: str) -> str:
     Rendered HTML template for the results page.
 
     """
-    results = {}
-    medal_class_by_category = {}
-    seasons = em.get_all_seasons()
-    try:
-        # Load results per category
-        category_dfs = []
-        for category in CATEGORIES:
-            df = pd.read_csv(
-                f"data/{season}/results/overall_{category}.csv", index_col=0
-            )
-            df["category"] = category
-            df = _format_results_columns(df)
-            category_dfs.append(df)
-        df = pd.concat(category_dfs)
-
-        # Process DataFrame (rename and drop columns etc.)
-        events = em.get_all_events(season)
-        if events is None:
-            return render_template(
-                "results.html",
-                season=season,
-                results={},
-                medal_class_by_category={},
-            )
-
-        oris_id_to_name_mapping = _build_oris_name_mapping(events)
-        oris_ids_in_results = {
-            int(x.split("-")[0]) for x in df.columns if x[0].isdigit()
-        }
-
-        df, cols_to_drop = _combine_points_and_places(
-            df, oris_id_to_name_mapping, oris_ids_in_results
-        )
-
-        best_n_col = str(df.filter(regex=r"Best.*").columns[0])
-        n = best_n_col.split("-", 1)[0][4:]
-        df = (
-            df.rename(
-                columns={
-                    best_n_col: f"Součet ({n} z {len(oris_ids_in_results)})",
-                    "Name": "Jméno",
-                }
-            )
-            .replace(["nan (nan.)", "nan (nan)"], "---")
-            .drop(columns=cols_to_drop)
-        )
-        medal_class_by_category = _medal_class_by_category(df)
-        # Split DataFrame per category
-        for category in CATEGORIES:
-            group_df = df[df["category"] == category].set_index("place", drop=True)
-            results[category] = group_df.drop(columns=["category"])
-    finally:
-        return render_template(
-            "results.html",
-            seasons=seasons,
-            season=season,
-            results=results,
-            medal_class_by_category=medal_class_by_category,
-        )
+    season_results = load_season_results(season, em.get_all_events(season) or {})
+    return render_template(
+        "results.html",
+        season=season,
+        results=season_results.tables if season_results else {},
+        medals=season_results.medals if season_results else {},
+    )
 
 
 # Event
