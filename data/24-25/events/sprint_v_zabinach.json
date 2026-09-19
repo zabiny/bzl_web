@@ -1,11 +1,14 @@
 {
-    "name": "Žabí sprint",
     "oris_id": 8867,
+    "name": "Žabí sprint",
+    "date": "2025-01-05",
     "is_bzl": false,
+    "difficulty": "easy",
     "desc_short": "Městský sprint",
     "desc_long": "Těšte se na tradiční sprint v brněnském sídlišti. Přesně tak, jak to máte v BZL rádi.",
-    "difficulty": "easy",
     "place_desc": "Žabiny",
+    "gps_lat": "49.215067",
+    "gps_lon": "16.579742",
     "organizer": "(Dorostenci)",
     "organizer_logo": "zbm.png",
     "organizer_logo_large": "zbm_large.png"
