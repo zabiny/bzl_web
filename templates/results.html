@@ -79,6 +79,9 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <button class="pill show-all" type="button" data-show-all="Zobrazit všech {{ df.index | length }}"
+    aria-expanded="false" hidden>Zobrazit všech {{ df.index | length }}</button>
 </section>
 {% endfor %}
 {% endif %}
@@ -86,23 +89,6 @@
 
 {% block scripts %}
 {% if results %}
-<script>
-  /* Filter by name. This is the one thing DataTables was carrying its weight
-     for; everything else it did (sorting a table that is already in the right
-     order, paging a list people scroll) cost more than it gave. */
-  (function () {
-    const input = document.getElementById('runner-filter');
-    if (!input) { return; }
-    const rows = Array.from(document.querySelectorAll('.results-table tbody tr'));
-    input.addEventListener('input', function () {
-      const needle = input.value.trim().toLocaleLowerCase('cs');
-      rows.forEach(function (row) {
-        const name = row.querySelector('.col-name');
-        const hit = !needle || (name && name.textContent.toLocaleLowerCase('cs').includes(needle));
-        row.hidden = !hit;
-      });
-    });
-  })();
-</script>
+<script src="{{ url_for('static', filename='js/results.js') }}" defer></script>
 {% endif %}
 {% endblock %}

@@ -85,6 +85,14 @@ img {
     height: auto;
 }
 
+/* `hidden` is only `display: none` in the UA stylesheet, so any author rule
+   that sets display beats it. The results table sets `display: block` on its
+   rows below 780px, which would have made hidden rows reappear on exactly
+   the screens where filtering matters most. */
+[hidden] {
+    display: none !important;
+}
+
 /* Keyboard users meet the navigation on every page; this lets them past it. */
 .skip-link {
     position: absolute;

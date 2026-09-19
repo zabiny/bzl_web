@@ -276,6 +276,16 @@ Ties are shown, not resolved: the `Place` column is already
 standard-competition-ranked by the timing software, so a shared first place
 appears as two runners at 1. and the next at 3.
 
+### Finding yourself in the standings
+
+Every runner is in the HTML, but each category opens showing its first 15 and
+offers the rest behind a button — the page is 681 rows otherwise. The search
+box filters across the whole field, not just what is on screen, and it
+ignores diacritics: typing `adame` finds *Adámek*, `cerny` finds *Černý*.
+
+Both are progressive enhancements. With JavaScript off, every runner is
+listed and nothing is hidden.
+
 ### Medals
 
 The results page highlights the first three places of every category. H, D and

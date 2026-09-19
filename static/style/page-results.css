@@ -229,3 +229,11 @@
         background-color: var(--medal-bronze-row);
     }
 }
+
+/* Each category opens short and offers the rest behind this. Hidden when the
+   category is small enough not to need it, and while a search is running. */
+.show-all {
+    margin-top: var(--space-3);
+    cursor: pointer;
+    font-family: var(--font-body);
+}
