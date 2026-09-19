@@ -9,6 +9,8 @@ turns ORIS race results into season standings. There is no database.
 
 ---
 
+Work in progress and open items are in [TODO.md](TODO.md).
+
 ## Contents
 
 - [Quick start](#quick-start)
