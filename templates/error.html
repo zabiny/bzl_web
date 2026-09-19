@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block title %}Chyba {{ code }} - Sportega BZL{% endblock %}
+
+{% block page_title %}Chyba {{ code }}{% endblock %}
+
+{% block body %}
+<div id="border">
+    <div class="text-center my-5">
+        <p class="fs-5">{{ message }}</p>
+        <p class="mt-4">
+            <a href="{{ url_for('home') }}" class="btn btn-primary">Zpět na úvodní stránku</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
