@@ -2,9 +2,12 @@
 
 Working notes for picking this up again. Written 2026-09-19.
 
-Branch **`pre-26-27-redesign`**, 24 commits ahead of `master`, **nothing pushed**.
-Working tree clean. `pytest` (199 tests), `ruff check`, `ruff format --check` and
-`mypy` all pass; the production image builds and serves.
+Branch **`pre-26-27-redesign`**, pushed, open as **PR #77 into `devel`** —
+<https://github.com/zabiny/bzl_web/pull/77>. CI is green (lint, format, types,
+199 tests, and a container that builds and serves pages with no ORIS access).
+Working tree clean.
+
+Merging that PR deploys to <https://dev.bzl.zabiny.club>, not to production.
 
 The season 25/26 is over. The next one has not been set up yet, and the redesign
 this branch is named after has not been started — what happened instead was a
@@ -42,7 +45,7 @@ Mapy.com instead of a map. See the first open item.
 
 ## Open
 
-### 1. Get a Mapy.com API key — the maps are still not visible without it
+### 1. Mapy.com API key
 
 The only open item that needs something from outside the repository, and the
 one that makes the biggest visible difference. About five minutes:
@@ -74,46 +77,35 @@ If you would rather the key never reach the browser at all, the alternative is
 to proxy the tiles through Flask. That is more code, adds latency and puts tile
 traffic through your server, and is almost certainly not worth it here.
 
-### 2. Nothing is pushed, and the key has to reach the server
+### 2. Get the key into Coolify, then merge
 
-24+ commits sit locally.
+PR #77 targets `devel`, so merging it releases to **dev.bzl.zabiny.club**;
+production follows from a later merge into `master`.
 
 What is known about the deployment, as of 2026-09-19:
 
-- Pushing to `master` deploys to <https://bzl.zabiny.club>, pushing to `devel`
-  to <https://dev.bzl.zabiny.club>.
-- Both names resolve to `20.52.186.181`, which is also `azure.zabiny.club` — an
-  Azure VM running Ubuntu with **nginx 1.18.0** in front of the container.
-- `dev.bzl.zabiny.club` currently answers **502**, so nginx is configured for it
-  but nothing is listening behind it.
-- There is still **no GitHub Actions workflow** on the repository (the API
-  reports zero), so whatever reacts to the push lives on that VM or in an
-  external service, not in this repo.
+- `master` deploys to <https://bzl.zabiny.club>, `devel` to
+  <https://dev.bzl.zabiny.club>. Both resolve to `20.52.186.181`, also
+  `azure.zabiny.club` — an Azure VM running Ubuntu with **nginx 1.18.0** in
+  front of the container. The platform is **Coolify**, set up by a colleague.
+- `dev.bzl.zabiny.club` answered **502** before any of this was pushed, so
+  nginx is configured for it but nothing was listening behind it.
+- The only GitHub Actions workflow on the repository is the CI added here, so
+  whatever Coolify reacts to is a webhook or a poll, not a workflow.
 
-Two things follow:
+To do, in order:
 
-The deployment is **Coolify** on that VM, set up by a colleague; pushing to
-master is the whole release process.
-
-- **`MAPY_API_KEY` has to be set in Coolify**, not here: open the application,
-  Environment Variables, add it as a *runtime* variable (not build-time), and
-  redeploy. Needs Coolify access, or a colleague to add it.
-- While in there, it is worth noting **which Build Pack** the application uses
-  (Dockerfile, Nixpacks, Docker Compose) and writing it into the README. The
-  Dockerfile's `EXPOSE 5099` and its gunicorn bind are unchanged from master, so
-  the port contract Coolify relies on is the same as it has always been.
-- The local compose file is deliberately named `docker-compose.local.yml` rather
-  than `docker-compose.yml`, so that a platform scanning the repository root
-  cannot pick it up. Its port binding and bind mounts are right for a laptop and
-  wrong for that server. If Coolify turns out to use the Dockerfile build pack -
-  which is likely, since the build pack is chosen per application and does not
-  change by itself - the name could go back, but there is no reason to.
-- **Does Coolify mount `data/` as a volume?** If not, results and news still
-  come from the image and publishing them needs a redeploy, exactly as before.
-  That is not a regression, but a persistent mount for `./data` would make
-  publishing a file change. The container writes nothing to `data/` at runtime;
-  the ORIS cache lives in `/var/cache/bzl`, and if that is not writable the app
-  logs a warning and carries on.
+1. **Add `MAPY_API_KEY` in Coolify** — application, Environment Variables, as a
+   *runtime* value, then redeploy. Without it the event pages show a link to
+   Mapy.com instead of a map; nothing else is affected. The key already works
+   locally.
+2. **Merge #77 into `devel`** and look at dev.bzl.zabiny.club.
+3. While in Coolify, note **which Build Pack** the application uses and whether
+   **`data/` is mounted as a persistent volume**, and write both into the
+   README. If `data/` is not mounted, publishing results still needs a redeploy
+   — not a regression, but mounting it is the single biggest operational win
+   left. The container writes nothing to `data/`; the ORIS cache lives in
+   `/var/cache/bzl` and degrades to a warning if it is not writable.
 
 ### 3. ORIS — broken at the source, and moving domain
 
