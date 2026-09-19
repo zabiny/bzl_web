@@ -20,10 +20,12 @@ RUN python -m pip install --no-cache-dir uv \
 
 COPY . .
 
-# Run as an unprivileged user.
+# Run as an unprivileged user. It owns only the cache directory: nothing writes
+# to /web at runtime, so the application cannot modify its own code or data.
+# (PYTHONDONTWRITEBYTECODE above keeps Python from trying to drop .pyc files there.)
 RUN useradd --create-home --uid 10001 bzl \
     && mkdir -p "$BZL_ORIS_CACHE_DIR" \
-    && chown -R bzl:bzl "$BZL_ORIS_CACHE_DIR" /web
+    && chown -R bzl:bzl "$BZL_ORIS_CACHE_DIR"
 USER bzl
 
 EXPOSE 5099
