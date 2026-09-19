@@ -11,7 +11,6 @@ from flask import Flask, abort, render_template, url_for
 from werkzeug import Response
 from werkzeug.utils import redirect
 
-from results_calculator.overall import count_best_n
 from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
@@ -138,15 +137,11 @@ def info() -> str:
     Rendered HTML template for the info page.
 
     """
-    season = em.get_latest_season()
-    total_races = em.count_bzl_races(season) if season else 0
     return render_template(
         "info.html",
         hdd_max_year=hdd_max_year(),
         zv_kid_year=zv_kid_year(),
         zv_vet_year=zv_vet_year(),
-        total_races=total_races,
-        counted_races=count_best_n(total_races),
     )
 
 
@@ -316,12 +311,6 @@ def _czech_plural(count: int, one: str, few: str, many: str) -> str:
 def _filter_racer_count(count: int) -> str:
     """Render a runner count, e.g. ``"244 závodníků"``."""
     return _czech_plural(count, "závodník", "závodníci", "závodníků")
-
-
-@app.template_filter("race_count")
-def _filter_race_count(count: int) -> str:
-    """Render a race count, e.g. ``"5 závodů"`` but ``"2 závody"``."""
-    return _czech_plural(count, "závod", "závody", "závodů")
 
 
 @app.template_filter("full_season")

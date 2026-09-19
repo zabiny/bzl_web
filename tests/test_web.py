@@ -115,34 +115,15 @@ def test_navigation_points_at_the_newest_season(client):
     assert "/26-27/results" in html
 
 
-def test_info_page_states_the_real_scoring_rule(client):
-    html = client.get("/info").get_data(as_text=True)
-    # The fixture season has two BZL races, so the best 2 of 2 count.
-    assert "2 nejlepších závodů" in html
-    assert "z 2 možných" in html
-    # Two races, so the Czech plural is "závody", not "závodů".
-    assert "2 závody" in html
-
-
-def test_info_page_states_the_rule_itself_not_only_this_years_numbers(client):
+def test_info_page_states_the_scoring_rule_without_a_race_count(client):
     """
     The rule outlives any one season's numbers.
 
-    The number of races changes from year to year, so the page has to explain
-    the rule as well as apply it.
+    How many races a season has is not settled until the last one is
+    confirmed, so the page explains the rule and leaves the arithmetic to the
+    results table, which counts what actually happened.
     """
     html = client.get("/info").get_data(as_text=True)
-    assert "nadpoloviční většina" in html
-
-
-def test_info_page_omits_the_numbers_when_a_season_has_no_races_yet(
-    flask_app, monkeypatch
-):
-    """A season that has not been set up must not claim "0 z 0 možných"."""
-    import app as app_module
-
-    monkeypatch.setattr(app_module.em, "count_bzl_races", lambda season: 0)
-    html = flask_app.test_client().get("/info").get_data(as_text=True)
 
     assert "nadpoloviční většina" in html
     assert "možných" not in html

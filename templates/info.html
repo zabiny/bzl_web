@@ -68,15 +68,7 @@
         Do celkového hodnocení se každému závodníkovi započítává nadpoloviční většina
         závodů sezóny &ndash; tedy nejmenší počet, který je víc než polovina.
         Ze čtyř i z pěti závodů se tak počítají tři, ze šesti i ze sedmi čtyři a tak dál.
-        Počet závodů v seriálu se rok od roku liší, pravidlo zůstává stejné.
     </p>
-
-    {% if total_races %}
-    <p>
-        V této sezóně je v seriálu {{ total_races | race_count }}, takže se celkové pořadí
-        počítá z {{ counted_races }} nejlepších závodů z {{ total_races }} možných.
-    </p>
-    {% endif %}
 
     <p>Bodování závodníků je následovně:</p>
 

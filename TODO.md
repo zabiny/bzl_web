@@ -208,8 +208,11 @@ open questions, none blocking:
   duplicate runners the rules cannot resolve. Answers are saved to
   `merge_decisions.json` and replayed, so it only asks once. `--non-interactive`
   keeps ambiguous runners separate and warns instead.
-- **Info page numbers are derived.** The "best N of M" sentence comes from the
-  number of `is_bzl` races in the newest season, so adding a race changes it.
+- **The info page states the scoring rule, not a race count.** A season's
+  number of races is not settled until the last one is confirmed, so the page
+  explains "a strict majority of the season's races" and leaves the
+  arithmetic to the results table, which counts what actually happened.
+  `count_best_n` is still the single definition of the rule.
 
 ---
 
