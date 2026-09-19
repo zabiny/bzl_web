@@ -138,16 +138,7 @@ Do **not** add a certificate workaround. Trusting the certificate does not work
 (expiry is checked separately from trust — tested), and pinning its fingerprint
 would break the moment it is renewed.
 
-### 4. Two bits of Czech to check
-
-- `templates/info.html`: "poukazy do **jeho e-obchodu**" — was "e-obchodu
-  Sportegy". Changed because a template cannot decline the sponsor's name, but
-  the grammar deserves a native eye.
-- `templates/news/2024-10-01_sezona_zacina.html` writes "brněnské zimní ligy"
-  in lower case while every other article capitalises it. That article predates
-  Sportega becoming titular partner, so it may be deliberate. Left alone.
-
-### 5. Set up season 26/27
+### 4. Set up season 26/27
 
 ```bash
 mkdir -p data/26-27/events data/26-27/results
@@ -157,7 +148,7 @@ Then one JSON per race (schema in the README). Nothing else needs touching: the
 navigation, the season dropdown and the "best N of M" sentence on the rules page
 all read the newest season directory.
 
-### 6. Smaller things, none urgent
+### 5. Smaller things, none urgent
 
 - `docker/Dockerfile` installs `uv` and then uninstalls it in the same layer to
   keep it out of the image. A multi-stage build would be tidier.
