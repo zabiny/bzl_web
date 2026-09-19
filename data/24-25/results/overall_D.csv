@@ -1,4 +1,4 @@
-,Name,RegNo,Gender,8956-Place,8956-Points,8811-Place,8811-Points,8902-Place,8902-Points,8925-Place,8925-Points,8810-Place,8810-Points,Best3-Points,place
+,Name,RegNo,Sex,8956-Place,8956-Points,8811-Place,8811-Points,8902-Place,8902-Points,8925-Place,8925-Points,8810-Place,8810-Points,Best3-Points,place
 0,Kaiser Markéta,ZBM9456,F,,,,,1.,200,2.,190,2.,190,580,1
 1,Matulová Lucie,ADA8880,F,3.,182,2.,190,19.,157,,,4.,176,548,2
 2,Hlavová Hana,TBM8888,F,,,3.,182,6.,170,3.,182,8.,168,534,3
@@ -13,7 +13,7 @@
 11,Chloupková Barbora,VBM8455,F,,,6.,170,21.,155,,,25.,151,476,12
 12,Trtílková Hana,VBM8051,F,19.,157,14.,162,43.,133,,,30.,146,465,13
 13,Trávníčková Silvie,ADA8551,F,,,20.,156,,,15.,161,34.,142,459,14
-14,Jégrová Kateřina,0030001,M,,,26.,150,50.,126,20.,156,36.,140,446,15
+14,Jégrová Kateřina,0030001,F,,,26.,150,50.,126,20.,156,36.,140,446,15
 15,Spáčilová Veronika,0060002,F,27.,149,32.,144,69.,107,27.,149,55.,121,442,16
 16,Malá Alice,TBM7991,F,,,17.,159,42.,134,,,29.,147,440,17
 17,Beránková Šárka,ZBM7356,F,28.,148,31.,145,63.,113,29.,147,54.,122,440,17
@@ -23,7 +23,7 @@
 21,Králová Olga,BBM8750,F,,,15.,161,52.,124,,,37.,139,424,22
 22,Vršanová Mína,0050007,F,,,28.,148,,,30.,146,57.,119,413,23
 23,Obrátilová Naďa,ABM6654,F,26.,150,29.,147,68.,108,,,,,405,24
-24,Přikrylová Lenka,0120001,M,17.,159,,,45.,131,,,62.,114,404,25
+24,Přikrylová Lenka,0120001,F,17.,159,,,45.,131,,,62.,114,404,25
 25,Janková Magda,nereg.,F,,,,,60.,116,23.,153,48.,128,397,26
 26,Stárková Tereza,0150001,F,30.,146,,,72.,104,32.,144,,,394,27
 27,Tomanová Eliška,ZBM0658,F,,,DISK,0,3.,182,,,1.,200,382,28
@@ -45,7 +45,7 @@
 43,Cicvárková Lucie,ZBM7651,F,,,16.,160,49.,127,,,,,287,44
 44,Smítalová Ester,ZBM1056,F,,,30.,146,,,,,41.,135,281,45
 45,Dvořáková Hana,ZBM8676,F,20.,156,,,51.,125,,,,,281,45
-46,Bašeová Magdalena,0110001,M,,,27.,149,,,,,58.,118,267,47
+46,Bašeová Magdalena,0110001,F,,,27.,149,,,,,58.,118,267,47
 47,Chromá Adéla,TBM8870,F,,,,,39.,137,,,52.,124,261,48
 48,Jarušková Radka,nereg.,F,,,,,70.,106,31.,145,,,251,49
 49,Bašeová Jolana,ZBM1051,F,,,DISK,0,54.,122,,,47.,129,251,49
@@ -105,7 +105,7 @@
 103,Zatloukalová Romana,ZLH9950,F,,,,,33.,143,,,,,143,104
 104,Václavková Petra,ZBM7553,F,,,,,DISK,0,,,33.,143,143,104
 105,Sýkorová Iva,VBM8256,F,,,,,34.,142,,,,,142,106
-106,Jana Pekařová,0110002,M,,,,,,,,,35.,141,141,107
+106,Jana Pekařová,0110002,F,,,,,,,,,35.,141,141,107
 107,Königová Jana,ZBM8661,F,,,,,38.,138,,,,,138,108
 108,Janošíková Lenka,UOL7651,F,,,,,,,,,38.,138,138,108
 109,Batistová Karolína,ZBM0864,F,,,,,,,,,39.,137,137,110
@@ -116,7 +116,7 @@
 114,Novotná Klára,ZLH9851,F,,,,,44.,132,,,,,132,115
 115,Kaděrová Jana,ZBM8653,F,,,,,47.,129,,,,,129,116
 116,Zemánková Vladimíra,RBK8051,F,,,,,,,,,50.,126,126,117
-117,Unčovská Martina,0200001,M,,,,,,,,,51.,125,125,118
+117,Unčovská Martina,0200001,F,,,,,,,,,51.,125,125,118
 118,Vičarová Lucie,0070001,F,,,,,,,,,53.,123,123,119
 119,Soukupová Kateřina,ZBM0660,F,,,,,53.,123,,,,,123,119
 120,Mazálková Libuše,nereg.,F,,,,,55.,121,,,,,121,121
@@ -130,15 +130,15 @@
 128,Lžičařová Magdalena,0050005,F,,,,,,,,,61.,115,115,129
 129,Kurečková Dana,ABM7650,F,,,,,61.,115,,,,,115,129
 130,Dohnalová Květa,ZBM7954,F,,,,,62.,114,,,,,114,131
-131,Láčíková Sabina,0230001,M,,,,,,,DISK,0,63.,113,113,132
+131,Láčíková Sabina,0230001,F,,,,,,,DISK,0,63.,113,113,132
 132,Černayová Diana,nereg.,F,,,,,67.,109,,,,,109,133
-133,Kozlova Slavka,nereg.,M,,,,,71.,105,,,,,105,134
+133,Kozlova Slavka,nereg.,F,,,,,71.,105,,,,,105,134
 134,Marečková Iva,nereg.,F,,,,,73.,103,,,,,103,135
 135,Kapitánová Jitka,nereg.,F,,,,,74.,102,,,,,102,136
 136,Kadlecová Gabriela,BBM,F,,,,,75.,101,,,,,101,137
 137,Bednaříková Emma,PBM0359,F,,,,,,,DISK,0,,,0,138
 138,Kelina Ivanna,ZBM1156,F,,,DISK,0,,,,,,,0,138
-139,Indrová Lucie,0010006,M,,,,,,,DISK,0,,,0,138
+139,Indrová Lucie,0010006,F,,,,,,,DISK,0,,,0,138
 140,Mesiarkinová Kamila,ZBM8282,F,,,,,,,DISK,0,,,0,138
 141,Paděrová Jana,nereg,F,,,,,,,,,DISK,0,0,138
 142,Vespalcová Alena,nereg.,F,,,,,DISK,0,,,,,0,138

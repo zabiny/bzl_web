@@ -1,4 +1,4 @@
-,Name,RegNo,Gender,9518-Place,9518-Points,9519-Place,9519-Points,9517-Place,9517-Points,9656-Place,9656-Points,9690-Place,9690-Points,Best3-Points,place
+,Name,RegNo,Sex,9518-Place,9518-Points,9519-Place,9519-Points,9517-Place,9517-Points,9656-Place,9656-Points,9690-Place,9690-Points,Best3-Points,place
 0,Trš Lubomír,PBM7302,M,1.,200,1.,200,1.,200,3.,182,18.,158,600,1
 1,Jordanov Nikolaj,VBM6501,M,2.,190,3.,182,2.,190,6.,170,4.,176,562,2
 2,Hlavová Miroslava,KON6389,F,5.,172,7.,169,3.,182,,,6.,170,524,3
@@ -45,7 +45,7 @@
 43,Pulec Pavel,VBM6201,M,,,8.,168,,,,,,,168,42
 44,Ryglová Kateřina,TBM7372,F,,,,,,,,,9.,167,167,45
 45,Forst Libor,MFP6301,M,,,,,,,,,10.,166,166,46
-46,Buráňová Hana,0040002,M,11.,165,,,,,,,,,165,47
+46,Buráňová Hana,0040002,F,11.,165,,,,,,,,,165,47
 47,Eva Uhlířová,0270002,F,12.,164,,,,,,,,,164,48
 48,Plachý Martin,JPV6515,M,,,,,,,,,13.,163,163,49
 49,Čelechovská Zora,UBM7451,F,,,,,,,14.,162,,,162,50
@@ -63,7 +63,7 @@
 61,Dokoupilová Zuzana,VBM5754,F,21.,155,,,,,,,,,155,62
 62,Miková Iva,TBM7071,F,,,,,,,,,23.,153,153,63
 63,Dvořáková Martina,RBK7253,F,,,,,,,24.,152,,,152,64
-64,Nová Kateřina,0020001,M,24.,152,,,,,,,,,152,64
+64,Nová Kateřina,0020001,F,24.,152,,,,,,,,,152,64
 65,Chmelík Aleš,VBM4732,M,,,DISK,0,,,,,25.,151,151,66
 66,Novák Josef,RBK5001,M,,,,,,,25.,151,,,151,66
 67,Vymazal Michal,TBM5701,M,,,,,,,26.,150,DISK,0,150,68

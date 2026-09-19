@@ -1,4 +1,4 @@
-,Name,RegNo,Gender,8956-Place,8956-Points,8811-Place,8811-Points,8902-Place,8902-Points,8925-Place,8925-Points,8810-Place,8810-Points,Best3-Points,place
+,Name,RegNo,Sex,8956-Place,8956-Points,8811-Place,8811-Points,8902-Place,8902-Points,8925-Place,8925-Points,8810-Place,8810-Points,Best3-Points,place
 0,Bárta Vítězslav,RBK1501,M,2.,190,,,1.,200,,,1.,200,590,1
 1,Pala Tereza,ZBM1552,F,,,1.,200,,,1.,200,3.,182,582,2
 2,Matulová Markéta,PBM1554,F,1.,200,DISK,0,3.,182,2.,190,4.,176,572,3
@@ -29,16 +29,16 @@
 27,Nováčková Anika,ZBM1653,F,,,17.,159,,,20.,156,,,315,28
 28,Rajnošek Léna,BZR1750,F,,,,,,,19.,157,20.,156,313,29
 29,Ženková Sára,TBM1858,F,,,,,23.,153,17.,159,,,312,30
-30,Stehlík Tomáš,0170002,F,,,,,,,15.,161,26.,150,311,31
+30,Stehlík Tomáš,0170002,M,,,,,,,15.,161,26.,150,311,31
 31,Marková Zuzana,ZBM1751,F,,,,,17.,159,,,25.,151,310,32
 32,Stehlík Jakub,PBM1605,M,17.,159,,,,,26.,150,,,309,33
 33,Pavelková Zuzana,MBM2052,F,,,11.,165,DISK,0,,,33.,143,308,34
 34,Nehybková Marie,0080002,F,,,12.,164,33.,143,,,,,307,35
-35,Skoba Martin,0090001,F,,,,,,,18.,158,27.,149,307,35
+35,Skoba Martin,0090001,M,,,,,,,18.,158,27.,149,307,35
 36,Stehlíková Anna,0170001,F,,,,,,,30.,146,17.,159,305,37
 37,Kozumplíková Andrea,VBM1653,F,14.,162,,,41.,135,,,,,297,38
 38,Válková Andrea,ZBM1953,F,,,21.,155,35.,141,,,,,296,39
-39,Stehlík Michal,0170003,F,,,,,,,27.,149,29.,147,296,39
+39,Stehlík Michal,0170003,M,,,,,,,27.,149,29.,147,296,39
 40,Pavelka Jindřich,MBM1717,M,,,,,24.,152,,,32.,144,296,39
 41,Kobližek Kryštof,nereg.,M,,,,,25.,151,33.,143,,,294,42
 42,Chromá Klára,TBM1991,F,,,,,30.,146,,,37.,139,285,43
@@ -49,7 +49,7 @@
 47,Kocourek Vít,ZBM1405,M,,,,,,,,,2.,190,190,48
 48,Stachoň Ondřej,ZBM1404,M,,,,,4.,176,,,,,176,49
 49,Tesař Antonín,PBM1609,M,,,,,,,5.,172,,,172,50
-50,Urbančíková Elen,0110002,M,5.,172,,,,,,,,,172,50
+50,Urbančíková Elen,0110002,F,5.,172,,,,,,,,,172,50
 51,Marek Daniel,ZBM1701,M,,,,,5.,172,,,DISK,0,172,50
 52,Linkeschová Aneta,nereg.,F,,,5.,172,,,,,,,172,50
 53,Křížová Elisa,ZBM1556,F,,,6.,170,,,,,,,170,54
@@ -67,7 +67,7 @@
 65,Juřenová Zuzka,RBK1651,F,10.,166,,,,,,,,,166,65
 66,Kocourek Jiří,ZBM8504,M,,,,,,,,,10.,166,166,65
 67,Morávek Antonín,0040001,M,,,,,,,10.,166,,,166,65
-68,Klímová Leontýna,0200001,M,,,,,,,11.,165,,,165,69
+68,Klímová Leontýna,0200001,F,,,,,,,11.,165,,,165,69
 69,Král Jonáš,BBM1403,M,,,,,11.,165,,,DISK,0,165,69
 70,Plíšek Tobiáš,GBM1504,M,,,,,12.,164,,,,,164,71
 71,Meissner Otto,ZBM1501,M,,,13.,163,,,DISK,0,,,163,72
@@ -77,29 +77,29 @@
 75,Křivánková Daniela,0180001,F,,,,,,,16.,160,,,160,76
 76,Nekula Ondřej,MBM1600,M,,,16.,160,,,,,,,160,76
 77,Sedláková Barbora,nereg.,F,,,,,18.,158,,,,,158,78
-78,Peťovský Jakub,0160001,F,18.,158,,,,,,,,,158,78
+78,Peťovský Jakub,0160001,M,18.,158,,,,,,,,,158,78
 79,Lišková Anna,ZBM1852,F,,,,,,,,,19.,157,157,80
-80,Losová Alička,RBKx001,M,19.,157,,,,,,,,,157,80
-81,Vala Alois,0090001,F,,,20.,156,,,,,,,156,82
+80,Losová Alička,RBKx001,F,19.,157,,,,,,,,,157,80
+81,Vala Alois,0090001,M,,,20.,156,,,,,,,156,82
 82,Čech Vilém,VBM1604,M,20.,156,,,,,,,,,156,82
 83,Klaisnerová Amálie,nereg.,F,,,,,20.,156,,,,,156,82
 84,Kozel Daniel,VBM1603,M,,,,,,,21.,155,,,155,85
 85,Čechová Helena Maja,VBM1852,F,22.,154,,,,,,,,,154,86
-86,Skobová Petra,0130002,M,,,,,,,,,22.,154,154,86
+86,Skobová Petra,0130002,F,,,,,,,,,22.,154,154,86
 87,Šafek Jakub,PBM1616,M,,,,,,,22.,154,,,154,86
 88,Linkesch Richard,nereg.,M,,,22.,154,,,,,,,154,86
-89,Urbančíková Nina,0110003,M,23.,153,,,,,,,,,153,90
-90,Kubešová Marie,0110001,M,24.,152,,,,,,,,,152,91
+89,Urbančíková Nina,0110003,F,23.,153,,,,,,,,,153,90
+90,Kubešová Marie,0110001,F,24.,152,,,,,,,,,152,91
 91,Kubinová Laura,nereg.,F,,,24.,152,,,,,,,152,91
 92,Holáňová Silvie,ZBM1752,F,,,,,,,,,24.,152,152,91
 93,Hendrych Mariana,ZLH8700,M,,,25.,151,,,,,,,151,94
 94,Juřenová Hanča,RBK1951,F,25.,151,,,,,,,,,151,94
-95,Losová Dominička,RBKx002,M,26.,150,,,,,,,,,150,96
+95,Losová Dominička,RBKx002,F,26.,150,,,,,,,,,150,96
 96,Šviráková Elena,nereg.,F,,,27.,149,,,,,,,149,97
 97,Štrajt Jakub,UOL2000,M,27.,149,,,,,,,,,149,97
-98,Trávníček Zbyněk,0080001,F,,,,,,,28.,148,,,148,99
+98,Trávníček Zbyněk,0080001,M,,,,,,,28.,148,,,148,99
 99,Štrajtová Zuzana,UOL6452,F,28.,148,,,,,,,,,148,99
-100,Pomikalkova Kristyna,nereg,M,,,,,,,,,28.,148,148,99
+100,Pomikalkova Kristyna,nereg,F,,,,,,,,,28.,148,148,99
 101,Chaloupka Lukáš,ZBM1402,M,,,28.,148,,,,,,,148,99
 102,Štrajtová Nela,UOL9351,F,29.,147,,,,,,,,,147,103
 103,Trávníčková Jitka,nereg.,F,,,,,DISK,0,,,30.,146,146,104
@@ -107,7 +107,7 @@
 105,Hubatková Kateřina,nereg.,F,,,,,32.,144,,,,,144,106
 106,Sychra Jakub,VBM1601,M,,,,,,,,,34.,142,142,107
 107,Réblová Eliška,LBM2151,F,,,,,,,35.,141,,,141,108
-108,Nový David,0050004,F,,,,,,,,,35.,141,141,108
+108,Nový David,0050004,M,,,,,,,,,35.,141,141,108
 109,Smětáková Marie,nereg.,F,,,,,,,36.,140,,,140,110
 110,König Tobias,ZBM1818,M,,,,,,,,,36.,140,140,110
 111,Sýkora Jindřich,VBM1602,M,,,,,36.,140,,,,,140,110

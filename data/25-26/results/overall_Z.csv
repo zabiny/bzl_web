@@ -1,4 +1,4 @@
-,Name,RegNo,Gender,9518-Place,9518-Points,9519-Place,9519-Points,9517-Place,9517-Points,9656-Place,9656-Points,9690-Place,9690-Points,Best3-Points,place
+,Name,RegNo,Sex,9518-Place,9518-Points,9519-Place,9519-Points,9517-Place,9517-Points,9656-Place,9656-Points,9690-Place,9690-Points,Best3-Points,place
 0,Koča František,ZBM1100,M,1.,200,1.,200,2.,190,1.,200,2.,190,600,1
 1,Smítal Vendelín,ZBM1203,M,2.,190,3.,182,1.,200,,,1.,200,590,2
 2,Hikl Martin,ZBM1104,M,,,2.,190,4.,176,,,6.,170,536,3
@@ -55,7 +55,7 @@
 53,Urban Milan,RBK1414,M,,,,,,,16.,160,,,160,54
 54,Zemánek Jakub,RBK1202,M,16.,160,,,,,,,,,160,54
 55,Kaňka Jan,TZL1202,M,,,18.,158,,,,,,,158,56
-56,Benda Vojta,0280001,F,19.,157,,,,,,,,,157,57
+56,Benda Vojta,0280001,M,19.,157,,,,,,,,,157,57
 57,Křížová Ema,ZBM1358,F,19.,157,,,,,,,,,157,57
 58,Maksymenko Mark,ZBM1410,M,,,20.,156,,,,,,,156,59
 59,Kaňka Vilém,TZL1402,M,,,22.,154,,,,,,,154,60
@@ -83,7 +83,7 @@
 81,Marván Timotej,0310002,M,44.,132,,,,,,,,,132,82
 82,Matlocha Simon,nereg.,M,45.,131,,,,,,,,,131,83
 83,Kocourek Vít,ZBM1405,M,,,,,,,,,DISK,0,0,84
-84,Kozlová Slávka,0210001,M,DISK,0,,,,,,,,,0,84
+84,Kozlová Slávka,0210001,F,DISK,0,,,,,,,,,0,84
 85,Král Jonáš,BBM1403,M,DISK,0,,,,,,,,,0,84
 86,Klášterecký Antonín,BBM1402,M,,,,,DISK,0,,,,,0,84
 87,Krejčiříková Kamila,BBM1550,F,,,,,,,DISK,0,,,0,84
