@@ -141,21 +141,30 @@
     top: 1rem;
 }
 
-/* A race outside the league. Smaller, solid, and centred on the line. */
+/* A race outside the league. Smaller, solid, and centred on the line.
+   The offsets are derived from the dot's own tokens rather than written out,
+   so the two gaps cannot drift apart from the symbol they belong to. */
 .course-dot {
     position: absolute;
     left: 0;
-    top: 2.25rem;
+    top: var(--course-dot-top);
     width: var(--course-symbol-size);
-    height: 0.75rem;
+    height: var(--course-dot-size);
+}
+
+/* Without this the SVG is an inline box: it sits on the text baseline and is
+   pushed below its container by the descender space, which closed the gap
+   under the dot and widened the one above it. */
+.course-dot svg {
+    display: block;
 }
 
 .course-row-aside .course-line-in {
-    height: 1.875rem;
+    height: calc(var(--course-dot-top) - var(--course-gap));
 }
 
 .course-row-aside .course-line-out {
-    top: 3.375rem;
+    top: calc(var(--course-dot-top) + var(--course-dot-size) + var(--course-gap));
 }
 
 /* ---------------------------------------------------------------------------
@@ -424,15 +433,8 @@
         top: 2.25rem;
     }
 
-    .course-dot {
-        top: 1.5rem;
-    }
-
-    .course-row-aside .course-line-in {
-        height: 1.125rem;
-    }
-
-    .course-row-aside .course-line-out {
-        top: 2.375rem;
+    /* The derived rules above follow this on their own. */
+    :root {
+        --course-dot-top: 1.5rem;
     }
 }

@@ -246,6 +246,8 @@
     --course-stroke: 2px;
     --course-gap: 6px;            /* line to symbol, everywhere */
     --course-symbol-top: 1.5rem;  /* aligns the symbol with a card's title row */
+    --course-dot-size: 0.75rem;   /* a race outside the league */
+    --course-dot-top: 2.25rem;
 }
 
 /* ===========================================================================
