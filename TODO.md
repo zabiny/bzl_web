@@ -121,19 +121,18 @@ As of 2026-09-19 `oris.orientacnisporty.cz` serves a self-signed certificate
 that expired on 11 January 2023, so nothing that verifies certificates can reach
 it. This is being repaired at the ČSOS end; nothing to do here but wait.
 
-Two things to pick up afterwards:
+One thing to pick up afterwards:
 
 - **The API has moved.** `oris.ceskyorientak.cz` is the newer domain.
   `src/oris.py` still points at `https://oris.orientacnisporty.cz/API/`
   (`API_URL`, line 28). Once ORIS is healthy, check which host is canonical and
   change that one constant.
-- **Nothing essential depends on ORIS any more.** Every 25/26 race now carries
-  its own name and date, so the calendar and results are complete without it.
-  ORIS only adds place, GPS, entry date and organiser. The older seasons are not
-  backfilled yet — 25 races across 22/23, 23/24 and 24/25 still rely on ORIS for
-  a name or a date, which is why their calendars look sparse when it is down.
-  Worth doing while the live site still has the values, since those seasons are
-  finished and will never change.
+- **Nothing depends on ORIS any more.** All four seasons now carry their own
+  names, dates, places, coordinates and organisers, harvested from the live site
+  while it still held them. Every calendar renders identically to production
+  with ORIS unreachable, and 35 of the 46 event pages draw a map; the other 11
+  have no coordinates in ORIS either and show the Mapy.com link instead. ORIS is
+  now enrichment for *new* races only.
 
 Do **not** add a certificate workaround. Trusting the certificate does not work
 (expiry is checked separately from trust — tested), and pinning its fingerprint
