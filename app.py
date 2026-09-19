@@ -8,7 +8,7 @@ from flask import Flask, redirect, render_template, url_for
 from werkzeug import Response
 
 from results_calculator.overall import CATEGORIES
-from results_calculator.race import HDD_MAX_YEAR, ZV_KID_YEAR, ZV_VET_YEAR
+from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
 
@@ -60,9 +60,9 @@ def info() -> str:
     """
     return render_template(
         "info.html",
-        hdd_max_year=HDD_MAX_YEAR,
-        zv_kid_year=ZV_KID_YEAR,
-        zv_vet_year=ZV_VET_YEAR,
+        hdd_max_year=hdd_max_year(),
+        zv_kid_year=zv_kid_year(),
+        zv_vet_year=zv_vet_year(),
     )
 
 

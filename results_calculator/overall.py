@@ -1,3 +1,5 @@
+"""Combines the per-race point tables into the overall season standings."""
+
 import logging
 from pathlib import Path
 from typing import Any
@@ -7,21 +9,58 @@ import typer
 import unidecode as udc
 
 from results_calculator.cli import app
+from results_calculator.decisions import MERGE, SEPARATE, MergeDecisions
+from results_calculator.gender import gender_of
 from results_calculator.race import get_yob
+from src.paths import merge_decisions_file, overall_results_file, results_dir
 
 CATEGORIES = ["H", "D", "Z", "V", "HDD"]
 
 
+def count_best_n(num_races: int) -> int:
+    """
+    Return how many of a season's races count towards the standings.
+
+    A runner's total is the sum of their best ``N`` results out of the
+    season's races, where ``N`` is just over half of them: 3 of 5, 4 of 7.
+    Exposed so the rules page can state the real numbers instead of a
+    hard-coded sentence that silently goes out of date.
+    """
+    if num_races <= 0:
+        return 0
+    return (num_races // 2) + 1
+
+
 @app.command()
-def overall(season: str) -> None:
-    """Calculate overall results for a given season."""
+def overall(
+    season: str,
+    non_interactive: bool = typer.Option(
+        False,
+        "--non-interactive",
+        help=(
+            "Never prompt. Ambiguous duplicate runners are kept separate and "
+            "reported, so the command can run unattended."
+        ),
+    ),
+) -> None:
+    """
+    Calculate overall results for a given season.
+
+    Answers to the duplicate-runner questions are recorded in
+    ``merge_decisions.json`` next to the results, so re-running the command
+    reproduces the same standings instead of asking again.
+    """
     # Get overall results
     ovr_results = _get_overall_results(season)
     if ovr_results is None:
         return
 
-    # Solve duplicities
-    ovr_res_wout_dupl = _solve_duplicates(ovr_results)
+    # Solve duplicities, replaying any answers given in previous runs
+    decisions = MergeDecisions(merge_decisions_file(season))
+    ovr_res_wout_dupl = _solve_duplicates(
+        ovr_results, decisions, interactive=not non_interactive
+    )
+    decisions.save()
 
     # Get best N races
     final_results = _best_n_races(ovr_res_wout_dupl)
@@ -29,11 +68,15 @@ def overall(season: str) -> None:
     # Assign overall place
     final_results = _assign_overall_place(final_results)
 
+    # Record gender, so medals in the mixed-gender Z and V categories can be
+    # awarded without the website having to re-derive it from the RegNo.
+    final_results = _add_gender(final_results)
+
     # Export results
     for class_desc in CATEGORIES:
-        final_results[class_desc].to_csv(
-            f"data/{season}/results/overall_{class_desc}.csv"
-        )
+        output_file = overall_results_file(season, class_desc)
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        final_results[class_desc].to_csv(output_file)
 
 
 def _get_overall_results(season: str) -> dict[str, pd.DataFrame] | None:
@@ -54,7 +97,7 @@ def _get_overall_results(season: str) -> dict[str, pd.DataFrame] | None:
     columns_list = ["Name", "RegNo"]
 
     # For each race add <id>-Place and <id>-Points column
-    for r_id, r_filename in zip(race_ids, filenames):
+    for r_id, r_filename in zip(race_ids, filenames, strict=True):
         races[r_id] = pd.read_csv(r_filename, index_col=False)
         columns_list.extend([f"{r_id}-Place", f"{r_id}-Points"])
 
@@ -196,27 +239,38 @@ def _merge_new_runners(
 
 
 def _get_filenames_and_ids(season: str) -> tuple[list[Path], list[int]]:
-    season_dir = Path(f"data/{season}/results")
-    filenames = list(season_dir.glob("points_*.csv"))
+    """
+    List a season's race result files, ordered by ORIS id.
+
+    Sorted explicitly: Path.glob() yields whatever order the filesystem happens
+    to use, which made the column order of the exported CSVs differ between
+    machines for the same input.
+    """
+    season_dir = results_dir(season)
+    filenames = sorted(season_dir.glob("points_*.csv"), key=lambda f: int(f.stem[7:]))
     race_ids = [int(f.stem[7:]) for f in filenames]
     return filenames, race_ids
 
 
 def _solve_duplicates(
     input_results: dict[str, pd.DataFrame],
+    decisions: MergeDecisions,
+    interactive: bool = True,
 ) -> dict[str, pd.DataFrame]:
     output_results = {}
 
     # Iterate through all categories and try to merge probable duplicates
     for class_desc in CATEGORIES:
         output_results[class_desc] = _solve_duplicates_category(
-            input_results[class_desc]
+            input_results[class_desc], decisions, interactive
         )
     return output_results
 
 
 def _solve_duplicates_category(
     class_results: pd.DataFrame,
+    decisions: MergeDecisions,
+    interactive: bool = True,
 ) -> pd.DataFrame:
     # Unify name (Lowercase names without diacritics matches and trailing spaces)
     class_results["Name"] = class_results["Name"].str.strip()
@@ -224,20 +278,27 @@ def _solve_duplicates_category(
         lambda x: udc.unidecode(x).lower()
     )
     dfs = []
-    for _, group in class_results.groupby("name_unified"):
+    for name_key, group in class_results.groupby("name_unified"):
         # No duplicates, nothing to do
         if len(group) == 1:
             dfs.append(group.drop(columns=["name_unified"]))
             continue
 
-        result = _apply_duplicate_resolution_rules(group)
+        result = _apply_duplicate_resolution_rules(
+            group, str(name_key), decisions, interactive
+        )
         dfs.extend(result)
 
     df = pd.concat(dfs)
     return df
 
 
-def _apply_duplicate_resolution_rules(group: pd.DataFrame) -> list[pd.DataFrame]:
+def _apply_duplicate_resolution_rules(
+    group: pd.DataFrame,
+    name_key: str,
+    decisions: MergeDecisions,
+    interactive: bool = True,
+) -> list[pd.DataFrame]:
     """Apply cascade of decision rules to resolve duplicates."""
     # Rule 0: two different results in one race
     if _check_same_race_rule(group):
@@ -259,8 +320,11 @@ def _apply_duplicate_resolution_rules(group: pd.DataFrame) -> list[pd.DataFrame]
         ids_2_merge, main_id = result
         return [_merge_runners(group, ids_2_merge, main_id)]
 
-    # Rule 4: manual decision
-    return _manual_decision_rule(group)
+    # Rule 4: a previously recorded answer, or ask
+    recorded = _apply_recorded_decision(group, name_key, decisions)
+    if recorded is not None:
+        return recorded
+    return _manual_decision_rule(group, name_key, decisions, interactive)
 
 
 def _check_same_race_rule(group: pd.DataFrame) -> bool:
@@ -316,9 +380,7 @@ def _check_appearances_rule(group: pd.DataFrame) -> tuple[pd.Index, int] | None:
         # Get the first index value (pandas Index element)
         main_id_value = appearances[appearances == max_appearances].index[0]
         main_id = (
-            int(main_id_value)  # type: ignore[arg-type]
-            if not isinstance(main_id_value, int)
-            else main_id_value
+            main_id_value if isinstance(main_id_value, int) else int(main_id_value)
         )
         logging.info(
             "These runners will be merged to one (%s - because it has "
@@ -330,8 +392,90 @@ def _check_appearances_rule(group: pd.DataFrame) -> tuple[pd.Index, int] | None:
     return None
 
 
-def _manual_decision_rule(group: pd.DataFrame) -> list[pd.DataFrame]:
-    """Ask user to manually resolve duplicate runners."""
+def _regno_to_index(group: pd.DataFrame) -> dict[str, Any] | None:
+    """
+    Map each runner's registration number to their row index.
+
+    Returns None when the numbers are not unique within the group (several
+    unregistered runners, say), because then they cannot identify a runner.
+    """
+    reg_nos = [str(r) for r in group["RegNo"]]
+    if len(set(reg_nos)) != len(reg_nos):
+        return None
+    return dict(zip(reg_nos, group.index, strict=True))
+
+
+def _apply_recorded_decision(
+    group: pd.DataFrame, name_key: str, decisions: MergeDecisions
+) -> list[pd.DataFrame] | None:
+    """
+    Replay a previously recorded answer for this name.
+
+    Returns None when there is no usable recorded decision, in which case the
+    caller falls back to asking.
+    """
+    decision = decisions.get(name_key)
+    if decision is None:
+        return None
+
+    if decision.get("action") == SEPARATE:
+        logging.info("Keeping '%s' separate (recorded decision).", name_key)
+        return [group.drop(columns=["name_unified"])]
+
+    if decision.get("action") != MERGE:
+        return None
+
+    by_reg_no = _regno_to_index(group)
+    if by_reg_no is None:
+        logging.warning(
+            "Cannot replay the recorded decision for '%s': registration numbers "
+            "are not unique within the group.",
+            name_key,
+        )
+        return None
+
+    frames = []
+    merged: set[Any] = set()
+    for reg_nos in decision.get("groups", []):
+        ids = [by_reg_no[r] for r in reg_nos if r in by_reg_no]
+        if len(ids) < 2:
+            # Someone in the recorded group did not race this season.
+            continue
+        frames.append(_merge_runners(group, pd.Index(ids), ids[0]))
+        merged.update(ids)
+
+    remaining = [i for i in group.index if i not in merged]
+    if remaining:
+        frames.append(group.loc[remaining].drop(columns=["name_unified"]))
+
+    if not frames:
+        return None
+    logging.info("Applied recorded merge decision for '%s'.", name_key)
+    return frames
+
+
+def _manual_decision_rule(
+    group: pd.DataFrame,
+    name_key: str,
+    decisions: MergeDecisions,
+    interactive: bool = True,
+) -> list[pd.DataFrame]:
+    """Ask the user to resolve duplicate runners, and remember the answer."""
+    if not interactive:
+        logging.warning(
+            "Cannot decide the possible duplicates named '%s' and running "
+            "non-interactively: keeping them separate. Run the command without "
+            "--non-interactive once to record a decision.\n%s",
+            name_key,
+            group.T.to_markdown(),
+        )
+        return [group.drop(columns=["name_unified"])]
+
+    by_reg_no = _regno_to_index(group)
+    index_to_reg_no = (
+        {v: k for k, v in by_reg_no.items()} if by_reg_no is not None else None
+    )
+
     typer.echo(70 * "=")
     typer.echo("I'm not able to decide these possible duplicate runners automatically:")
     typer.echo(group.T.to_markdown())
@@ -341,16 +485,70 @@ def _manual_decision_rule(group: pd.DataFrame) -> list[pd.DataFrame]:
         "--> Keep all runners separated (s)\n"
         "--> Merge selected runners (write comma-separated ids - main first)?"
     )
-    decision = input("> ")
-    if decision == "s":
+    valid_ids = set(group.index)
+
+    def parse(answer: str) -> tuple[str, list[Any]] | None:
+        """Turn an answer into (kind, ids), or None when it makes no sense."""
+        answer = answer.strip()
+        if answer == "s":
+            return ("separate", [])
+        try:
+            ids = [int(x) for x in answer.split(",") if x.strip() != ""]
+        except ValueError:
+            return None
+        if not ids or len(set(ids)) != len(ids):
+            return None
+        if not set(ids).issubset(valid_ids):
+            return None
+        if "," in answer:
+            return ("merge_some", ids)
+        return ("merge_all", ids)
+
+    while True:
+        raw = input("> ")
+        parsed = parse(raw)
+        if parsed is not None:
+            break
+        typer.echo(
+            f"Sorry, '{raw.strip()}' is not one of the options. Enter 's', one "
+            f"id, or comma-separated ids from {sorted(valid_ids)}."
+        )
+
+    kind, chosen_ids = parsed
+
+    def remember(groups: list[list[str]] | None) -> None:
+        """Store the answer so the season can be recomputed without asking."""
+        if index_to_reg_no is None:
+            logging.warning(
+                "Not recording the decision for '%s': registration numbers are "
+                "not unique within the group.",
+                name_key,
+            )
+            return
+        if groups is None:
+            decisions.record_separate(name_key)
+        else:
+            decisions.record_merge(name_key, groups)
+
+    if kind == "separate":
+        remember(None)
         return [group.drop(columns=["name_unified"])]
-    if "," in decision:
-        ids_2_merge = pd.Index([int(x) for x in decision.split(",")])
+
+    if kind == "merge_some":
+        ids_2_merge = pd.Index(chosen_ids)
         separate_ids = group.index.difference(ids_2_merge)
-        main_id = ids_2_merge.to_numpy(dtype=int)[0]
-        return [group.loc[separate_ids], _merge_runners(group, ids_2_merge, main_id)]
+        if index_to_reg_no is not None:
+            remember([[index_to_reg_no[i] for i in chosen_ids]])
+        frames = [_merge_runners(group, ids_2_merge, chosen_ids[0])]
+        if len(separate_ids):
+            frames.append(group.loc[separate_ids].drop(columns=["name_unified"]))
+        return frames
+
+    main_id = chosen_ids[0]
     ids_2_merge = group.index
-    main_id = int(decision)
+    if index_to_reg_no is not None:
+        ordered = [main_id] + [i for i in ids_2_merge if i != main_id]
+        remember([[index_to_reg_no[i] for i in ordered]])
     return [_merge_runners(group, ids_2_merge, main_id)]
 
 
@@ -372,11 +570,29 @@ def _merge_runners(
     return pd.DataFrame(merged_runner_data, index=[0])
 
 
+def _add_gender(results: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    """Add a Gender column right after Name and RegNo."""
+    for class_desc in CATEGORIES:
+        df = results[class_desc]
+        if "Gender" in df.columns:
+            continue
+        df.insert(
+            2,
+            "Gender",
+            [
+                gender_of(reg_no, name)
+                for reg_no, name in zip(df["RegNo"], df["Name"], strict=True)
+            ],
+        )
+        results[class_desc] = df
+    return results
+
+
 def _best_n_races(results: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     for class_desc in CATEGORIES:
         race_columns = results[class_desc].columns[2:]
         num_of_all_races = len(race_columns) // 2
-        num_of_races_to_count = (num_of_all_races // 2) + 1
+        num_of_races_to_count = count_best_n(num_of_all_races)
 
         total_points = []
         for _, runner in results[class_desc].iterrows():

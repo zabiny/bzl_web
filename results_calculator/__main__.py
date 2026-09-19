@@ -1,3 +1,5 @@
+"""Entry point for ``python -m results_calculator``."""
+
 from results_calculator.cli import app
 from results_calculator.overall import overall  # noqa: F401
 from results_calculator.race import race  # noqa: F401

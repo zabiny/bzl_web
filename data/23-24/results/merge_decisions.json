@@ -1,0 +1,85 @@
+{
+    "hlavova hana": {
+        "action": "merge",
+        "groups": [
+            [
+                "TBM8888",
+                "KON8888"
+            ]
+        ]
+    },
+    "jelinek tomas": {
+        "action": "merge",
+        "groups": [
+            [
+                "0010001",
+                "nereg"
+            ]
+        ]
+    },
+    "kozmon tomas": {
+        "action": "merge",
+        "groups": [
+            [
+                "0130001",
+                "nereg.",
+                "90001"
+            ]
+        ]
+    },
+    "mulickova marketa": {
+        "action": "merge",
+        "groups": [
+            [
+                "TBM0362",
+                "ABM0362"
+            ]
+        ]
+    },
+    "polasek lukas": {
+        "action": "merge",
+        "groups": [
+            [
+                "0230001",
+                "220001"
+            ]
+        ]
+    },
+    "stehlikova alzbeta": {
+        "action": "merge",
+        "groups": [
+            [
+                "190001",
+                "0080001",
+                "0220003"
+            ]
+        ]
+    },
+    "travnickova jitka": {
+        "action": "merge",
+        "groups": [
+            [
+                "0090001",
+                "140001"
+            ]
+        ]
+    },
+    "zackova veronika": {
+        "action": "merge",
+        "groups": [
+            [
+                "10002",
+                "nereg."
+            ]
+        ]
+    },
+    "zamecnikova marie": {
+        "action": "merge",
+        "groups": [
+            [
+                "RBK1553",
+                "RBK15xx"
+            ]
+        ]
+    }
+}

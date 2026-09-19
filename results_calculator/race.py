@@ -1,6 +1,8 @@
+"""Fetches one race's results from ORIS and turns placings into BZL points."""
+
 import json
 import logging
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -9,10 +11,37 @@ import typer
 from pandas._libs.missing import NAType
 
 from results_calculator.cli import app
+from results_calculator.gender import gender_of
 
-HDD_MAX_YEAR = datetime.now().year - 11 + (datetime.now().month > 6)
-ZV_KID_YEAR = datetime.now().year - 15 + (datetime.now().month > 6)
-ZV_VET_YEAR = datetime.now().year - 51 + (datetime.now().month > 6)
+#: The BZL season turns over in the summer, so the age categories shift on 1 July.
+SEASON_ROLLOVER_MONTH = 6
+
+
+def _season_year(offset: int, today: date | None = None) -> int:
+    """
+    Return the cut-off year of birth for an age category.
+
+    Computed on every call rather than once at import: the web server runs for
+    months at a time, and a value frozen at import would go stale the moment the
+    season rolled over.
+    """
+    today = today or date.today()
+    return today.year - offset + (today.month > SEASON_ROLLOVER_MONTH)
+
+
+def hdd_max_year(today: date | None = None) -> int:
+    """Return the newest year of birth still eligible for the HDD category."""
+    return _season_year(11, today)
+
+
+def zv_kid_year(today: date | None = None) -> int:
+    """Return the newest year of birth counted as a youth (Z) runner."""
+    return _season_year(15, today)
+
+
+def zv_vet_year(today: date | None = None) -> int:
+    """Return the newest year of birth counted as a veteran (V) runner."""
+    return _season_year(51, today)
 
 
 @app.command()
@@ -113,6 +142,13 @@ def race(
     # Assign points
     df_results["Points"] = df_results["Place"].apply(_get_points)
 
+    # Record gender, so that medals in the mixed-gender Z and V categories can
+    # be awarded without the website having to re-derive it.
+    df_results["Gender"] = [
+        gender_of(reg_no, name)
+        for reg_no, name in zip(df_results["RegNo"], df_results["Name"], strict=True)
+    ]
+
     # Export to .csv
     output_file = output_dir / f"points_{oris_id}.csv"
     df_results.to_csv(output_file, sep=",", index=False)
@@ -146,23 +182,24 @@ def _split_zv_class(
 
     # Try to find unregistered runners in the list of known unregs
     for unreg in known_unregs:
+        # We only fill in a runner when exactly one row matches the name and
+        # their year of birth is still unknown.
         if (
             unreg["Name"] in df_zv["Name"].values
             and len(df_zv[df_zv["Name"] == unreg["Name"]]) == 1
-        ):
-            # We know there is only one row with this name (from prev. check).
             # The .all() method is required for proper type checking.
-            if df_zv.loc[df_zv["Name"] == unreg["Name"], "yob"].isna().all():
-                # Assign all known unreg's attributes to the row (yob, regno, etc.)
-                for key in unreg:
-                    df_zv.loc[df_zv["Name"] == unreg["Name"], key] = unreg[key]
+            and df_zv.loc[df_zv["Name"] == unreg["Name"], "yob"].isna().all()
+        ):
+            # Assign all known unreg's attributes to the row (yob, regno, etc.)
+            for key in unreg:
+                df_zv.loc[df_zv["Name"] == unreg["Name"], key] = unreg[key]
 
     # Create Z class (zaci)
-    df_z = df_zv[df_zv["yob"].notna() & (df_zv["yob"] >= ZV_KID_YEAR)].reset_index()
+    df_z = df_zv[df_zv["yob"].notna() & (df_zv["yob"] >= zv_kid_year())].reset_index()
     df_z["ClassDesc"] = "Z"
 
     # Create V class (veterani)
-    df_v = df_zv[df_zv["yob"].notna() & (df_zv["yob"] <= ZV_VET_YEAR)].reset_index()
+    df_v = df_zv[df_zv["yob"].notna() & (df_zv["yob"] <= zv_vet_year())].reset_index()
     df_v["ClassDesc"] = "V"
 
     # Place all other participants in a separate class
