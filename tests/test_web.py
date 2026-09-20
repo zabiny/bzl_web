@@ -152,8 +152,16 @@ def test_race_columns_are_sortable(client):
     That keeps the table's semantics and gives the keyboard a real control.
     """
     html = client.get("/26-27/results").get_data(as_text=True)
-    assert 'data-sort="number"' in html
-    assert 'data-sort="name"' in html
+
+    # One handle for the season standings, and one per race.
+    assert 'data-sort="rank"' in html
+    assert 'data-sort="race"' in html
+
+    # Sorting names alphabetically answers nothing the search box does not,
+    # and the points total is what the rank is computed from, so neither
+    # carries a sort of its own.
+    assert 'data-sort="name"' not in html
+    assert html.count('data-sort="rank"') == html.count("<table")
 
 
 def test_results_page_marks_medals(client):

@@ -87,29 +87,21 @@
         });
 
         decorated.sort(function (a, b) {
-            let result;
-            if (mode === 'name') {
-                result = fold(cellText(a.row, index)).localeCompare(
-                    fold(cellText(b.row, index)),
-                    'cs'
-                );
-            } else {
-                const left = numberIn(cellText(a.row, index));
-                const right = numberIn(cellText(b.row, index));
-                if (left === null && right === null) {
-                    result = 0;
-                } else if (left === null) {
-                    // A race somebody did not run sorts last either way round,
-                    // because "no result" is not a low score.
-                    return 1;
-                } else if (right === null) {
-                    return -1;
-                } else {
-                    result = right - left;
-                }
+            const left = numberIn(cellText(a.row, index));
+            const right = numberIn(cellText(b.row, index));
+            if (left === null && right === null) {
+                // Ties keep the standings order rather than shuffling.
+                return a.position - b.position;
             }
-            // Ties keep the standings order rather than shuffling.
-            return result !== 0 ? result : a.position - b.position;
+            // A race somebody did not run sorts last either way round,
+            // because "no result" is not a low score.
+            if (left === null) {
+                return 1;
+            }
+            if (right === null) {
+                return -1;
+            }
+            return right - left || a.position - b.position;
         });
 
         group.rows = decorated.map(function (entry) {
@@ -165,7 +157,7 @@
        aria-sort has to report the direction the values actually end up in,
        not which way the flag happens to point. */
     function announce(group) {
-        const naturallyDescending = modeOf(group, group.sortIndex) === 'number';
+        const naturallyDescending = modeOf(group, group.sortIndex) === 'race';
         const descending = naturallyDescending !== group.reversed;
         group.headers.forEach(function (header) {
             header.removeAttribute('aria-sort');
@@ -196,15 +188,21 @@
        cannot drift from the columns - and so it only exists when the sorting
        it drives exists. */
     function buildSortControl(group) {
-        const sortable = [];
+        const overall = [];
+        const races = [];
         group.headers.forEach(function (header, index) {
             const button = header.querySelector('button');
-            if (button) {
-                sortable.push({ index: index, label: button.textContent.trim() });
+            if (!button) {
+                return;
             }
+            const entry = {
+                index: index,
+                label: button.dataset.sortLabel || button.textContent.trim(),
+            };
+            (button.dataset.sort === 'race' ? races : overall).push(entry);
         });
         const table = group.section.querySelector('table');
-        if (sortable.length < 2 || !table) {
+        if (!races.length || !table) {
             return;
         }
 
@@ -218,12 +216,28 @@
         label.setAttribute('for', select.id);
         label.textContent = 'Seřadit podle';
 
-        sortable.forEach(function (entry) {
-            const option = document.createElement('option');
-            option.value = String(entry.index);
-            option.textContent = entry.label;
-            select.appendChild(option);
+        function option(entry) {
+            const el = document.createElement('option');
+            el.value = String(entry.index);
+            el.textContent = entry.label;
+            return el;
+        }
+
+        overall.forEach(function (entry) {
+            select.appendChild(option(entry));
         });
+
+        /* The races go in a group rather than the standings being emboldened:
+           a font-weight on a single <option> is honoured by some browsers and
+           silently dropped by others, while an <optgroup> label is styled by
+           every one of them and says what the separation means. */
+        const group_ = document.createElement('optgroup');
+        group_.label = 'Jednotlivé závody';
+        races.forEach(function (entry) {
+            group_.appendChild(option(entry));
+        });
+        select.appendChild(group_);
+
         select.value = String(group.sortIndex);
         select.addEventListener('change', function () {
             applySort(group, parseInt(select.value, 10), false);

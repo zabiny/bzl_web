@@ -42,18 +42,22 @@
   <table class="results-table">
     <thead>
       <tr>
+        {#- The rank column is the handle for the season standings. Sorting by
+            the points total would produce exactly the same order, since the
+            rank is computed from it, and sorting names alphabetically answers
+            no question the search box does not answer better. -#}
         <th scope="col" class="col-rank" aria-sort="ascending">
-          <button type="button" data-sort="rank">Pořadí</button>
+          <button type="button" data-sort="rank" data-sort-label="Celkové pořadí">Pořadí</button>
         </th>
         {% for column in df.columns %}
         {%- if loop.index0 == 0 -%}
-        <th scope="col" class="col-name"><button type="button" data-sort="name">{{ column }}</button></th>
+        <th scope="col" class="col-name">{{ column }}</th>
         {%- elif loop.index0 == 1 -%}
         <th scope="col" class="col-reg">{{ column }}</th>
         {%- elif loop.index0 == 2 -%}
-        <th scope="col" class="col-total"><button type="button" data-sort="number">{{ column }}</button></th>
+        <th scope="col" class="col-total">{{ column }}</th>
         {%- else -%}
-        <th scope="col" class="col-race"><button type="button" data-sort="number">{{ column }}</button></th>
+        <th scope="col" class="col-race"><button type="button" data-sort="race">{{ column }}</button></th>
         {%- endif -%}
         {% endfor %}
       </tr>
