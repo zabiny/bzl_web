@@ -119,28 +119,33 @@ To do, in order:
    left. The container writes nothing to `data/`; the ORIS cache lives in
    `/var/cache/bzl` and degrades to a warning if it is not writable.
 
-### 3. ORIS — broken at the source, and moving domain
+### 3. ORIS — repaired, and the domain switched
 
-As of 2026-09-19 `oris.orientacnisporty.cz` serves a self-signed certificate
-that expired on 11 January 2023, so nothing that verifies certificates can reach
-it. This is being repaired at the ČSOS end; nothing to do here but wait.
+Resolved on 2026-09-20. `oris.ceskyorientak.cz` is now canonical, serves a
+valid certificate, and answers API calls; the code points at it.
 
-One thing to pick up afterwards:
+Worth knowing why this mattered more than a rename: the old host still
+answers, but it **301s every request to the new domain's root**, dropping the
+path and the query string. An API call sent there comes back as the
+homepage's HTML instead of JSON, so every lookup failed silently — the client
+caught it, logged it and returned nothing, exactly as designed. Verified live
+through `OrisClient` against a cold cache: names, dates, places, GPS and
+organisers all come back.
 
-- **The API has moved.** `oris.ceskyorientak.cz` is the newer domain.
-  `src/oris.py` still points at `https://oris.orientacnisporty.cz/API/`
-  (`API_URL`, line 28). Once ORIS is healthy, check which host is canonical and
-  change that one constant.
-- **Nothing depends on ORIS any more.** All four seasons now carry their own
-  names, dates, places, coordinates and organisers, harvested from the live site
-  while it still held them. Every calendar renders identically to production
-  with ORIS unreachable, and 35 of the 46 event pages draw a map; the other 11
-  have no coordinates in ORIS either and show the Mapy.com link instead. ORIS is
-  now enrichment for *new* races only.
+The domain is defined once, in `src/oris.py` (`BASE_URL`). `API_URL` and
+`event_url()` derive from it, `results_calculator/race.py` imports `API_URL`,
+and the two prose links on the info page come from `oris_url` in the template
+globals. It was in five places before; that is what made this worth doing
+properly rather than with a search and replace.
 
-Do **not** add a certificate workaround. Trusting the certificate does not work
-(expiry is checked separately from trust — tested), and pinning its fingerprint
-would break the moment it is renewed.
+**Nothing depends on ORIS anyway.** All four seasons carry their own names,
+dates, places, coordinates and organisers, harvested while the old site still
+held them, and local values win over ORIS. Every calendar renders identically
+with ORIS unreachable. ORIS is enrichment for *new* races.
+
+Do **not** add a certificate workaround if it breaks again. Trusting an
+expired certificate does not work (expiry is checked separately from trust —
+tested), and pinning a fingerprint would break the moment it is renewed.
 
 ### 4. Set up season 26/27
 

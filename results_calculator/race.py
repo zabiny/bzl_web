@@ -12,6 +12,7 @@ from pandas._libs.missing import NAType
 
 from results_calculator.cli import app
 from results_calculator.sex import sex_of
+from src.oris import API_URL
 
 #: The BZL season turns over in the summer, so the age categories shift on 1 July.
 SEASON_ROLLOVER_MONTH = 6
@@ -81,10 +82,7 @@ def race(
         known_unregs = []
 
     # First, get name and date of the race
-    url = (
-        "https://oris.orientacnisporty.cz/API/"
-        f"?format=json&method=getEvent&id={oris_id}"
-    )
+    url = f"{API_URL}?format=json&method=getEvent&id={oris_id}"
     try:
         response = requests.get(url)
         race_metadata = response.json()
@@ -104,10 +102,7 @@ def race(
         logging.info("Event's date: %s", date)
 
     # Get results
-    url = (
-        "https://oris.orientacnisporty.cz/API/"
-        f"?format=json&method=getEventResults&eventid={oris_id}"
-    )
+    url = f"{API_URL}?format=json&method=getEventResults&eventid={oris_id}"
     try:
         response = requests.get(url)
         results_data = response.json()

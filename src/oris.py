@@ -1,7 +1,7 @@
 """
 Client for the ORIS API with an on-disk fallback cache.
 
-ORIS (https://oris.orientacnisporty.cz) is the Czech orienteering event database.
+ORIS (https://oris.ceskyorientak.cz) is the Czech orienteering event database.
 This module is the single place that talks to it from the web app.
 
 Two properties matter here, because the whole website used to go down whenever
@@ -25,7 +25,13 @@ from src.paths import data_dir
 
 logger = logging.getLogger(__name__)
 
-API_URL: Final = "https://oris.orientacnisporty.cz/API/"
+#: ORIS moved here from oris.orientacnisporty.cz. The old host still answers,
+#: but it redirects every request to this domain's *root*, dropping the path
+#: and the query string - so an API call sent there comes back as the
+#: homepage's HTML rather than JSON, and every lookup silently fails.
+BASE_URL: Final = "https://oris.ceskyorientak.cz"
+
+API_URL: Final = f"{BASE_URL}/API/"
 
 #: (connect, read) timeout in seconds. Without this a hung ORIS blocks a worker.
 DEFAULT_TIMEOUT: Final = (3.05, 10.0)
@@ -36,6 +42,24 @@ DEFAULT_TIMEOUT: Final = (3.05, 10.0)
 FREEZE_AFTER_DAYS: Final = 2
 
 CACHE_DIR_NAME: Final = ".oris_cache"
+
+
+def event_url(oris_id: int) -> str:
+    """
+    Return the ORIS page for one event.
+
+    Parameters
+    ----------
+    oris_id
+        The event's ORIS id.
+
+    Returns
+    -------
+    An absolute URL, used as an event's default web address when its
+    configuration does not give one.
+
+    """
+    return f"{BASE_URL}/Zavod?id={oris_id}"
 
 
 def _without_timestamp(data: dict[str, Any]) -> dict[str, Any]:

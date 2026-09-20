@@ -6,7 +6,7 @@ import re
 from typing import Any, overload
 
 from src.event import Event
-from src.oris import OrisClient
+from src.oris import OrisClient, event_url
 from src.paths import data_dir
 
 logger = logging.getLogger(__name__)
@@ -152,7 +152,7 @@ class EventManager:
             if oris_data is not None:
                 event.apply_oris_data(oris_data)
             if not event.web:
-                event.web = f"https://oris.orientacnisporty.cz/Zavod?id={event.oris_id}"
+                event.web = event_url(event.oris_id)
 
         if not event.name and not event.date:
             # With neither local metadata nor anything from ORIS there is

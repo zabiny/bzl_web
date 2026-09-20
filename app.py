@@ -14,6 +14,7 @@ from werkzeug.utils import redirect
 from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
+from src.oris import BASE_URL as ORIS_URL
 from src.race_stats import race_stats_by_event
 from src.results import load_season_results
 from src.site_config import load_site_config
@@ -108,6 +109,7 @@ def inject_globals() -> dict[str, object]:
         "all_seasons": em.get_all_seasons(),
         "current_season": em.get_latest_season(),
         "current_year": date.today().year,
+        "oris_url": ORIS_URL,
     }
 
 
