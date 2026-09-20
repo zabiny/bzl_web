@@ -1,8 +1,12 @@
 {
+    "oris_id": 7551,
     "name": "BZL: Hromniční trápení",
-    "desc_short": "Delší sprint",
-    "place_desc": "Blansko",
+    "date": "2023-01-28",
     "is_bzl": true,
     "difficulty": "easy",
-    "oris_id": 7551
+    "desc_short": "Delší sprint",
+    "place_desc": "Blansko",
+    "gps_lat": "49.367298",
+    "gps_lon": "16.637600",
+    "organizer": "SK Radioklub Blansko"
 }

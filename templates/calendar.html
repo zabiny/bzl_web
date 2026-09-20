@@ -1,64 +1,153 @@
 {% extends 'layout.html' %}
+{% import '_macros.html' as m %}
+
+{% block title %}Kalendář závodů {{ season | full_season }} - {{ site.short_title }}{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style/calendarStyle.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/page-calendar.css') }}">
 {% endblock %}
 
-{% block page_title %}Kalendář závodů ({{ season | full_season }}){% endblock %}
+{% block page_title %}Kalendář závodů{% endblock %}
+{% block page_sub %}sezóna {{ season | full_season }}{% endblock %}
+
+{% block page_head_extra %}
+<div class="difficulty-legend">
+  <span><span class="difficulty difficulty-easy"><span class="pip"></span><span class="pip"></span><span
+        class="pip"></span></span>lehká</span>
+  <span><span class="difficulty difficulty-medium"><span class="pip"></span><span class="pip"></span><span
+        class="pip"></span></span>střední</span>
+  <span><span class="difficulty difficulty-hard"><span class="pip"></span><span class="pip"></span><span
+        class="pip"></span></span>těžká</span>
+</div>
+{% endblock %}
+
+{% set difficulty_label = {'easy': 'Lehká trať', 'medium': 'Středně těžká trať', 'hard': 'Těžká trať'} %}
 
 {% block body %}
-<div id="border">
-    <div id="calendar">
-        {% for event_id, event in events.items() %}
-        <div class="calendar-row">
-            <!-- Date and logo -->
-            <div class="first-col">
-                <div class="date">
-                    <div>
-                        <h3 class="{{ 'past-event' if event['is_past'] }}" style="margin-bottom: 0">
-                            {{ event['date'] | day_from_date }}
-                        </h3>
-                    </div>
-                    <div>{{ event['date'] | month_and_year_from_date | upper }}</div>
-                </div>
+{{ m.season_picker(all_seasons, season, 'calendar') }}
 
-                <div class="organizer-logo">
-                    {% if event.get('organizer_logo') %}
-                    <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}"
-                        alt="{{ event.get('organizer', '') }} logo">
-                    {% endif %}
-                </div>
-            </div>
+{% if not events %}
+<p class="prose">Pro tuto sezónu zatím nejsou naplánované žádné závody.</p>
+{% else %}
 
-            <!-- Description -->
-            <div class="description">
-                <div>
-                    <a href="{{ url_for('event', season=season, event_id=event_id) }}">
-                        <h4 class="{{ 'past-event' if event['is_past'] }}">
-                            {% if event['is_bzl'] %}
-                            {{ event['bzl_order'] }}.
-                            {% endif %}
-                            {{ event['name'] }}
-                        </h4>
-                    </a>
-                </div>
-                <div>{{ event['desc_short'] }}</div>
-            </div>
+<div class="course">
 
-            <!-- Difficulty icon - only shows on large screens -->
-            <div class="difficulty">
-                {% set difficulty_image = {
-                'easy': 'easy.png',
-                'medium': 'medium.png',
-                'hard': 'hard.png'
-                } %}
-                <img src="{{ url_for('static', filename='images/' + difficulty_image.get(event['difficulty'], 'medium.png')) }}"
-                    class="difficulty-image" alt="Difficulty level">
-            </div>
-        </div>
-        <hr />
-        {% endfor %}
+  <!-- Start of the season: a point before the first race. The apex points
+       down the connecting line, at whatever the first race turns out to be. -->
+  <div class="course-marker course-marker-start">
+    <div class="course-rail">
+      <div class="course-symbol">
+        <svg width="36" height="32" viewBox="0 0 36 32" aria-hidden="true" focusable="false">
+          <polygon points="18,30 1.4,1.5 34.6,1.5" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linejoin="round" />
+        </svg>
+      </div>
+      <div class="course-line course-line-out"></div>
     </div>
-</div>
+    <div class="course-spacer"></div>
+    <div class="course-label">Start sezóny</div>
+  </div>
 
+  {% for event_id, event in events.items() %}
+  {% set stats = race_stats.get(event_id) %}
+  {% set is_next = event_id == next_event_id %}
+  <div class="course-row {{ 'course-row-aside' if not event['is_bzl'] }}">
+
+    <div class="course-rail">
+      <div class="course-line course-line-in"></div>
+      {% if event['is_bzl'] %}
+      <div class="course-symbol">
+        <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+          <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+        <span class="course-number" aria-hidden="true">{{ event['bzl_order'] }}</span>
+      </div>
+      {% else %}
+      <div class="course-dot">
+        <svg width="36" height="12" viewBox="0 0 36 12" aria-hidden="true" focusable="false">
+          <circle cx="18" cy="6" r="6" fill="currentColor" />
+        </svg>
+      </div>
+      {% endif %}
+      <div class="course-line course-line-out"></div>
+    </div>
+
+    <div class="course-spacer"></div>
+
+    <div class="race-card {{ 'race-card-next' if is_next }} {{ 'race-past' if event['is_past'] }}">
+      <div class="race-head">
+        <div class="race-ident">
+          <div class="race-date">
+            {% if event['date'] %}
+            <span class="race-day">{{ event['date'] | day_from_date }}</span>
+            <span class="race-month">{{ event['date'] | month_and_year_from_date | upper }}</span>
+            {% else %}
+            <span class="race-date-unknown">termín<br>upřesníme</span>
+            {% endif %}
+          </div>
+
+          {#- Always rendered, even when a race has no logo, so the names stay
+              aligned down the page. The organiser's name is in the text
+              beside it, so the image is decorative and takes an empty alt. -#}
+          <div class="race-logo">
+            {% if event.get('organizer_logo') %}
+            <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}" alt=""
+              loading="lazy">
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="race-body">
+          {% if is_next %}
+          <span class="race-badge">Nejbližší závod</span>
+          {% endif %}
+          <a class="race-name" href="{{ url_for('event', season=season, event_id=event_id) }}">
+            {%- if event['is_bzl'] %}{{ event['bzl_order'] }}. {% endif -%}
+            {{ event['name'] }}
+          </a>
+          <div class="race-meta">
+            {{ event['desc_short'] }}
+            {%- if event.get('organizer') %} &middot; {{ event['organizer'] }}{% endif -%}
+            {%- if not event['is_bzl'] %} &middot; nepočítá se do ligy{% endif -%}
+          </div>
+        </div>
+
+        <div class="race-aside">
+          {{ m.difficulty(event['difficulty'], difficulty_label) }}
+          {% if is_next and event.get('web') %}
+          <a class="btn-accent" href="{{ event['web'] }}" target="_blank" rel="noopener">Přihlásit v ORISu</a>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if stats %}
+      <details class="race-results">
+        <summary>
+          <span class="visually-hidden">{{ event['name'] }} &ndash; výsledky, </span>
+          {{ stats.participants | racer_count }}
+        </summary>
+        {{ m.podium(stats) }}
+      </details>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- End of the season -->
+  <div class="course-marker course-marker-finish">
+    <div class="course-rail">
+      <div class="course-line course-line-in"></div>
+      <div class="course-symbol">
+        <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+          <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" stroke-width="2" />
+          <circle cx="18" cy="18" r="11" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </div>
+    </div>
+    <div class="course-spacer"></div>
+    <div class="course-label">Vyhlášení celkových výsledků</div>
+  </div>
+
+</div>
+{% endif %}
 {% endblock %}

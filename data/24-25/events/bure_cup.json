@@ -1,10 +1,14 @@
 {
     "oris_id": 8810,
+    "name": "Sportega BZL: BURE Cup",
+    "date": "2025-02-23",
     "is_bzl": true,
     "difficulty": "easy",
-    "place_desc": "Komín",
     "desc_short": "Sprint",
     "desc_long": "Třetí ročník BURE Cupu se uskuteční v městské části Brno - Komín. Můžete se těšit na nezapomenutelný zážitek v prostorech, které tak dobře neznáte.",
+    "place_desc": "Komín",
+    "gps_lat": "49.214606",
+    "gps_lon": "16.560937",
     "organizer": "(BURE a spol.)",
     "organizer_logo": "zbm.png",
     "organizer_logo_large": "zbm_large.png"

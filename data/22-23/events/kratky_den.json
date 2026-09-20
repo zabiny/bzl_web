@@ -1,6 +1,12 @@
 {
     "oris_id": 7324,
-    "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
+    "name": "Krátký den 2023",
+    "date": "2023-01-21",
+    "is_bzl": false,
     "difficulty": "hard",
-    "is_bzl": false
+    "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
+    "place_desc": "Dubňany, Sportovní hala Želva",
+    "gps_lat": "48.910900",
+    "gps_lon": "17.098400",
+    "organizer": "SK Brno Žabovřesky"
 }

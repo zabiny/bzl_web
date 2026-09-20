@@ -1,7 +1,13 @@
 {
     "oris_id": 7347,
+    "name": "BZL: BURE Cup",
+    "date": "2022-12-04",
     "is_bzl": true,
-    "desc_short": "Sprint s kouskem lesa",
     "difficulty": "easy",
-    "desc_long": "Poprvé zmapovaný prostor pro sprint. Členitý terén vyzkouší nejen mapovou, ale i fyzickou připravenost závodníků."
+    "desc_short": "Sprint s kouskem lesa",
+    "desc_long": "Poprvé zmapovaný prostor pro sprint. Členitý terén vyzkouší nejen mapovou, ale i fyzickou připravenost závodníků.",
+    "place_desc": "Brno - Žebětín",
+    "gps_lat": "49.207699",
+    "gps_lon": "16.487000",
+    "organizer": "SK Brno Žabovřesky"
 }

@@ -1,0 +1,52 @@
+{#
+  Markup shared between pages.
+
+  The podium appears twice: folded into a race's row on the calendar, and
+  open on the race's own page. Keeping one definition means the two cannot
+  drift, which matters because they show the same numbers.
+#}
+
+{% macro podium(stats) %}
+<div class="podium">
+  {% for category, entries in stats.podium.items() %}
+  <div class="podium-category">
+    <h4>{{ category }} <span class="podium-count">{{ stats.category_counts[category] }}</span></h4>
+    <ol>
+      {% for entry in entries %}
+      <li>
+        <span class="place">{{ entry.place }}.</span>
+        <span class="runner">{{ entry.name }}</span>
+        <span class="time">{{ entry.time }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+
+{% macro difficulty(level, labels) %}
+{% set known = level if level in labels else 'medium' %}
+<span class="difficulty difficulty-{{ known }}">
+  <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+  <span class="visually-hidden">{{ labels[known] }}</span>
+</span>
+{% endmacro %}
+
+
+{#
+  The season picker. Both the calendar and the results page need one - the
+  navigation only ever links to the newest season, so without this an older
+  season is reachable only by editing the URL.
+#}
+{% macro season_picker(seasons, current, page) %}
+<div class="season-picker">
+  <label for="season-selector">Sezóna</label>
+  <select id="season-selector" onchange="window.location.href = '/' + this.value + '/{{ page }}'">
+    {% for s in seasons | sort(reverse=True) %}
+    <option value="{{ s }}" {% if s == current %}selected{% endif %}>{{ s | full_season }}</option>
+    {% endfor %}
+  </select>
+</div>
+{% endmacro %}

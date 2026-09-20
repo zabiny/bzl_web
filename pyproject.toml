@@ -1,0 +1,88 @@
+[project]
+name = "bzl-web"
+version = "0.1.0"
+description = "Website and results calculator for Sportega BZL (Brněnská zimní liga)"
+requires-python = ">=3.12"
+dependencies = [
+    "apscheduler",
+    "flask",
+    "gunicorn",
+    "pandas",
+    "requests",
+    "tabulate",
+    "typer",
+    "unidecode",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy",
+    "pandas-stubs",
+    "pytest",
+    "ruff",
+    "types-requests",
+]
+
+[project.scripts]
+results-calculator = "results_calculator.__main__:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["src", "results_calculator"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "N",      # pep8-naming
+    "D",      # pydocstyle
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear  (catches the `return` inside `finally`)
+    "A",      # flake8-builtins
+    "C4",     # flake8-comprehensions
+    "DTZ",    # flake8-datetimez
+    "T20",    # flake8-print
+    "SIM",    # flake8-simplify
+    "PTH",    # flake8-use-pathlib
+    "RUF",    # ruff-specific
+]
+ignore = [
+    "D203",   # conflicts with D211
+    "D213",   # conflicts with D212
+    # This is a single-city league in one timezone; naive local dates and
+    # times are what the domain actually means.
+    "DTZ005",
+    "DTZ011",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D100", "D103"]          # docstrings not required in tests
+# typer.echo/print is the CLI's user interface, and typer.Option() in a
+# default argument is how typer is meant to be used.
+"results_calculator/*" = ["T20", "B008"]
+"docker/gunicorn.conf.py" = ["D100"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_optional = true
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

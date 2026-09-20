@@ -1,0 +1,605 @@
+/* ===========================================================================
+ * Components shared by every page: header, navigation, footer, panels,
+ * pills, medals, news.
+ * ======================================================================== */
+
+/* ---------------------------------------------------------------------------
+ * Header
+ * ------------------------------------------------------------------------ */
+.site-header {
+    background-color: var(--nav-bg);
+    color: var(--text-on-inverse);
+}
+
+.site-header .shell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: inherit;
+    min-width: 0;
+}
+
+.brand-mark {
+    flex-shrink: 0;
+    display: block;
+
+    /* The control flag was the only hard corner on a site made of rounded
+       cards. Clipped rather than drawn with a rounded path so the two
+       triangles stay exactly the shape they are - a real flag is a square
+       split on the diagonal, and softening the corners should not soften
+       that. */
+    clip-path: inset(0 round var(--radius-sm));
+}
+
+.brand-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--surface-base);
+}
+
+.brand-tagline {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--text-sm);
+    color: var(--text-on-inverse);
+}
+
+/* The tagline is the first thing worth losing when the header gets tight. */
+@media (max-width: 600px) {
+    .brand-tagline {
+        display: none;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ * Navigation. Pills on the right at desktop, a drawer on a phone.
+ * ------------------------------------------------------------------------ */
+.nav-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--surface-base);
+    cursor: pointer;
+}
+
+.site-nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.nav-link {
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    color: var(--nav-fg);
+    transition: background-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
+}
+
+.nav-link:hover {
+    color: var(--surface-base);
+    background-color: rgb(255 255 255 / 10%);
+}
+
+.nav-link.active {
+    color: var(--nav-fg-active);
+    background-color: var(--nav-pill-active);
+    font-weight: var(--weight-bold);
+}
+
+.nav-close {
+    display: none;
+}
+
+.nav-backdrop {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .site-nav {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(20rem, 82vw);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: var(--space-4);
+        background-color: var(--nav-bg);
+        z-index: var(--z-menu);
+        transform: translateX(-100%);
+        transition: transform var(--duration-base) var(--ease-out);
+        overflow-y: auto;
+    }
+
+    .site-nav.open {
+        transform: translateX(0);
+    }
+
+    .nav-link {
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .nav-close {
+        display: inline-flex;
+        align-self: flex-end;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin-bottom: var(--space-2);
+        border: 0;
+        background: none;
+        color: var(--surface-base);
+        cursor: pointer;
+    }
+
+    .site-nav.open ~ .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background-color: rgb(26 29 35 / 55%);
+        z-index: var(--z-backdrop);
+    }
+
+    .nav-partners {
+        margin-top: var(--space-5);
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+    }
+}
+
+@media (min-width: 901px) {
+    .nav-toggle,
+    .nav-partners {
+        display: none;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ * Page heading
+ * ------------------------------------------------------------------------ */
+.page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    margin-block: var(--space-6) var(--space-5);
+}
+
+.page-head h1 {
+    font-size: var(--text-3xl);
+    margin: 0;
+}
+
+.page-head .page-sub {
+    font-size: var(--text-md);
+    color: var(--text-secondary);
+}
+
+.page-head .spacer {
+    flex-grow: 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * Panels and cards
+ * ------------------------------------------------------------------------ */
+.panel {
+    background-color: var(--card-bg);
+    border: var(--border-hair) solid var(--card-border);
+    border-radius: var(--card-radius);
+}
+
+/* ---------------------------------------------------------------------------
+ * Pills: category switches, filters
+ * ------------------------------------------------------------------------ */
+.pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    padding: 0;
+    list-style: none;
+}
+
+.pill {
+    display: inline-block;
+    padding: var(--space-2) var(--space-5);
+    border: var(--border-hair) solid var(--border-default);
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-base);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    transition: background-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
+}
+
+.pill:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.pill.active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--text-on-accent);
+    font-weight: var(--weight-bold);
+}
+
+/* ---------------------------------------------------------------------------
+ * Buttons
+ * ------------------------------------------------------------------------ */
+.btn-accent {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-hair) solid var(--color-accent);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-accent);
+    color: var(--text-on-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+}
+
+.btn-accent:hover {
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: var(--text-on-accent);
+}
+
+.btn-quiet {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-hair) solid var(--border-quiet);
+    border-radius: var(--radius-pill);
+    background-color: var(--surface-quiet);
+    color: var(--color-accent);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    cursor: pointer;
+}
+
+.btn-quiet:hover {
+    border-color: var(--color-accent);
+}
+
+/* ---------------------------------------------------------------------------
+ * Medals. Used by the results table and the per-race podiums.
+ * ------------------------------------------------------------------------ */
+.medal-gold td,
+.medal-gold th {
+    background-color: var(--medal-gold-row);
+}
+
+.medal-silver td,
+.medal-silver th {
+    background-color: var(--medal-silver-row);
+}
+
+.medal-bronze td,
+.medal-bronze th {
+    background-color: var(--medal-bronze-row);
+}
+
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+}
+
+.medal-gold .rank-badge { background-color: var(--medal-gold-badge); }
+.medal-silver .rank-badge { background-color: var(--medal-silver-badge); }
+.medal-bronze .rank-badge { background-color: var(--medal-bronze-badge); }
+
+/* ---------------------------------------------------------------------------
+ * Difficulty. Three pips; how many are filled is the signal, the colour
+ * reinforces it. Each group carries a text label for assistive tech.
+ * ------------------------------------------------------------------------ */
+.difficulty {
+    display: flex;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.difficulty .pip {
+    width: 18px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: var(--difficulty-empty);
+}
+
+.difficulty-easy .pip:nth-child(-n + 1) { background-color: var(--difficulty-easy); }
+.difficulty-medium .pip:nth-child(-n + 2) { background-color: var(--difficulty-medium); }
+.difficulty-hard .pip:nth-child(-n + 3) { background-color: var(--difficulty-hard); }
+
+.difficulty-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.difficulty-legend > span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* ---------------------------------------------------------------------------
+ * Footer
+ * ------------------------------------------------------------------------ */
+.site-footer {
+    margin-top: var(--space-8);
+    padding-block: var(--space-6);
+    background-color: var(--footer-bg);
+    color: var(--footer-fg);
+}
+
+.site-footer .shell {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+.site-footer p {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--footer-fg);
+}
+
+.site-footer a {
+    color: var(--surface-base);
+}
+
+.footer-text {
+    flex-grow: 1;
+    min-width: 16rem;
+}
+
+.footer-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+/* The partner artwork is dark on transparency, so it needs a light plate to
+   sit on now that the footer is dark. */
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--surface-base);
+    border-radius: var(--radius-md);
+}
+
+.footer-logo img {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* ---------------------------------------------------------------------------
+ * News
+ * ------------------------------------------------------------------------ */
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin-bottom: var(--space-7);
+}
+
+.news-item {
+    background-color: var(--card-bg);
+    border: var(--border-hair) solid var(--card-border);
+    border-radius: var(--card-radius);
+    padding: var(--space-5) var(--space-6);
+}
+
+.news-item h2 {
+    font-size: var(--text-xl);
+    margin: 0;
+}
+
+/* Renamed from .date, which collided with the calendar's own .date and was
+   unstyled only because that stylesheet is not loaded here. */
+.news-date {
+    display: block;
+    margin: var(--space-1) 0 var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text-faded);
+}
+
+.news-content {
+    max-width: var(--measure);
+}
+
+.news-content > :last-child {
+    margin-bottom: 0;
+}
+
+.news-content table {
+    width: 100%;
+    margin-bottom: var(--space-4);
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.news-content th,
+.news-content td {
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-hair) solid var(--border-default);
+    text-align: left;
+}
+
+.news-content th {
+    background-color: var(--surface-sunken);
+    font-weight: var(--weight-bold);
+}
+
+/* ---------------------------------------------------------------------------
+ * Error page
+ * ------------------------------------------------------------------------ */
+.error-page {
+    text-align: center;
+    padding-block: var(--space-8);
+}
+
+.error-code {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+}
+
+/* ---------------------------------------------------------------------------
+ * The categories table on the info page. It had no styling at all.
+ * ------------------------------------------------------------------------ */
+.info-table {
+    width: 100%;
+    max-width: 26rem;
+    margin-bottom: var(--space-4);
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+}
+
+.info-table th,
+.info-table td {
+    padding: var(--space-2) var(--space-3);
+    text-align: left;
+    border-bottom: var(--border-hair) solid var(--border-subtle);
+}
+
+.info-table thead th {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faded);
+}
+
+.info-table tbody th,
+.info-table tbody td:first-child {
+    font-weight: var(--weight-medium);
+}
+
+/* The podium sits on terrain green: on a map, green is what you ran through. */
+.podium {
+    margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--surface-terrain);
+    border: var(--border-hair) solid var(--border-terrain);
+    border-radius: var(--radius-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-4) var(--space-5);
+}
+
+.podium-category {
+    min-width: 0;
+}
+
+.podium-category h4 {
+    margin: 0 0 var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--border-terrain-strong);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.06em;
+    color: var(--text-terrain);
+}
+
+.podium-count {
+    font-weight: var(--weight-regular);
+    color: var(--text-terrain-quiet);
+}
+
+.podium ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+}
+
+.podium li {
+    display: flex;
+    gap: var(--space-2);
+    line-height: 1.8;
+}
+
+.podium .place {
+    color: var(--text-terrain-quiet);
+    flex-shrink: 0;
+}
+
+.podium .runner {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.podium .time {
+    color: var(--text-terrain-quiet);
+    font-variant-numeric: tabular-nums;
+}
+
+/* On a narrow screen the categories get tighter rather than stacking into one
+   long column - five short lists read better than one tall one. */
+@media (max-width: 720px) {
+    .podium {
+        grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+        padding: var(--space-3) var(--space-4);
+    }
+}
+
+/* Season picker, on both the calendar and the results page. */
+.season-picker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.season-picker select {
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-hair) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-base);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+}
+

@@ -1,117 +1,106 @@
 {% extends 'layout.html' %}
+{% import '_macros.html' as m %}
+
+{% set has_map = event_data['gps_lat'] and event_data['gps_lon'] %}
+
+{% block title %}{{ event_data['name'] }} - {{ site.short_title }}{% endblock %}
 
 {% block head %}
-<title>{{ event_data.name }}</title>
-<!-- Load Mapy.cz API -->
-<script src="https://api.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
-<!-- Custom CSS for event page -->
-<link rel="stylesheet" href="/static/style/eventStyle.css">
+{% if has_map and mapy_api_key %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+{% endif %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style/page-event.css') }}">
+{% endblock %}
+
+{% block page_title %}
+{%- if event_data['bzl_order'] -%}
+{{ event_data['bzl_order'] }}. {{ event_data['name'] }}
+{%- else -%}
+{{ event_data['name'] }}
+{%- endif -%}
 {% endblock %}
 
 {% block body %}
 
-<!-- Event Name -->
-<h1 class="page-header text-center">
-    {% if event_data['bzl_order'] %}
-    {{event_data['bzl_order']}}. {{event_data['name']}}
-    {% else %}
-    {{event_data['name']}}
-    {% endif %}
-</h1>
-
-<div class="position-relative" id="border">
+<div class="position-relative">
     <div id="event-detail">
 
-        <!-- Difficulty Icon -->
-        {% if event_data['difficulty'] == 'easy' %}
-        <img src="/static/images/easy.png" class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
-            alt="difficulty_easy">
-        {% elif event_data['difficulty'] == 'medium' %}
-        <img src="/static/images/medium.png" class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
-            alt="difficulty_medium">
-        {% elif event_data['difficulty'] == 'hard' %}
-        <img src="/static/images/hard.png" class="position-absolute end-0 top-0 mt-3 me-4 difficulty-icon"
-            alt="difficulty_hard">
-        {% endif %}
+        {% set difficulty_label = {'easy': 'Lehká trať', 'medium': 'Středně těžká trať', 'hard': 'Těžká trať'} %}
+        {% set level = event_data['difficulty'] if event_data['difficulty'] in difficulty_label else 'medium' %}
 
-        <!-- Short Description -->
-        {% if event_data['desc_short'] %}
-        <h2 id="description">
-            {{event_data['desc_short']}}
-        </h2>
-        {% endif %}
+        <div class="event-top">
+            {% if event_data['desc_short'] %}
+            <p class="event-lead">{{ event_data['desc_short'] }}</p>
+            {% endif %}
+            {{ m.difficulty(level, difficulty_label) }}
+        </div>
 
         <!-- Table with basic info -->
-        <table class="table mt-4">
+        <table class="event-facts">
             <!-- Date -->
+            {% if event_data['date'] %}
             <tr>
-                <td>Datum:</td>
-                <td>{{event_data['date'] | czech_date_from_date }}</td>
+                <th scope="row">Datum:</th>
+                <td>{{ event_data['date'] | czech_date_from_date }}</td>
             </tr>
+            {% endif %}
 
             <!-- Organizer -->
-            {% if event_data['organizer'] and event_data['organizer_logo_large'] %}
+            {% if event_data['organizer'] %}
+            {% set organizer_logo = event_data['organizer_logo_large'] or event_data['organizer_logo'] %}
             <tr>
-                <td>Pořadatel:</td>
+                <th scope="row">Pořadatel:</th>
                 <td>
-                    <img src="/static/images/logos/{{event_data['organizer_logo_large']}}" alt="organizer logo"
-                        class="me-2" style="height: 30px;">
-                    {{event_data['organizer']}}
+                    {% if organizer_logo %}
+                    <img src="{{ url_for('static', filename='images/logos/' + organizer_logo) }}" alt="">
+                    {% endif %}
+                    {{ event_data['organizer'] }}
                 </td>
-            </tr>
-            {% elif event_data['organizer'] and event_data['organizer_logo'] %}
-            <tr>
-                <td>Pořadatel:</td>
-                <td>
-                    <img src="/static/images/logos/{{event_data['organizer_logo']}}" alt="organizer logo" class="me-2"
-                        style="height: 30px;">
-                    {{event_data['organizer']}}
-                </td>
-            </tr>
-            {% elif event_data['organizer'] %}
-            <tr>
-                <td>Pořadatel:</td>
-                <td>{{event_data['organizer']}}</td>
             </tr>
             {% endif %}
 
             <!-- Entry Date -->
             {% if event_data['entry_date'] %}
             <tr>
-                <td>Přihlášky do:</td>
-                <td>{{event_data['entry_date'] | czech_date_from_datetime }}</td>
+                <th scope="row">Přihlášky do:</th>
+                <td>{{ event_data['entry_date'] | czech_date_from_datetime }}</td>
             </tr>
             {% endif %}
 
             <!-- Web -->
             {% if event_data['web'] %}
             <tr>
-                <td>Web:</td>
+                <th scope="row">Web:</th>
                 <td>
-                    <a href="{{ event_data['web'] }}">
-                        {% if event_data['web'] %}
-                        {{event_data['web']}}
-                        {% elif event_data['oris_id'] %}
-                        ORIS
-                        {% endif %}
-                    </a>
+                    <a href="{{ event_data['web'] }}" target="_blank" rel="noopener">{{ event_data['web'] }}</a>
                 </td>
             </tr>
             {% endif %}
+
             <!-- Place -->
             {% if event_data['place_desc'] %}
             <tr>
-                <td>Místo:</td>
-                <td>{{event_data['place_desc']}}</td>
+                <th scope="row">Místo:</th>
+                <td>{{ event_data['place_desc'] }}</td>
             </tr>
             {% endif %}
         </table>
 
+        {% if race_stats %}
+        <section class="event-podium">
+            <h2>Výsledky závodu <span class="event-podium-count">{{ race_stats.participants | racer_count }}</span>
+            </h2>
+            {{ m.podium(race_stats) }}
+        </section>
+        {% endif %}
+
         <!-- Long description if present -->
         {% if event_data['desc_long'] %}
-        <div id="description">
-            {{event_data['desc_long']}}
+        <div class="event-description">
+            {% for paragraph in event_data['desc_long'] %}
+            <p>{{ paragraph }}</p>
+            {% endfor %}
         </div>
         {% endif %}
 
@@ -119,48 +108,45 @@
         {% if event_data['images'] %}
         <div class="text-center my-4">
             {% for image in event_data['images'] %}
-            <img src="/static/images/{{image}}" alt="logo" class="mx-2" style="max-height: 100px;">
+            <img src="{{ url_for('static', filename='images/' + image) }}" alt="" class="mx-2"
+                style="max-height: 100px;">
             {% endfor %}
         </div>
         {% endif %}
 
         <!-- Video if present -->
         {% if event_data['video_yt_id'] %}
-        <div class="text-center my-4">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{event_data['video_yt_id']}}"
-                title="YouTube video player" frameborder="0"
+        <div class="text-center my-4 video-wrapper">
+            <iframe src="https://www.youtube.com/embed/{{ event_data['video_yt_id'] }}"
+                title="Video ze závodu {{ event_data['name'] }}" frameborder="0" loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
             </iframe>
         </div>
         {% endif %}
 
-        <!-- Map -->
-        {% if event_data['gps_lat'] and event_data['gps_lon'] %}
-        <div id="map"></div>
-        <script type="text/javascript">
-            // Initialize map
-            var center = SMap.Coords.fromWGS84("{{event_data['gps_lon']}}", "{{event_data['gps_lat']}}");
-            var map = new SMap(JAK.gel("map"), center, 14);
-            map.addDefaultLayer(SMap.DEF_BASE).enable();
-            map.addDefaultControls();
+        <!-- Map of the event centre -->
+        {% if has_map %}
+        {% if mapy_api_key %}
+        <div id="map" data-lat="{{ event_data['gps_lat'] }}" data-lon="{{ event_data['gps_lon'] }}"
+            data-title="{{ event_data['name'] }} - centrum" data-place="{{ event_data['place_desc'] or '' }}"
+            data-apikey="{{ mapy_api_key }}"></div>
+        {% else %}
+        <p class="map-fallback">
+            <a href="https://mapy.com/zakladni?x={{ event_data['gps_lon'] }}&amp;y={{ event_data['gps_lat'] }}&amp;z=15&amp;source=coor&amp;id={{ event_data['gps_lon'] }},{{ event_data['gps_lat'] }}"
+                target="_blank" rel="noopener">Zobrazit centrum závodu na Mapy.com</a>
+        </p>
+        {% endif %}
+        {% endif %}
 
-            // Add marker layer
-            var layer = new SMap.Layer.Marker();
-            map.addLayer(layer);
-            layer.enable();
-
-            // Create info card
-            var card = new SMap.Card();
-            card.getHeader().innerHTML = "<strong>{{event_data['name']}} - centrum</strong>";
-            card.getBody().innerHTML = "{{event_data['place_desc']}}";
-
-            // Add marker with info card
-            var marker = new SMap.Marker(center, "myMarker");
-            marker.decorate(SMap.Marker.Feature.Card, card);
-            layer.addMarker(marker);
-        </script>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{% if has_map and mapy_api_key %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/event-map.js') }}"></script>
 {% endif %}
 {% endblock %}
