@@ -276,8 +276,16 @@
 }
 
 .race-logo {
+    width: 3.5rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.race-logo img {
     max-height: 34px;
-    max-width: 62px;
+    max-width: 100%;
     object-fit: contain;
 }
 
@@ -336,12 +344,42 @@
         --course-symbol-top: 1.125rem;
     }
 
+    /* The logo moves under the date rather than taking a column of its own:
+       on a phone those 40px come straight out of the race name, which was
+       already wrapping to three lines. */
     .race-head {
-        gap: var(--space-4);
+        display: grid;
+        grid-template-columns: 3.25rem 1fr;
+        grid-template-areas:
+            "date  body"
+            "logo  body"
+            "aside aside";
+        column-gap: var(--space-4);
+        align-items: start;
     }
 
     .race-date {
-        width: 3.25rem;
+        grid-area: date;
+        width: auto;
+    }
+
+    .race-logo {
+        grid-area: logo;
+        width: auto;
+        justify-content: flex-start;
+        margin-top: var(--space-2);
+    }
+
+    .race-logo img {
+        max-height: 26px;
+    }
+
+    .race-body {
+        grid-area: body;
+    }
+
+    .race-aside {
+        grid-area: aside;
     }
 
     .race-aside {

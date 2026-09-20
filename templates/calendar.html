@@ -83,6 +83,15 @@
           {% endif %}
         </div>
 
+        {#- Always rendered, even when a race has no logo, so the names stay
+            aligned down the page. The organiser's name is in the text below,
+            so the image is decorative and takes an empty alt. -#}
+        <div class="race-logo">
+          {% if event.get('organizer_logo') %}
+          <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}" alt="" loading="lazy">
+          {% endif %}
+        </div>
+
         <div class="race-body">
           {% if is_next %}
           <span class="race-badge">Nejbližší závod</span>
