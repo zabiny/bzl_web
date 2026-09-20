@@ -1,9 +1,11 @@
 {
     "oris_id": 8811,
+    "name": "Sportega BZL: Pohár Legendy",
+    "date": "2025-01-26",
     "is_bzl": true,
+    "difficulty": "easy",
     "desc_short": "Městský sprint",
     "desc_long": "Již tradiční Pohár Legendy Vás v klasickém formátu zve znovu do Líšně na rychlé městské tratě.",
-    "difficulty": "easy",
     "place_desc": "Líšeň",
     "organizer": "(K + J)",
     "organizer_logo": "zbm.png",

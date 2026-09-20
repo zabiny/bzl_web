@@ -1,8 +1,16 @@
 {
     "oris_id": 7348,
+    "name": "BZL: Pohár Legendy",
+    "date": "2023-01-08",
     "is_bzl": true,
-    "desc_short": "Městský sprint",
     "difficulty": "easy",
+    "desc_short": "Městský sprint",
     "desc_long": "Partnerem tohoto závodu je projekt Tipsport Sportuj s námi.",
-    "images": ["Tipsport_SPORTUJ_CUS_RGB.svg"]
+    "place_desc": "Brno - Kohoutovice",
+    "gps_lat": "49.197102",
+    "gps_lon": "16.538700",
+    "organizer": "SK Brno Žabovřesky",
+    "images": [
+        "Tipsport_SPORTUJ_CUS_RGB.svg"
+    ]
 }

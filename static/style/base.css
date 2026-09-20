@@ -1,0 +1,252 @@
+/* ===========================================================================
+ * Base: the page itself, typography, links, focus, print.
+ * Loads after tokens.css and after Bootstrap, so our rules win on equal
+ * specificity without !important.
+ * ======================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    background-color: var(--surface-page);
+
+    /* A column so the footer sits at the bottom of short pages. */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-3);
+}
+
+h1 { font-size: var(--text-2xl); }
+h2 { font-size: var(--text-xl); }
+h3 { font-size: var(--text-lg); }
+h4 { font-size: var(--text-md); }
+
+p {
+    margin: 0 0 var(--space-4);
+}
+
+/* Links keep their underline in running prose: colour alone is not an
+   accessible affordance, and this site's links sit in long Czech paragraphs.
+   They are removed only where the surrounding shape already says
+   "clickable" - navigation, buttons, cards, logos. */
+a {
+    color: var(--color-accent);
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.16em;
+}
+
+a:hover {
+    color: var(--color-accent-hover);
+}
+
+.nav-link,
+.btn,
+.skip-link,
+.pill,
+.footer-logo,
+.brand,
+.race-card a,
+.course a {
+    text-decoration: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* `hidden` is only `display: none` in the UA stylesheet, so any author rule
+   that sets display beats it. The results table sets `display: block` on its
+   rows below 780px, which would have made hidden rows reappear on exactly
+   the screens where filtering matters most. */
+[hidden] {
+    display: none !important;
+}
+
+/* Keyboard users meet the navigation on every page; this lets them past it. */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: var(--z-skip);
+    padding: var(--space-3) var(--space-5);
+    background-color: var(--color-accent);
+    color: var(--text-on-accent);
+    border-radius: 0 0 var(--radius-md) 0;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* The page shell */
+.shell {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+/* Long-form prose is capped separately from the shell: a table wants the
+   full width, a paragraph does not. */
+.prose {
+    max-width: var(--measure);
+}
+
+.prose ul,
+.prose ol {
+    margin: 0 0 var(--space-4);
+    padding-left: var(--space-5);
+}
+
+.prose li {
+    margin-bottom: var(--space-1);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Bootstrap bridge. Bootstrap 5.3 expresses its components as custom
+ * properties, so pointing those at our semantics is enough to stop it
+ * painting its own blue over the design. Some live on the component rather
+ * than :root, which is why the component rules below exist.
+ * ------------------------------------------------------------------------ */
+:root {
+    --bs-body-bg: var(--surface-base);
+    --bs-body-color: var(--text-primary);
+    --bs-body-font-family: var(--font-body);
+    --bs-border-color: var(--border-default);
+    --bs-link-color: var(--color-accent);
+    --bs-link-hover-color: var(--color-accent-hover);
+    --bs-primary: var(--color-accent);
+    --bs-emphasis-color: var(--text-primary);
+    --bs-secondary-color: var(--text-secondary);
+    --bs-border-radius: var(--radius-md);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--color-accent);
+    --bs-btn-border-color: var(--color-accent);
+    --bs-btn-hover-bg: var(--color-accent-hover);
+    --bs-btn-hover-border-color: var(--color-accent-hover);
+    --bs-btn-active-bg: var(--color-accent-hover);
+    --bs-btn-color: var(--text-on-accent);
+    --bs-btn-hover-color: var(--text-on-accent);
+}
+
+/* News items are hand-written HTML and use `table table-bordered`; this is
+   the only Bootstrap class that survives from a fragment into the page. */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text-primary);
+    --bs-table-border-color: var(--border-default);
+}
+
+/* ---------------------------------------------------------------------------
+ * Print. Calendars and results get printed and carried to races, so the
+ * paper version is a feature rather than a checkbox.
+ * ------------------------------------------------------------------------ */
+@media print {
+    body {
+        display: block;
+        background: none;
+        color: var(--print-ink);
+    }
+
+    .site-nav,
+    .nav-backdrop,
+    .nav-toggle,
+    .footer-logos,
+    .skip-link,
+    .results-hint {
+        display: none !important;
+    }
+
+    .site-header {
+        background: none !important;
+        color: var(--print-ink) !important;
+        border-bottom: 1px solid var(--print-ink);
+    }
+
+    .site-header a,
+    .site-header .brand-name,
+    .site-header .brand-tagline {
+        color: var(--print-ink) !important;
+    }
+
+    .shell {
+        max-width: none;
+        padding-inline: 0;
+    }
+
+    .race-card,
+    .panel {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    .prose a[href^="http"]::after,
+    .news-content a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        word-break: break-all;
+    }
+
+    tr,
+    .course-row {
+        break-inside: avoid;
+    }
+}
+
+/* The site animates very little, but what it does should stop when asked.
+   This used to live in main.js, guarding the falling snow. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

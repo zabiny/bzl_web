@@ -1,5 +1,8 @@
 {
     "name": "Sportega BZL: Lesný sprint",
+    "date": "2026-01-11",
+    "gps_lat": "49.223420",
+    "gps_lon": "16.624825",
     "oris_id": 9517,
     "is_bzl": true,
     "desc_short": "Městský sprint",

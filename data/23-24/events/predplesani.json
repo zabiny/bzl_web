@@ -1,7 +1,12 @@
 {
     "oris_id": 8051,
+    "name": "BZL: Předplesání",
+    "date": "2023-11-25",
     "is_bzl": true,
-    "place_desc": "Žabiny",
     "difficulty": "easy",
-    "desc_short": "Sprint"
+    "desc_short": "Sprint",
+    "place_desc": "Žabiny",
+    "gps_lat": "49.214500",
+    "gps_lon": "16.580200",
+    "organizer": "SK Brno Žabovřesky"
 }

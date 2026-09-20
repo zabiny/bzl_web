@@ -1,0 +1,35 @@
+{#
+  Markup shared between pages.
+
+  The podium appears twice: folded into a race's row on the calendar, and
+  open on the race's own page. Keeping one definition means the two cannot
+  drift, which matters because they show the same numbers.
+#}
+
+{% macro podium(stats) %}
+<div class="podium">
+  {% for category, entries in stats.podium.items() %}
+  <div class="podium-category">
+    <h4>{{ category }} <span class="podium-count">{{ stats.category_counts[category] }}</span></h4>
+    <ol>
+      {% for entry in entries %}
+      <li>
+        <span class="place">{{ entry.place }}.</span>
+        <span class="runner">{{ entry.name }}</span>
+        <span class="time">{{ entry.time }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+
+{% macro difficulty(level, labels) %}
+{% set known = level if level in labels else 'medium' %}
+<span class="difficulty difficulty-{{ known }}">
+  <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+  <span class="visually-hidden">{{ labels[known] }}</span>
+</span>
+{% endmacro %}

@@ -1,3 +1,5 @@
+"""Loads the news items that make up the site's front page."""
+
 import re
 from datetime import date
 from pathlib import Path

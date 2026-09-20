@@ -1,0 +1,47 @@
+{
+    "jagrova aneta": {
+        "action": "merge",
+        "groups": [
+            [
+                "PBM0954",
+                "RBK0951"
+            ]
+        ]
+    },
+    "korpasova lucie": {
+        "action": "merge",
+        "groups": [
+            [
+                "LBM0151",
+                "TBM0151"
+            ]
+        ]
+    },
+    "semotamova martina": {
+        "action": "merge",
+        "groups": [
+            [
+                "ZBM8952",
+                "ZBM8955"
+            ]
+        ]
+    },
+    "stein vojtech": {
+        "action": "merge",
+        "groups": [
+            [
+                "0190001",
+                "nereg."
+            ]
+        ]
+    },
+    "uchytil ivo": {
+        "action": "merge",
+        "groups": [
+            [
+                "SJI1203",
+                "PZR1201"
+            ]
+        ]
+    }
+}

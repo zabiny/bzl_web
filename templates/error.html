@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block title %}Chyba {{ code }} - {{ site.short_title }}{% endblock %}
+
+{% block page_title %}Chyba {{ code }}{% endblock %}
+
+{% block body %}
+<div class="error-page">
+  <p class="error-code">{{ code }}</p>
+  <p>{{ message }}</p>
+  <p><a class="btn-accent" href="{{ url_for('home') }}">Zpět na úvodní stránku</a></p>
+</div>
+{% endblock %}
