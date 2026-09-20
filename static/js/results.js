@@ -60,7 +60,8 @@
             button: section.querySelector('[data-show-all]'),
             expanded: false,
             sortIndex: 0,
-            sortDescending: false,
+            reversed: false,
+            select: null,
         };
     });
 
@@ -76,7 +77,7 @@
             : null;
         const mode = kind ? kind.dataset.sort : 'rank';
 
-        if (mode === 'rank' && !group.sortDescending) {
+        if (mode === 'rank' && !group.reversed) {
             group.rows = group.standings.slice();
             return;
         }
@@ -114,7 +115,7 @@
         group.rows = decorated.map(function (entry) {
             return entry.row;
         });
-        if (group.sortDescending) {
+        if (group.reversed) {
             group.rows.reverse();
         }
     }
@@ -154,28 +155,96 @@
         });
     }
 
+    function modeOf(group, index) {
+        const header = group.headers[index];
+        const button = header ? header.querySelector('button') : null;
+        return button ? button.dataset.sort : 'rank';
+    }
+
+    /* Points sort best-first and names A-Z, so "natural" differs by column.
+       aria-sort has to report the direction the values actually end up in,
+       not which way the flag happens to point. */
+    function announce(group) {
+        const naturallyDescending = modeOf(group, group.sortIndex) === 'number';
+        const descending = naturallyDescending !== group.reversed;
+        group.headers.forEach(function (header) {
+            header.removeAttribute('aria-sort');
+        });
+        const active = group.headers[group.sortIndex];
+        if (active) {
+            active.setAttribute('aria-sort', descending ? 'descending' : 'ascending');
+        }
+    }
+
+    function applySort(group, index, allowToggle) {
+        if (allowToggle && group.sortIndex === index) {
+            group.reversed = !group.reversed;
+        } else {
+            group.sortIndex = index;
+            group.reversed = false;
+        }
+        if (group.select) {
+            group.select.value = String(index);
+        }
+        announce(group);
+        sortRows(group);
+        render();
+    }
+
+    /* The card layout hides the table header, so there is nothing to click.
+       Built from the header buttons rather than the template, so the labels
+       cannot drift from the columns - and so it only exists when the sorting
+       it drives exists. */
+    function buildSortControl(group) {
+        const sortable = [];
+        group.headers.forEach(function (header, index) {
+            const button = header.querySelector('button');
+            if (button) {
+                sortable.push({ index: index, label: button.textContent.trim() });
+            }
+        });
+        const table = group.section.querySelector('table');
+        if (sortable.length < 2 || !table) {
+            return;
+        }
+
+        const wrap = document.createElement('div');
+        wrap.className = 'sort-control';
+
+        const select = document.createElement('select');
+        select.id = 'sort-' + group.section.id;
+
+        const label = document.createElement('label');
+        label.setAttribute('for', select.id);
+        label.textContent = 'Seřadit podle';
+
+        sortable.forEach(function (entry) {
+            const option = document.createElement('option');
+            option.value = String(entry.index);
+            option.textContent = entry.label;
+            select.appendChild(option);
+        });
+        select.value = String(group.sortIndex);
+        select.addEventListener('change', function () {
+            applySort(group, parseInt(select.value, 10), false);
+        });
+
+        wrap.appendChild(label);
+        wrap.appendChild(select);
+        group.section.insertBefore(wrap, table);
+        group.select = select;
+    }
+
     groups.forEach(function (group) {
+        buildSortControl(group);
+
         group.headers.forEach(function (header, index) {
             const button = header.querySelector('button');
             if (!button) {
                 return;
             }
             button.addEventListener('click', function () {
-                if (group.sortIndex === index) {
-                    group.sortDescending = !group.sortDescending;
-                } else {
-                    group.sortIndex = index;
-                    group.sortDescending = false;
-                }
-                group.headers.forEach(function (other) {
-                    other.removeAttribute('aria-sort');
-                });
-                header.setAttribute(
-                    'aria-sort',
-                    group.sortDescending ? 'descending' : 'ascending'
-                );
-                sortRows(group);
-                render();
+                applySort(group, index, true);
             });
         });
 

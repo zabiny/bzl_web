@@ -112,15 +112,34 @@
     color: var(--text-faded);
 }
 
-.results-table tbody tr:hover td,
-.results-table tbody tr:hover th {
-    background-color: var(--surface-sunken);
-}
+/* Row hover belongs to the table layout only. In the card layout the cells
+   are blocks inside a tinted card, so a hover background sat on top of the
+   medal colour and hid it - `tbody tr:hover td` outranks `.medal-gold td`.
+   Guarded by `hover: hover` as well, so a touch screen does not keep a row
+   highlighted after a tap. */
+@media (min-width: 781px) and (hover: hover) {
+    .results-table tbody tr:hover td,
+    .results-table tbody tr:hover th {
+        background-color: var(--surface-sunken);
+    }
 
-.results-table .medal-gold:hover td,
-.results-table .medal-silver:hover td,
-.results-table .medal-bronze:hover td {
-    filter: brightness(0.98);
+    /* A medal row keeps its own colour on hover. Re-stated rather than
+       excluded with :not(), because these have to OUTRANK the rule above and
+       a negation of the same weight would not. */
+    .results-table tbody tr.medal-gold:hover td,
+    .results-table tbody tr.medal-gold:hover th {
+        background-color: var(--medal-gold-row);
+    }
+
+    .results-table tbody tr.medal-silver:hover td,
+    .results-table tbody tr.medal-silver:hover th {
+        background-color: var(--medal-silver-row);
+    }
+
+    .results-table tbody tr.medal-bronze:hover td,
+    .results-table tbody tr.medal-bronze:hover th {
+        background-color: var(--medal-bronze-row);
+    }
 }
 
 .results-empty {
@@ -279,3 +298,35 @@
 }
 
 /* The header row is hidden on a phone, so sorting is a desktop affordance. */
+
+/* Sorting on a narrow screen.
+
+   The table header is hidden in the card layout, so there is nothing to
+   click. This is the same sort, offered as a select - one tap, the platform's
+   own picker, and it reads out properly. Built by results.js from the header
+   buttons, so the labels cannot drift from the columns. */
+.sort-control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.sort-control select {
+    flex-grow: 1;
+    min-width: 0;
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-hair) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-base);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+@media (min-width: 781px) {
+    .sort-control {
+        display: none;
+    }
+}
