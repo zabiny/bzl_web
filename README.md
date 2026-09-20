@@ -276,6 +276,10 @@ Ties are shown, not resolved: the `Place` column is already
 standard-competition-ranked by the timing software, so a shared first place
 appears as two runners at 1. and the next at 3.
 
+The same podium appears in two places — folded into the race's row on the
+calendar, and open on the race's own page. Both render `templates/_macros.html`,
+so they cannot drift.
+
 ### Finding yourself in the standings
 
 Every runner is in the HTML, but each category opens showing its first 15 and
@@ -283,8 +287,13 @@ offers the rest behind a button — the page is 681 rows otherwise. The search
 box filters across the whole field, not just what is on screen, and it
 ignores diacritics: typing `adame` finds *Adámek*, `cerny` finds *Černý*.
 
-Both are progressive enhancements. With JavaScript off, every runner is
-listed and nothing is hidden.
+Any column can be sorted by clicking its header — including each individual
+race, which answers "who was fastest at Lesný sprint?" without leaving the
+standings. Points sort best-first; a race somebody did not run sorts last
+either way round, because "no result" is not a low score.
+
+All three are progressive enhancements. With JavaScript off every runner is
+listed, nothing is hidden, and the table arrives in standings order.
 
 ### Medals
 

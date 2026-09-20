@@ -237,3 +237,45 @@
     cursor: pointer;
     font-family: var(--font-body);
 }
+
+/* Sortable headers. The header is still a <th scope="col">; the button inside
+   it is what takes focus and carries the click, so the table keeps its
+   semantics and the keyboard gets a real control. */
+.results-table th button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+}
+
+.results-table th button::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    opacity: 0.25;
+}
+
+.results-table th[aria-sort] button {
+    color: var(--color-accent);
+}
+
+.results-table th[aria-sort] button::after {
+    opacity: 1;
+}
+
+.results-table th[aria-sort="ascending"] button::after {
+    border-top: 0;
+    border-bottom: 5px solid currentColor;
+}
+
+/* The header row is hidden on a phone, so sorting is a desktop affordance. */

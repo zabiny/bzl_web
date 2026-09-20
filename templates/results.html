@@ -42,12 +42,19 @@
   <table class="results-table">
     <thead>
       <tr>
-        <th scope="col" class="col-rank">Pořadí</th>
-        {% for column in df.columns %}
-        <th scope="col"
-          class="{% if loop.index0 == 0 %}col-name{% elif loop.index0 == 1 %}col-reg{% elif loop.index0 == 2 %}col-total{% else %}col-race{% endif %}">
-          {{ column }}
+        <th scope="col" class="col-rank" aria-sort="ascending">
+          <button type="button" data-sort="rank">Pořadí</button>
         </th>
+        {% for column in df.columns %}
+        {%- if loop.index0 == 0 -%}
+        <th scope="col" class="col-name"><button type="button" data-sort="name">{{ column }}</button></th>
+        {%- elif loop.index0 == 1 -%}
+        <th scope="col" class="col-reg">{{ column }}</th>
+        {%- elif loop.index0 == 2 -%}
+        <th scope="col" class="col-total"><button type="button" data-sort="number">{{ column }}</button></th>
+        {%- else -%}
+        <th scope="col" class="col-race"><button type="button" data-sort="number">{{ column }}</button></th>
+        {%- endif -%}
         {% endfor %}
       </tr>
     </thead>

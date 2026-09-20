@@ -129,6 +129,33 @@ def test_info_page_states_the_scoring_rule_without_a_race_count(client):
     assert "možných" not in html
 
 
+def test_an_event_page_shows_its_own_podium(client):
+    """The calendar folds it away; the race's own page has room to show it."""
+    html = client.get("/26-27/event/s_mapou/").get_data(as_text=True)
+
+    assert "Výsledky závodu" in html
+    assert "18 závodníků" in html
+    # The tie for first in H, shown rather than resolved.
+    assert "Novák Jan" in html
+    assert "Dvořák Petr" in html
+
+
+def test_an_event_without_published_results_shows_no_podium(client):
+    html = client.get("/26-27/event/bez_mapy/").get_data(as_text=True)
+    assert "Výsledky závodu" not in html
+
+
+def test_race_columns_are_sortable(client):
+    """
+    Sorting hangs off a button inside the header cell.
+
+    That keeps the table's semantics and gives the keyboard a real control.
+    """
+    html = client.get("/26-27/results").get_data(as_text=True)
+    assert 'data-sort="number"' in html
+    assert 'data-sort="name"' in html
+
+
 def test_results_page_marks_medals(client):
     html = client.get("/26-27/results").get_data(as_text=True)
     assert "medal-gold" in html

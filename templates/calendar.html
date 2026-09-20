@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% import '_macros.html' as m %}
 
 {% block title %}Kalendář závodů {{ season | full_season }} - {{ site.short_title }}{% endblock %}
 
@@ -21,14 +22,6 @@
 {% endblock %}
 
 {% set difficulty_label = {'easy': 'Lehká trať', 'medium': 'Středně těžká trať', 'hard': 'Těžká trať'} %}
-
-{% macro difficulty(level) %}
-{% set known = level if level in difficulty_label else 'medium' %}
-<span class="difficulty difficulty-{{ known }}">
-  <span class="pip"></span><span class="pip"></span><span class="pip"></span>
-  <span class="visually-hidden">{{ difficulty_label[known] }}</span>
-</span>
-{% endmacro %}
 
 {% block body %}
 {% if not events %}
@@ -106,7 +99,7 @@
         </div>
 
         <div class="race-aside">
-          {{ difficulty(event['difficulty']) }}
+          {{ m.difficulty(event['difficulty'], difficulty_label) }}
           {% if is_next and event.get('web') %}
           <a class="btn-accent" href="{{ event['web'] }}" target="_blank" rel="noopener">Přihlásit v ORISu</a>
           {% endif %}
@@ -119,22 +112,7 @@
           <span class="visually-hidden">{{ event['name'] }} &ndash; výsledky, </span>
           {{ stats.participants | racer_count }}
         </summary>
-        <div class="podium">
-          {% for category, entries in stats.podium.items() %}
-          <div class="podium-category">
-            <h4>{{ category }} <span class="podium-count">{{ stats.category_counts[category] }}</span></h4>
-            <ol>
-              {% for entry in entries %}
-              <li>
-                <span class="place">{{ entry.place }}.</span>
-                <span class="runner">{{ entry.name }}</span>
-                <span class="time">{{ entry.time }}</span>
-              </li>
-              {% endfor %}
-            </ol>
-          </div>
-          {% endfor %}
-        </div>
+        {{ m.podium(stats) }}
       </details>
       {% endif %}
     </div>

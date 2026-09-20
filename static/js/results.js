@@ -1,13 +1,13 @@
-/* Season standings: filtering by name, and keeping the page a sensible
- * length without hiding anyone.
+/* Season standings: sorting, filtering by name, and keeping the page a
+ * sensible length without hiding anyone.
  *
  * Every runner is in the HTML. Each category shows its first rows and offers
  * the rest behind a button, so the page opens short, but a search still finds
  * the 190th runner in H without a round trip - which matters at a race, where
  * the phone signal is whatever the car park has.
  *
- * Without JavaScript nothing is hidden: the truncation is an enhancement, not
- * a requirement.
+ * Without JavaScript nothing is hidden and nothing is sorted: the table
+ * arrives in standings order, which is the order that matters most.
  */
 (function () {
     'use strict';
@@ -25,6 +25,15 @@
             .toLowerCase();
     }
 
+    /* A race cell reads "182 (3.)", or "0 (DISK)", or the missing marker.
+     * Sorting on the points is what people mean by sorting on a race: it
+     * ranks the field, and a disqualification belongs at the bottom next to
+     * the people who did not run it. */
+    function numberIn(text) {
+        const match = text.match(/-?\d+/);
+        return match ? parseInt(match[0], 10) : null;
+    }
+
     const input = document.getElementById('runner-filter');
     const sections = Array.from(document.querySelectorAll('.results-category'));
     if (!sections.length) {
@@ -33,19 +42,82 @@
 
     const groups = sections.map(function (section) {
         const rows = Array.from(section.querySelectorAll('tbody tr'));
-        const button = section.querySelector('[data-show-all]');
         return {
             section: section,
+            body: section.querySelector('tbody'),
             rows: rows,
-            // Folded once, not on every keystroke: five categories of these.
+            // The order the server sent, which is the standings order.
+            standings: rows.slice(),
+            headers: Array.from(section.querySelectorAll('thead th')),
+            // Folded once, not on every keystroke: hundreds of these.
             names: rows.map(function (row) {
                 const cell = row.querySelector('.col-name');
                 return fold(cell ? cell.textContent : '');
             }),
-            button: button,
+            // Where each row started, so a filter can find its folded name
+            // after sorting has moved it.
+            index: new Map(rows.map(function (row, i) { return [row, i]; })),
+            button: section.querySelector('[data-show-all]'),
             expanded: false,
+            sortIndex: 0,
+            sortDescending: false,
         };
     });
+
+    function cellText(row, index) {
+        const cell = row.children[index];
+        return cell ? cell.textContent.trim() : '';
+    }
+
+    function sortRows(group) {
+        const index = group.sortIndex;
+        const kind = group.headers[index]
+            ? group.headers[index].querySelector('button')
+            : null;
+        const mode = kind ? kind.dataset.sort : 'rank';
+
+        if (mode === 'rank' && !group.sortDescending) {
+            group.rows = group.standings.slice();
+            return;
+        }
+
+        const decorated = group.rows.map(function (row, position) {
+            return { row: row, position: position };
+        });
+
+        decorated.sort(function (a, b) {
+            let result;
+            if (mode === 'name') {
+                result = fold(cellText(a.row, index)).localeCompare(
+                    fold(cellText(b.row, index)),
+                    'cs'
+                );
+            } else {
+                const left = numberIn(cellText(a.row, index));
+                const right = numberIn(cellText(b.row, index));
+                if (left === null && right === null) {
+                    result = 0;
+                } else if (left === null) {
+                    // A race somebody did not run sorts last either way round,
+                    // because "no result" is not a low score.
+                    return 1;
+                } else if (right === null) {
+                    return -1;
+                } else {
+                    result = right - left;
+                }
+            }
+            // Ties keep the standings order rather than shuffling.
+            return result !== 0 ? result : a.position - b.position;
+        });
+
+        group.rows = decorated.map(function (entry) {
+            return entry.row;
+        });
+        if (group.sortDescending) {
+            group.rows.reverse();
+        }
+    }
 
     function render() {
         const needle = input ? fold(input.value.trim()) : '';
@@ -53,13 +125,13 @@
 
         groups.forEach(function (group) {
             let shown = 0;
-            group.rows.forEach(function (row, i) {
-                const matches = !searching || group.names[i].includes(needle);
+            group.rows.forEach(function (row) {
+                const original = group.index.get(row);
+                const matches = !searching || group.names[original].includes(needle);
                 // While searching, every match is shown wherever it ranks.
                 const withinLimit =
                     searching || group.expanded || shown < VISIBLE_BY_DEFAULT;
-                const visible = matches && withinLimit;
-                row.hidden = !visible;
+                row.hidden = !(matches && withinLimit);
                 if (matches) {
                     shown += 1;
                 }
@@ -73,10 +145,40 @@
                 group.button.hidden =
                     searching || group.rows.length <= VISIBLE_BY_DEFAULT;
             }
+
+            // Re-append in the current order. Appending a node that is already
+            // in the document moves it, so this needs no removal pass.
+            group.rows.forEach(function (row) {
+                group.body.appendChild(row);
+            });
         });
     }
 
     groups.forEach(function (group) {
+        group.headers.forEach(function (header, index) {
+            const button = header.querySelector('button');
+            if (!button) {
+                return;
+            }
+            button.addEventListener('click', function () {
+                if (group.sortIndex === index) {
+                    group.sortDescending = !group.sortDescending;
+                } else {
+                    group.sortIndex = index;
+                    group.sortDescending = false;
+                }
+                group.headers.forEach(function (other) {
+                    other.removeAttribute('aria-sort');
+                });
+                header.setAttribute(
+                    'aria-sort',
+                    group.sortDescending ? 'descending' : 'ascending'
+                );
+                sortRows(group);
+                render();
+            });
+        });
+
         if (!group.button) {
             return;
         }

@@ -15,7 +15,7 @@ from results_calculator.race import hdd_max_year, zv_kid_year, zv_vet_year
 from src.event_manager import EventManager
 from src.news import load_news
 from src.oris import BASE_URL as ORIS_URL
-from src.race_stats import race_stats_by_event
+from src.race_stats import load_race_stats, race_stats_by_event
 from src.results import load_season_results
 from src.site_config import load_site_config
 
@@ -235,9 +235,11 @@ def event(season: str, event_id: str) -> str:
     ev = em.get_event(season, event_id)
     if ev is None:
         abort(404)
+    stats = load_race_stats(season).get(ev.oris_id) if ev.oris_id else None
     return render_template(
         "event.html",
         event_data=ev.to_dict(),
+        race_stats=stats,
         mapy_api_key=os.environ.get("MAPY_API_KEY", ""),
     )
 
