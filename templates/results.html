@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% import '_macros.html' as m %}
 
 {% block title %}Celkové výsledky {{ season | full_season }} - {{ site.short_title }}{% endblock %}
 
@@ -12,14 +13,7 @@
 {% set medal_label = {'medal-gold': '1. místo', 'medal-silver': '2. místo', 'medal-bronze': '3. místo'} %}
 
 {% block body %}
-<div class="season-picker">
-  <label for="season-selector">Sezóna</label>
-  <select id="season-selector" onchange="window.location.href = '/' + this.value + '/results'">
-    {% for s in all_seasons | sort(reverse=True) %}
-    <option value="{{ s }}" {% if s==season %}selected{% endif %}>{{ s | full_season }}</option>
-    {% endfor %}
-  </select>
-</div>
+{{ m.season_picker(all_seasons, season, 'results') }}
 
 {% if not results %}
 <p class="results-empty">Výsledky pro tuto sezónu nejsou k dispozici.</p>

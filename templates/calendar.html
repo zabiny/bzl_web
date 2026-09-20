@@ -24,6 +24,8 @@
 {% set difficulty_label = {'easy': 'Lehká trať', 'medium': 'Středně těžká trať', 'hard': 'Těžká trať'} %}
 
 {% block body %}
+{{ m.season_picker(all_seasons, season, 'calendar') }}
+
 {% if not events %}
 <p class="prose">Pro tuto sezónu zatím nejsou naplánované žádné závody.</p>
 {% else %}
@@ -74,22 +76,25 @@
 
     <div class="race-card {{ 'race-card-next' if is_next }} {{ 'race-past' if event['is_past'] }}">
       <div class="race-head">
-        <div class="race-date">
-          {% if event['date'] %}
-          <span class="race-day">{{ event['date'] | day_from_date }}</span>
-          <span class="race-month">{{ event['date'] | month_and_year_from_date | upper }}</span>
-          {% else %}
-          <span class="race-date-unknown">termín<br>upřesníme</span>
-          {% endif %}
-        </div>
+        <div class="race-ident">
+          <div class="race-date">
+            {% if event['date'] %}
+            <span class="race-day">{{ event['date'] | day_from_date }}</span>
+            <span class="race-month">{{ event['date'] | month_and_year_from_date | upper }}</span>
+            {% else %}
+            <span class="race-date-unknown">termín<br>upřesníme</span>
+            {% endif %}
+          </div>
 
-        {#- Always rendered, even when a race has no logo, so the names stay
-            aligned down the page. The organiser's name is in the text below,
-            so the image is decorative and takes an empty alt. -#}
-        <div class="race-logo">
-          {% if event.get('organizer_logo') %}
-          <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}" alt="" loading="lazy">
-          {% endif %}
+          {#- Always rendered, even when a race has no logo, so the names stay
+              aligned down the page. The organiser's name is in the text
+              beside it, so the image is decorative and takes an empty alt. -#}
+          <div class="race-logo">
+            {% if event.get('organizer_logo') %}
+            <img src="{{ url_for('static', filename='images/logos/' + event['organizer_logo']) }}" alt=""
+              loading="lazy">
+            {% endif %}
+          </div>
         </div>
 
         <div class="race-body">

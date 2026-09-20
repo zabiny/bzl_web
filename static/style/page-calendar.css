@@ -86,8 +86,15 @@
     height: var(--course-symbol-size);
 }
 
-.course-symbol svg {
+/* The symbols carry a viewBox, so let them fill their box rather than keeping
+   the width the markup happens to state. Without this they stayed 36px wide
+   while --course-symbol-size shrank on narrow screens, and the connecting
+   line ran 4px off the centre of every circle. */
+.course-symbol svg,
+.course-dot svg {
     display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .course-number {
@@ -152,13 +159,6 @@
     height: var(--course-dot-size);
 }
 
-/* Without this the SVG is an inline box: it sits on the text baseline and is
-   pushed below its container by the descender space, which closed the gap
-   under the dot and widened the one above it. */
-.course-dot svg {
-    display: block;
-}
-
 .course-row-aside .course-line-in {
     height: calc(var(--course-dot-top) - var(--course-gap));
 }
@@ -189,6 +189,16 @@
     display: flex;
     align-items: center;
     gap: var(--space-5);
+}
+
+/* Date and logo together: who is running this race, and when. Grouping them
+   means the pair can turn into a column on a phone without the two ending up
+   in different grid rows and drifting apart. */
+.race-ident {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-shrink: 0;
 }
 
 .race-date {
@@ -348,26 +358,24 @@
        on a phone those 40px come straight out of the race name, which was
        already wrapping to three lines. */
     .race-head {
-        display: grid;
-        grid-template-columns: 3.25rem 1fr;
-        grid-template-areas:
-            "date  body"
-            "logo  body"
-            "aside aside";
-        column-gap: var(--space-4);
-        align-items: start;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: var(--space-4);
+    }
+
+    .race-ident {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-2);
+        width: 3.25rem;
     }
 
     .race-date {
-        grid-area: date;
         width: auto;
     }
 
     .race-logo {
-        grid-area: logo;
         width: auto;
-        justify-content: flex-start;
-        margin-top: var(--space-2);
     }
 
     .race-logo img {
@@ -375,11 +383,7 @@
     }
 
     .race-body {
-        grid-area: body;
-    }
-
-    .race-aside {
-        grid-area: aside;
+        flex: 1 1 0;
     }
 
     .race-aside {

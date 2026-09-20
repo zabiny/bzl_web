@@ -584,3 +584,22 @@
         padding: var(--space-3) var(--space-4);
     }
 }
+
+/* Season picker, on both the calendar and the results page. */
+.season-picker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.season-picker select {
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-hair) solid var(--border-default);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-base);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+}
+

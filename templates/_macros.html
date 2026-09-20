@@ -33,3 +33,20 @@
   <span class="visually-hidden">{{ labels[known] }}</span>
 </span>
 {% endmacro %}
+
+
+{#
+  The season picker. Both the calendar and the results page need one - the
+  navigation only ever links to the newest season, so without this an older
+  season is reachable only by editing the URL.
+#}
+{% macro season_picker(seasons, current, page) %}
+<div class="season-picker">
+  <label for="season-selector">Sezóna</label>
+  <select id="season-selector" onchange="window.location.href = '/' + this.value + '/{{ page }}'">
+    {% for s in seasons | sort(reverse=True) %}
+    <option value="{{ s }}" {% if s == current %}selected{% endif %}>{{ s | full_season }}</option>
+    {% endfor %}
+  </select>
+</div>
+{% endmacro %}
