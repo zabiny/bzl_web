@@ -21,8 +21,21 @@ def test_pages_render(client, url):
     assert client.get(url).status_code == 200
 
 
-def test_home_redirects_to_news(client):
+def test_home_redirects_to_the_newest_calendar(client):
+    """The commonest visit is "when is the next race", so land on it."""
     response = client.get("/")
+
+    assert response.status_code == 302
+    assert "/26-27/calendar" in response.headers["Location"]
+
+
+def test_home_falls_back_to_news_before_any_season_exists(flask_app, monkeypatch):
+    """An empty calendar is a worse welcome than the last post."""
+    import app as app_module
+
+    monkeypatch.setattr(app_module.em, "get_latest_season", lambda: None)
+    response = flask_app.test_client().get("/")
+
     assert response.status_code == 302
     assert "/news" in response.headers["Location"]
 

@@ -73,8 +73,8 @@
                     </svg>
                 </button>
 
-                <a class="nav-link {% if request.path == '/' or '/news' in request.path %}active{% endif %}"
-                    href="{{ url_for('home') }}">Novinky</a>
+                <a class="nav-link {% if '/news' in request.path %}active{% endif %}"
+                    href="{{ url_for('news') }}">Novinky</a>
                 <a class="nav-link {% if request.path == '/info' %}active{% endif %}"
                     href="{{ url_for('info') }}">Informace</a>
                 {% if current_season %}

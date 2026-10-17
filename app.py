@@ -118,14 +118,22 @@ def inject_globals() -> dict[str, object]:
 @app.route("/home")
 def home() -> Response:
     """
-    Redirect to the news page.
+    Redirect to the newest season's calendar.
+
+    The commonest reason to open the site is to find out when the next race
+    is, and the calendar answers that at a glance. News is a few posts a
+    season, so it is a page to visit rather than a page to land on.
 
     Returns
     -------
-    Redirect response to the news page.
+    Redirect to the calendar, or to the news page before any season exists -
+    an empty calendar would be a worse welcome than the last post.
 
     """
-    return redirect(url_for("news"))
+    season = em.get_latest_season()
+    if season is None:
+        return redirect(url_for("news"))
+    return redirect(url_for("calendar", season=season))
 
 
 # Info
