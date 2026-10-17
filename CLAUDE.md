@@ -33,8 +33,17 @@ All three run in CI. `ruff format` is authoritative; line length 88.
   cannot be byte-reproduced and they are published results people care about.
   `TODO.md` explains why. Adding a column by pure insertion is fine, if every
   other column is verified unchanged line by line.
-- **`data/` is content, not code.** It is mounted as a volume in production, so
-  results and news are file edits rather than deployments. Do not bake it in.
+- **`data/` is versioned content, and git is its single source of truth.**
+  Every season's standings are tracked and publicly fetchable from GitHub, so
+  the results are open data that anyone can diff, archive or script against.
+  Publishing is: run the calculator, commit, push, redeploy.
+
+  **Do not mount it as a volume in production.** A volume would make the
+  server copy authoritative at runtime while git held a copy, and the two
+  drift: edit the volume and the published data goes stale, commit to git and
+  the site does not update. One source beats a restart being slightly faster
+  than a redeploy, for five races a season. The ORIS cache is different -
+  genuine runtime state - and keeps its own volume at `/var/cache/bzl`.
 - **The site must start without ORIS.** `EventManager` loads from configs plus
   the on-disk cache and never blocks on the network; the background scheduler
   does the fetching. Anything that reintroduces a network call on the import

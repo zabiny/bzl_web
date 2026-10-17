@@ -34,8 +34,10 @@ docker compose -f docker-compose.local.yml logs -f
 docker compose -f docker-compose.local.yml down
 ```
 
-Content is mounted, so editing anything under `data/` or `templates/news/` then
-restarting is enough — no rebuild. Code changes do need `--build`.
+Locally the working tree is bind-mounted, so editing anything under `data/` or
+`templates/news/` and restarting is enough — no rebuild. Code changes do need
+`--build`. That is a development convenience only; production bakes the content
+into the image.
 
 Without Docker:
 
@@ -112,12 +114,17 @@ To do, in order:
    Mapy.com instead of a map; nothing else is affected. The key already works
    locally.
 2. **Merge #77 into `devel`** and look at dev.bzl.zabiny.club.
-3. While in Coolify, note **which Build Pack** the application uses and whether
-   **`data/` is mounted as a persistent volume**, and write both into the
-   README. If `data/` is not mounted, publishing results still needs a redeploy
-   — not a regression, but mounting it is the single biggest operational win
-   left. The container writes nothing to `data/`; the ORIS cache lives in
-   `/var/cache/bzl` and degrades to a warning if it is not writable.
+3. While in Coolify, note **which Build Pack** the application uses and write
+   it into the README. It must build from `docker/Dockerfile`; an auto-detected
+   pack would miss the gunicorn config and the port.
+4. **Confirm `data/` is NOT mounted as a volume.** Earlier notes here called
+   mounting it the biggest operational win left; that was wrong. The standings
+   are tracked in git and publicly fetchable from GitHub, so git is the single
+   source of truth and the results are open data. A volume would make the
+   server copy authoritative at runtime and let the two drift. Publishing is
+   run the calculator, commit, push, redeploy. The ORIS cache is separate
+   runtime state and keeps its volume at `/var/cache/bzl`, degrading to a
+   warning if it is not writable.
 
 ### 3. ORIS — repaired, and the domain switched
 

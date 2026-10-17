@@ -50,9 +50,11 @@ cp .env.example .env     # then put your Mapy.com API key in it
 docker compose -f docker-compose.local.yml up -d --build
 ```
 
-The site listens on port **5099**. `data/` and `templates/news/` are mounted as
-volumes, so **publishing results or adding a news item does not need an image
-rebuild** — change the files and `docker compose restart web`.
+The site listens on port **5099**. Locally `data/` and `templates/news/` are
+bind-mounted from the working tree, so editing a result or a news item and
+running `docker compose restart web` is enough — no rebuild. That is a
+convenience for development; in production the content is baked into the
+image and git is the single source of truth (see below).
 
 ### Without Docker
 
@@ -154,9 +156,8 @@ and the link-preview tags; it is written once here. Dropping a sponsor is
 paragraph on the rules page about e-shop vouchers goes with them. Logo paths
 are relative to `static/images/`.
 
-This file is inside the mounted data volume, so a change needs a restart, not
-a rebuild. Old news items still name the sponsor of their time, which is as it
-should be — they are a record of what happened.
+Old news items still name the sponsor of their time, which is as it should be
+— they are a record of what happened.
 
 ### Post a news item
 
@@ -353,5 +354,17 @@ cosmetic differences (column order, which temporary id an unregistered runner
 gets). **Do not regenerate an old season's results unless you mean to.** New
 seasons are fully reproducible.
 
-**The `data/` directory is the content.** It is mounted into the container, so
-results and news are file edits, not deployments.
+**The `data/` directory is the content, and git is its single source of
+truth.** Every season's standings are tracked and publicly fetchable from
+GitHub, so the results are open data — anyone can diff them across seasons,
+archive them, or build statistics on them without asking.
+
+That is why `data/` is **not** mounted as a volume in production. A volume
+would make the server copy authoritative while git held a copy, and the two
+would drift: edit the volume and the open data goes stale; commit to git and
+the site does not update. Publishing is run the calculator, commit, push,
+redeploy — which is one step fewer than the mounted version, since that needs
+the same commit plus getting the files onto the server.
+
+The ORIS cache is a different thing — genuine runtime state — and does have
+its own volume, at `/var/cache/bzl`.
