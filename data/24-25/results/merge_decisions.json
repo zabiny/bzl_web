@@ -1,0 +1,20 @@
+{
+    "janikova marie": {
+        "action": "merge",
+        "groups": [
+            [
+                "ZBM7852",
+                "UBM7852"
+            ]
+        ]
+    },
+    "lacikova sabina": {
+        "action": "merge",
+        "groups": [
+            [
+                "0230001",
+                "0310001"
+            ]
+        ]
+    }
+}

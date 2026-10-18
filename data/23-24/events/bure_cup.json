@@ -1,7 +1,12 @@
 {
     "oris_id": 8053,
+    "name": "BZL: BURE Cup",
+    "date": "2024-02-18",
     "is_bzl": true,
     "difficulty": "easy",
+    "desc_short": "Sprint",
     "place_desc": "Přehrada",
-    "desc_short": "Sprint"
+    "gps_lat": "49.227600",
+    "gps_lon": "16.526501",
+    "organizer": "SK Brno Žabovřesky"
 }

@@ -1,10 +1,14 @@
 {
+    "oris_id": 7799,
     "name": "BZL: Adamna cup",
     "date": "2023-02-19",
-    "web": "http://cup.adamna.net",
     "is_bzl": true,
-    "oris_id": 7799,
     "difficulty": "medium",
+    "desc_short": "Sprint se self-choice",
     "desc_long": "Jubilejní dvacátý ročník tradičního zimního sprintového závodu okořeněného self-choice.",
-    "desc_short": "Sprint se self-choice"
+    "place_desc": "Brno - Černovice",
+    "gps_lat": "49.180599",
+    "gps_lon": "16.636600",
+    "web": "http://cup.adamna.net",
+    "organizer": "KOS TJ Tesla Brno"
 }

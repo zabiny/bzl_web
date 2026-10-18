@@ -1,7 +1,12 @@
 {
     "oris_id": 8052,
+    "name": "BZL: Pohár legendy",
+    "date": "2024-01-07",
     "is_bzl": true,
-    "desc_short": "Městský sprint",
     "difficulty": "easy",
-    "place_desc": "Líšeň"
+    "desc_short": "Městský sprint",
+    "place_desc": "Líšeň",
+    "gps_lat": "49.213100",
+    "gps_lon": "16.678400",
+    "organizer": "SK Brno Žabovřesky"
 }

@@ -1,0 +1,12 @@
+{
+    "name": "Sportega BZL: BURE Cup",
+    "date": "2027-03-07",
+    "oris_id": 10306,
+    "is_bzl": true,
+    "desc_short": "Klasický sprint",
+    "difficulty": "easy",
+    "place_desc": "Bystrc",
+    "organizer": "SK Brno Žabovřesky (Saša a spol.)",
+    "organizer_logo": "zbm.png",
+    "organizer_logo_large": "zbm_large.png"
+}

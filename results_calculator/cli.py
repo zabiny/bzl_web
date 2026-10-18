@@ -1,3 +1,5 @@
+"""Typer application and logging setup shared by the calculator commands."""
+
 import logging
 
 import typer
@@ -24,7 +26,15 @@ def setup_logging(verbose: bool = False) -> None:
 
 
 app = typer.Typer(
-    pretty_exceptions_show_locals=False, no_args_is_help=True, callback=setup_logging
+    pretty_exceptions_show_locals=False,
+    no_args_is_help=True,
+    callback=setup_logging,
+    # Without an explicit help string, typer uses the callback's docstring,
+    # which describes logging rather than the tool.
+    help=(
+        "Results calculator for the Sportega BZL. Fetches a race's results from "
+        "ORIS and combines a season's races into the overall standings."
+    ),
 )
 
 # Add verbose flag to all commands

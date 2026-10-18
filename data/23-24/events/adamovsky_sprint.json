@@ -1,8 +1,13 @@
 {
     "oris_id": 8384,
-    "place_desc": "Adamov",
-    "desc_short": "Sprint s kouskem lesa",
+    "name": "BZL: Adamovský sprint",
+    "date": "2024-03-03",
     "is_bzl": true,
     "difficulty": "easy",
-    "desc_long": "Krátký závod na sídlišti a v přilehlém lese. Schodiště, volby postupů. Neplést s Adamna Cupem :)"
+    "desc_short": "Sprint s kouskem lesa",
+    "desc_long": "Krátký závod na sídlišti a v přilehlém lese. Schodiště, volby postupů. Neplést s Adamna Cupem :)",
+    "place_desc": "Adamov",
+    "gps_lat": "49.291401",
+    "gps_lon": "16.661600",
+    "organizer": "OOB Spartak Adamov"
 }

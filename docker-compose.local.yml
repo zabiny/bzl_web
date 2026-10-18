@@ -1,0 +1,34 @@
+# Local development only:
+#
+#     docker compose -f docker-compose.local.yml up -d     # http://localhost:5099
+#
+# Deliberately NOT named docker-compose.yml. Production is deployed by Coolify
+# from a push to master, and a file with the default name sitting in the
+# repository root is the kind of thing a platform can pick up on its own. The
+# port binding and bind mounts here are right for a laptop and wrong for that
+# server, so the file is named so it can only ever be used on purpose.
+#
+# Content lives in ./data, mounted as a volume, so publishing a new result or
+# adding a race is a file change plus a restart - no image rebuild.
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: bzl_web
+    container_name: bzl_web
+    restart: unless-stopped
+    ports:
+      - "5099:5099"
+    environment:
+      # Get a key at https://developer.mapy.com/account/ (free tier is ample).
+      # Without it the event pages show a link to Mapy.com instead of a map.
+      MAPY_API_KEY: "${MAPY_API_KEY:-}"
+      BZL_LOG_LEVEL: "${BZL_LOG_LEVEL:-INFO}"
+    volumes:
+      - ./data:/web/data
+      - ./templates/news:/web/templates/news
+      - oris-cache:/var/cache/bzl
+
+volumes:
+  oris-cache:

@@ -1,7 +1,12 @@
 {
     "oris_id": 8385,
-    "place_desc": "Bílovice n S.",
+    "name": "BZL: Bílovický koláč",
+    "date": "2024-03-10",
     "is_bzl": true,
     "difficulty": "easy",
-    "desc_short": "bude upřesněno"
+    "desc_short": "bude upřesněno",
+    "place_desc": "Bílovice n S.",
+    "gps_lat": "49.244900",
+    "gps_lon": "16.672701",
+    "organizer": "OOB Spartak Adamov"
 }

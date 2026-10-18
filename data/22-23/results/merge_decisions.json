@@ -1,0 +1,56 @@
+{
+    "burt lukas": {
+        "action": "merge",
+        "groups": [
+            [
+                "210002",
+                "0200002"
+            ]
+        ]
+    },
+    "dvorak david": {
+        "action": "merge",
+        "groups": [
+            [
+                "RBK0702",
+                "ABM0702"
+            ]
+        ]
+    },
+    "graf miroslav": {
+        "action": "merge",
+        "groups": [
+            [
+                "30001",
+                "0010001"
+            ]
+        ]
+    },
+    "karasek antonin": {
+        "action": "merge",
+        "groups": [
+            [
+                "200001",
+                "nereg."
+            ]
+        ]
+    },
+    "ondrouch martin": {
+        "action": "merge",
+        "groups": [
+            [
+                "120001",
+                "nereg."
+            ]
+        ]
+    },
+    "travnicek adam": {
+        "action": "merge",
+        "groups": [
+            [
+                "270001",
+                "nereg."
+            ]
+        ]
+    }
+}

@@ -1,10 +1,13 @@
 {
-    "name": "Sportega BZL: TROLL Cup",
     "oris_id": 8925,
-    "desc_short": "Sprint",
-    "place_desc": "Slatina",
+    "name": "Sportega BZL: TROLL Cup",
+    "date": "2025-03-09",
     "is_bzl": true,
     "difficulty": "easy",
+    "desc_short": "Sprint",
+    "place_desc": "Slatina",
+    "gps_lat": "49.180048",
+    "gps_lon": "16.685572",
     "organizer": "TJ Spartak první brněnská",
     "organizer_logo": "pbm.png"
 }

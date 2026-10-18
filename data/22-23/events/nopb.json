@@ -1,8 +1,13 @@
 {
-    "name": "Mistrovství Brna v NOPB",
     "oris_id": 7369,
-    "web": "https://nopb.adamna.net/index.php?site=rozpis",
+    "name": "Mistrovství Brna v NOPB",
+    "date": "2022-11-03",
+    "is_bzl": false,
     "difficulty": "hard",
     "desc_short": "Noční sprint bez světla v parku",
-    "is_bzl": false
+    "place_desc": "Brno - Lesná",
+    "gps_lat": "49.237099",
+    "gps_lon": "16.623600",
+    "web": "https://nopb.adamna.net/index.php?site=rozpis",
+    "organizer": "O-mikron"
 }

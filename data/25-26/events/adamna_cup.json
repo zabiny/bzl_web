@@ -2,6 +2,8 @@
     "name": "Sportega BZL: Adamna cup",
     "oris_id": 9690,
     "date": "2025-11-30",
+    "gps_lat": "49.225670",
+    "gps_lon": "16.757369",
     "web": "http://cup.adamna.net",
     "is_bzl": true,
     "place_desc": "Mokrá-Horákov",

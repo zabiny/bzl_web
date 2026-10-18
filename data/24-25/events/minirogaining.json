@@ -1,10 +1,14 @@
 {
     "oris_id": 8931,
+    "name": "Předsilvestrovský (mini)rogaining",
+    "date": "2024-12-29",
     "is_bzl": false,
+    "difficulty": "hard",
     "desc_short": "Mini Rogaining",
     "desc_long": "Závod s volným pořadím kontrol a časovým limitem ~3 hodiny v převážně lesnatém terénu na pomezí JM a Vysočiny.",
-    "difficulty": "hard",
     "place_desc": "Rudka",
+    "gps_lat": "49.241790",
+    "gps_lon": "16.331030",
     "organizer": "Beta Ursus Rosice",
     "organizer_logo": "bbm.png"
 }

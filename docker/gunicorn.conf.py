@@ -1,3 +1,5 @@
+"""Gunicorn configuration for the production container."""
+
 loglevel = "info"
 errorlog = "-"  # stderr
 accesslog = "-"  # stdout

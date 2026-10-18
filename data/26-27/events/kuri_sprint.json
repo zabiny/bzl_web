@@ -1,0 +1,15 @@
+{
+    "name": "Sportega BZL: Kuří sprint",
+    "date": "2027-01-10",
+    "oris_id": 10305,
+    "is_bzl": true,
+    "desc_short": "Sprint",
+    "desc_long": [
+        "Klasický sprint kousek od Brna."
+    ],
+    "difficulty": "easy",
+    "place_desc": "Kuřim",
+    "organizer": "Kuči a spol.",
+    "organizer_logo": "zbm.png",
+    "organizer_logo_large": "zbm_large.png"
+}

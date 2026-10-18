@@ -1,11 +1,17 @@
 {
     "oris_id": 8777,
-    "web": "https://kratkyden.zabiny.club/",
-    "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
-    "difficulty": "hard",
+    "name": "Krátký den 2025",
+    "date": "2025-01-18",
     "is_bzl": false,
+    "difficulty": "hard",
+    "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
+    "desc_long": "Krátký den je štafetový závod v orienťáku po vzoru skandinávských klasik Tiomila a Jukola.\nPoměřte síly s ostatními kluby. V zimě, s čelovkou, v noci.\nZávod je vhodný pro celý oddíl, postavte na start týmy dospělých, žáků a nově i veteránů.\nMrkněte na video z letošního ročníku a nasajte atmosféru Krátkého dne.",
+    "place_desc": "Dubňany, SC Želva",
+    "gps_lat": "48.910118",
+    "gps_lon": "17.099490",
+    "web": "https://kratkyden.zabiny.club/",
+    "organizer": "SK Brno Žabovřesky",
     "organizer_logo": "zbm.png",
     "organizer_logo_large": "zbm_large.png",
-    "desc_long": "Krátký den je štafetový závod v orienťáku po vzoru skandinávských klasik Tiomila a Jukola.\nPoměřte síly s ostatními kluby. V zimě, s čelovkou, v noci.\nZávod je vhodný pro celý oddíl, postavte na start týmy dospělých, žáků a nově i veteránů.\nMrkněte na video z letošního ročníku a nasajte atmosféru Krátkého dne.",
     "video_yt_id": "1xHYvPZiq3c"
 }

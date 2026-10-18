@@ -1,10 +1,14 @@
 {
-    "name": "BZL: Adamna cup",
-    "web": "http://cup.adamna.net",
     "oris_id": 8188,
+    "name": "BZL: Adamna cup",
+    "date": "2023-12-03",
     "is_bzl": true,
-    "place_desc": "Kamechy",
     "difficulty": "medium",
+    "desc_short": "Sprint se self-choice",
     "desc_long": "Zábavný sprintový závod pro prokročilé i úplné začátečníky, který potrápí vaši fyzičku i mozkové závity.",
-    "desc_short": "Sprint se self-choice"
+    "place_desc": "Kamechy",
+    "gps_lat": "49.219700",
+    "gps_lon": "16.498600",
+    "web": "http://cup.adamna.net",
+    "organizer": "KOS TJ Tesla Brno"
 }

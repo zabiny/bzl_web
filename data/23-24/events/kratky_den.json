@@ -1,6 +1,12 @@
 {
     "oris_id": 8041,
-    "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
+    "name": "Krátký den 2024",
+    "date": "2024-01-13",
+    "is_bzl": false,
     "difficulty": "hard",
-    "is_bzl": false
+    "desc_short": "Česká obdoba severských štafet typu Tiomila a Jukola",
+    "place_desc": "Dubňany",
+    "gps_lat": "48.910999",
+    "gps_lon": "17.098900",
+    "organizer": "SK Brno Žabovřesky"
 }

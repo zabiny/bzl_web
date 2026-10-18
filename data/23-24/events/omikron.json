@@ -1,7 +1,12 @@
 {
     "oris_id": 8082,
-    "desc_short": "Krátký závod s s fintou",
-    "difficulty": "medium",
+    "name": "XXI. O-mikron",
+    "date": "2024-02-25",
     "is_bzl": false,
-    "place_desc": "Majdalenky"
+    "difficulty": "medium",
+    "desc_short": "Krátký závod s s fintou",
+    "place_desc": "Majdalenky",
+    "gps_lat": "49.230900",
+    "gps_lon": "16.616800",
+    "organizer": "O-mikron"
 }

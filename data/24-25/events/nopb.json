@@ -1,11 +1,14 @@
 {
-    "name": "Mistrovství Brna v NOPB",
     "oris_id": 8815,
-    "web": "https://nopb.adamna.net/index.php?site=rozpis",
+    "name": "Mistrovství Brna v NOPB",
+    "date": "2024-11-07",
+    "is_bzl": false,
     "difficulty": "hard",
     "desc_short": "Noční scorelauf bez světel a buzol.",
-    "is_bzl": false,
     "place_desc": "Židenice",
+    "gps_lat": "49.211240",
+    "gps_lon": "16.633830",
+    "web": "https://nopb.adamna.net/index.php?site=rozpis",
     "organizer": "Jiří Zelinka",
     "organizer_logo": "mbm.png"
 }
