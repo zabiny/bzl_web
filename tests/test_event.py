@@ -80,3 +80,25 @@ def test_oris_nulls_do_not_overwrite_anything():
     event = _event(place_desc="Brno", oris_id=1)
     event.apply_oris_data({"place_desc": None, "name": None})
     assert event.place_desc == "Brno"
+
+
+def test_a_race_is_sorted_by_its_real_date():
+    event = _event(date="2027-01-10", expected_date="2026-11-28")
+    assert event.sort_date == datetime.date(2027, 1, 10)
+
+
+def test_an_unconfirmed_race_is_sorted_by_its_expected_date():
+    """Otherwise it sorts to the end and takes the wrong number in the series."""
+    event = _event(expected_date="2026-11-28")
+    assert event.sort_date == datetime.date(2026, 11, 28)
+
+
+def test_a_race_with_neither_date_has_nothing_to_sort_by():
+    assert _event().sort_date is None
+
+
+def test_an_expected_date_never_makes_a_race_past():
+    """It is a guess, so it must not claim the race has been run."""
+    event = _event(expected_date="2020-01-01")
+    assert event.is_past is None
+    assert event.date is None

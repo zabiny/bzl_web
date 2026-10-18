@@ -74,6 +74,10 @@ class Event:
         Order in BZL series.
     date
         Event date.
+    expected_date
+        Roughly when the race falls, for a race whose exact day is not settled.
+    sort_date
+        The date the race is ordered by.
     is_past
         Whether the event has already occurred.
 
@@ -86,6 +90,7 @@ class Event:
         difficulty: Difficulty,
         name: str | None = None,
         date: str | None = None,
+        expected_date: str | None = None,
         place_desc: str | None = None,
         desc_long: str | list[str] | None = None,
         oris_id: int | None = None,
@@ -114,6 +119,10 @@ class Event:
             Event name (can be fetched from ORIS if not provided).
         date
             Event date in ISO format (YYYY-MM-DD).
+        expected_date
+            Roughly when the race falls, in ISO format, for a race whose exact
+            day the organiser has not settled yet. It only places the race in
+            the season; it is never shown and never makes the race past.
         place_desc
             Description of the event location.
         desc_long
@@ -160,6 +169,9 @@ class Event:
         self.bzl_order: int | None = None  # will be set by event manager
 
         self.date = datetime.date.fromisoformat(date) if date else None
+        self.expected_date = (
+            datetime.date.fromisoformat(expected_date) if expected_date else None
+        )
 
     @staticmethod
     def _as_paragraphs(desc_long: str | list[str] | None) -> list[str]:
@@ -176,6 +188,18 @@ class Event:
         if isinstance(desc_long, str):
             desc_long = desc_long.split("\n")
         return [p.strip() for p in desc_long if p and p.strip()]
+
+    @property
+    def sort_date(self) -> datetime.date | None:
+        """
+        The date the race is ordered by, which may be an expected one.
+
+        A race whose day is not settled still has a place in the season, and
+        sorting it to the end of the calendar puts it after races it comes
+        before and hands it the wrong number in the series. Deliberately not
+        used by :attr:`is_past`: a guessed date must never mark a race as run.
+        """
+        return self.date or self.expected_date
 
     @property
     def is_past(self) -> bool | None:
