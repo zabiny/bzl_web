@@ -78,15 +78,6 @@
             </tr>
             {% endif %}
 
-            <!-- Web -->
-            {% if event_data['web'] %}
-            <tr>
-                <th scope="row">Web:</th>
-                <td>
-                    <a href="{{ event_data['web'] }}" target="_blank" rel="noopener">{{ event_data['web'] }}</a>
-                </td>
-            </tr>
-            {% endif %}
 
             <!-- Place -->
             {% if event_data['place_desc'] %}
@@ -96,6 +87,17 @@
             </tr>
             {% endif %}
         </table>
+
+        {#- Entering is the most actionable thing on this page, and the facts
+            above it - the date, the deadline, the place - are what make it a
+            decision rather than a leap. Label it for where it actually goes. -#}
+        {% if event_data['web'] %}
+        <p class="event-entry">
+          <a class="btn-accent" href="{{ event_data['web'] }}" target="_blank" rel="noopener">
+            {%- if event_data['web'].startswith(oris_url) %}Přihlásit v ORISu{% else %}Web závodu{% endif -%}
+          </a>
+        </p>
+        {% endif %}
 
         {% if race_stats %}
         <section class="event-podium">

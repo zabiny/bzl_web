@@ -158,30 +158,33 @@ def test_an_event_without_published_results_shows_no_podium(client):
     assert "Výsledky závodu" not in html
 
 
-def test_the_entry_button_names_the_site_it_links_to(client):
+def test_the_entry_link_lives_on_the_event_page_and_names_its_destination(client):
     """
-    Several races run their own entry site instead of ORIS.
+    Entering belongs where the date, deadline and place are.
 
-    The button used to say "Přihlásit v ORISu" whatever it pointed at, which
-    sent people to a page that tells them entries are handled elsewhere.
+    On the calendar it was the loudest thing in the row and pointed off-site,
+    and its label could not describe a destination that varies per race - it
+    said "in ORIS" even when the link went to the race's own entry site.
     """
     import re
 
     from src.oris import BASE_URL
 
-    html = client.get("/26-27/calendar").get_data(as_text=True)
-    buttons = re.findall(
-        r'<a class="btn-accent" href="([^"]+)"[^>]*>\s*([^<]+?)\s*</a>', html
-    )
-    assert buttons, "the next race should offer a link"
-    # The fixture's next race runs its own site, which is the case that broke.
-    assert any(not href.startswith(BASE_URL) for href, _ in buttons)
+    # A race that runs its own site, and one that is entered through ORIS.
+    cases = (("s_mapou", "Web závodu"), ("s_orisem", "Přihlásit v ORISu"))
+    for event_id, expected in cases:
+        html = client.get(f"/26-27/event/{event_id}/").get_data(as_text=True)
+        found = re.findall(
+            r'<a class="btn-accent" href="([^"]+)"[^>]*>\s*([^<]+?)\s*</a>', html
+        )
+        assert found, f"{event_id} should offer an entry link"
+        href, label = found[0]
+        assert label == expected, (event_id, href, label)
+        assert href.startswith(BASE_URL) == (expected == "Přihlásit v ORISu")
 
-    for href, label in buttons:
-        if href.startswith(BASE_URL):
-            assert label == "Přihlásit v ORISu", href
-        else:
-            assert label == "Web závodu", href
+    # And it is gone from the calendar, which links to the race instead.
+    calendar = client.get("/26-27/calendar").get_data(as_text=True)
+    assert "btn-accent" not in calendar
 
 
 def test_an_event_page_links_back_to_the_calendar(client):

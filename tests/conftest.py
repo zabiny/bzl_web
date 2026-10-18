@@ -37,6 +37,15 @@ FIXTURE_EVENTS = {
         "difficulty": "hard",
         "is_bzl": True,
     },
+    # Registered in ORIS and nowhere else, so its link is the ORIS page.
+    "s_orisem": {
+        "name": "Závod v ORISu",
+        "oris_id": 88888,
+        "date": "2027-03-01",
+        "desc_short": "Závod, na který se hlásí přes ORIS.",
+        "difficulty": "easy",
+        "is_bzl": False,
+    },
     "jen_oris": {
         "oris_id": 99999,
         "desc_short": "Závod, který zná jen ORIS.",

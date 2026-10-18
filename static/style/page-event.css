@@ -155,3 +155,7 @@
     font-weight: var(--weight-regular);
     color: var(--text-secondary);
 }
+
+.event-entry {
+    margin-bottom: var(--space-6);
+}

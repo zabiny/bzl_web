@@ -114,13 +114,6 @@
 
         <div class="race-aside">
           {{ m.difficulty(event['difficulty'], difficulty_label) }}
-          {#- A race's own site wins over ORIS, and several use one. Only say
-              "in ORIS" when that is actually where the link goes. -#}
-          {% if is_next and event.get('web') %}
-          <a class="btn-accent" href="{{ event['web'] }}" target="_blank" rel="noopener">
-            {%- if event['web'].startswith(oris_url) %}Přihlásit v ORISu{% else %}Web závodu{% endif -%}
-          </a>
-          {% endif %}
         </div>
       </div>
 
