@@ -3,6 +3,7 @@
     "is_bzl": true,
     "desc_short": "Formát závodu upřesníme",
     "difficulty": "medium",
+    "web": "https://cup.adamna.net/",
     "organizer": "KOS TJ Tesla Brno (Adamna)",
     "organizer_logo": "tbm.gif"
 }
