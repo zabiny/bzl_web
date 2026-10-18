@@ -154,15 +154,31 @@ Do **not** add a certificate workaround if it breaks again. Trusting an
 expired certificate does not work (expiry is checked separately from trust —
 tested), and pinning a fingerprint would break the moment it is renewed.
 
-### 4. Set up season 26/27
+### 4. Season 26/27 — configured, with three things to confirm
 
-```bash
-mkdir -p data/26-27/events data/26-27/results
-```
+Nine races are in `data/26-27/events/`, five of them counting towards the
+standings. Built from the club's planning sheet and cross-checked against
+ORIS, which numbers them the same way (`2. Sportega BZL: Memoriál svobody`,
+`3. Sportega BZL`, `5. Sportega BZL` — matching date order).
 
-Then one JSON per race (schema in the README). Nothing else needs touching: the
-navigation, the season dropdown and the "best N of M" sentence on the rules page
-all read the newest season directory.
+Still to settle with the organisers:
+
+- **Adamna Cup's date and place are provisional.** The sheet says "termín ani
+  místo není ještě zcela jisté — budu vědět cca 22.10." The date 29. 11. 2026
+  is in, the place is not. Delete `date` from the config and the calendar
+  shows "termín upřesníme" instead.
+- **Difficulty is not in the sheet.** Seven races carry over last season's
+  value; Memoriál svobody and Kuří sprint are new and set to `easy` like every
+  other sprint.
+- **Three races have no ORIS entry yet** — Adamna Cup, Návrat ke kořenům and
+  Kauflauf. Add `oris_id` when they appear and the name, place and map fill in
+  by themselves.
+
+No coordinates are stored. ORIS supplies them for the six races that have an
+id, which keeps the organiser's own value authoritative while a race is still
+being planned — a local value would override a later correction. Two of those
+six have no coordinates in ORIS yet either, so those maps appear when the
+organiser fills them in.
 
 ### 5. Design follow-ups
 
