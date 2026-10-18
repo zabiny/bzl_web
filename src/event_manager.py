@@ -102,8 +102,10 @@ class EventManager:
                 events[event_file.stem] = event
 
         def _sort_key(item: tuple[str, Event]) -> tuple[bool, Any]:
-            # Events whose date is still unknown sort last instead of raising.
-            date = item[1].date
+            # Events with no date at all sort last instead of raising. One
+            # that carries an expected date takes its place in the season, so
+            # an unconfirmed race still gets the right number in the series.
+            date = item[1].sort_date
             return (date is None, date)
 
         events = dict(sorted(events.items(), key=_sort_key))

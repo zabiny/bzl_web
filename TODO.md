@@ -167,12 +167,13 @@ Still to settle with the organisers:
   The sheet says "termín ani místo není ještě zcela jisté — budu vědět cca
   22.10."
 
-  **While it has no date it sorts last, so it is numbered 5 and the other four
-  shift down.** ORIS has already published the other numbering —
-  `2. Sportega BZL: Memoriál svobody`, `3. Sportega BZL`, `5. Sportega BZL` —
-  so the two disagree until the date is filled in, at which point the site
-  corrects itself to 1-5 with Adamna first. Adding `"date": "2026-11-29"` back
-  is the whole fix.
+  It carries `"expected_date": "2026-11-28"`, which only places it in the
+  season: the card still shows "termín upřesníme", the race is never past and
+  it is never the next race. Without it the race sorted last and was numbered
+  5, which pushed the other four down and disagreed with the numbering ORIS
+  has already published. **When the real date arrives, add `date` and delete
+  `expected_date`** — keeping both is harmless, since `date` wins, but the
+  stale guess is then just noise.
 - **Difficulty is not in the sheet.** Seven races carry over last season's
   value; Memoriál svobody and Kuří sprint are new and set to `easy` like every
   other sprint.
