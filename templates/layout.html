@@ -101,6 +101,8 @@
 
     <main>
         <div class="shell">
+            {% block breadcrumb %}{% endblock %}
+
             <div class="page-head">
                 <h1>{% block page_title %}{% endblock %}</h1>
                 <span class="page-sub">{% block page_sub %}{% endblock %}</span>

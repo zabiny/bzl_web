@@ -246,6 +246,7 @@ def event(season: str, event_id: str) -> str:
     stats = load_race_stats(season).get(ev.oris_id) if ev.oris_id else None
     return render_template(
         "event.html",
+        season=season,
         event_data=ev.to_dict(),
         race_stats=stats,
         mapy_api_key=os.environ.get("MAPY_API_KEY", ""),

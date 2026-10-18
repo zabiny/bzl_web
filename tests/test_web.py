@@ -158,6 +158,40 @@ def test_an_event_without_published_results_shows_no_podium(client):
     assert "Výsledky závodu" not in html
 
 
+def test_the_entry_button_names_the_site_it_links_to(client):
+    """
+    Several races run their own entry site instead of ORIS.
+
+    The button used to say "Přihlásit v ORISu" whatever it pointed at, which
+    sent people to a page that tells them entries are handled elsewhere.
+    """
+    import re
+
+    from src.oris import BASE_URL
+
+    html = client.get("/26-27/calendar").get_data(as_text=True)
+    buttons = re.findall(
+        r'<a class="btn-accent" href="([^"]+)"[^>]*>\s*([^<]+?)\s*</a>', html
+    )
+    assert buttons, "the next race should offer a link"
+    # The fixture's next race runs its own site, which is the case that broke.
+    assert any(not href.startswith(BASE_URL) for href, _ in buttons)
+
+    for href, label in buttons:
+        if href.startswith(BASE_URL):
+            assert label == "Přihlásit v ORISu", href
+        else:
+            assert label == "Web závodu", href
+
+
+def test_an_event_page_links_back_to_the_calendar(client):
+    """Without it the only way back is the browser button."""
+    html = client.get("/26-27/event/s_mapou/").get_data(as_text=True)
+
+    assert "Zpět na kalendář" in html
+    assert 'href="/26-27/calendar"' in html
+
+
 def test_race_columns_are_sortable(client):
     """
     Sorting hangs off a button inside the header cell.

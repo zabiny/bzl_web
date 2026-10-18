@@ -603,3 +603,23 @@
     font-size: var(--text-sm);
 }
 
+
+/* Getting back out of a page. Sits above the title rather than beside it, so
+   it reads as leaving rather than as an action on what you are looking at. */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+}
+
+.back-link:hover {
+    color: var(--color-accent);
+}
+
+.back-link + .page-head {
+    margin-top: var(--space-2);
+}

@@ -22,6 +22,9 @@ FIXTURE_EVENTS = {
         "desc_long": ["První odstavec.", "Druhý odstavec."],
         "difficulty": "medium",
         "is_bzl": True,
+        # Its own entry site, not ORIS: several real races have one, and the
+        # calendar has to label the link for where it actually goes.
+        "web": "https://zavod.example.test/",
         "gps_lat": "49.2101",
         "gps_lon": "16.5991",
         "place_desc": 'Brno "Žabovřesky"',
