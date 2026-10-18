@@ -163,10 +163,16 @@ ORIS, which numbers them the same way (`2. Sportega BZL: Memoriál svobody`,
 
 Still to settle with the organisers:
 
-- **Adamna Cup's date and place are provisional.** The sheet says "termín ani
-  místo není ještě zcela jisté — budu vědět cca 22.10." The date 29. 11. 2026
-  is in, the place is not. Delete `date` from the config and the calendar
-  shows "termín upřesníme" instead.
+- **Adamna Cup has no date yet**, so the calendar shows "termín upřesníme".
+  The sheet says "termín ani místo není ještě zcela jisté — budu vědět cca
+  22.10."
+
+  **While it has no date it sorts last, so it is numbered 5 and the other four
+  shift down.** ORIS has already published the other numbering —
+  `2. Sportega BZL: Memoriál svobody`, `3. Sportega BZL`, `5. Sportega BZL` —
+  so the two disagree until the date is filled in, at which point the site
+  corrects itself to 1-5 with Adamna first. Adding `"date": "2026-11-29"` back
+  is the whole fix.
 - **Difficulty is not in the sheet.** Seven races carry over last season's
   value; Memoriál svobody and Kuří sprint are new and set to `easy` like every
   other sprint.
