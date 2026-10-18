@@ -623,3 +623,8 @@
 .back-link + .page-head {
     margin-top: var(--space-2);
 }
+
+/* The prize table has five columns; the categories table has two. */
+.info-table.prize-table {
+    max-width: 34rem;
+}
