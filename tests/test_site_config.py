@@ -62,3 +62,23 @@ def test_partners_key_absent_is_treated_as_no_partners(data_dir):
     config = load_site_config()
     assert config["partners"] == []
     assert config["main_partner"] is None
+
+
+def test_the_webmaster_address_falls_back_to_the_general_contact(data_dir):
+    """A site.json written before the field existed must still render links."""
+    _write(data_dir, {"contact_email": "zavody@example.test"})
+
+    assert load_site_config()["webmaster_email"] == "zavody@example.test"
+
+
+def test_the_webmaster_address_is_used_when_given(data_dir):
+    """Questions about the standings go to whoever runs the site."""
+    _write(
+        data_dir,
+        {
+            "contact_email": "zavody@example.test",
+            "webmaster_email": "web@example.test",
+        },
+    )
+
+    assert load_site_config()["webmaster_email"] == "web@example.test"

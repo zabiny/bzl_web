@@ -32,6 +32,9 @@ DEFAULTS: dict[str, Any] = {
     ),
     "url": "https://bzl.zabiny.club",
     "contact_email": "poradatel@zabiny.club",
+    #: Who to write to about the site and the results, as opposed to about a
+    #: race. Falls back to contact_email when it is not set.
+    "webmaster_email": "",
     "og_image": "og-image.png",
     "organizer": {
         "name": "SK Brno Žabovřesky",
@@ -69,6 +72,9 @@ def load_site_config() -> dict[str, Any]:
         logger.error("Could not read %s: %s", path, e)
 
     config = {**DEFAULTS, **loaded}
+    # Questions about the standings go to whoever runs the site, which is not
+    # necessarily whoever answers questions about a race.
+    config["webmaster_email"] = config.get("webmaster_email") or config["contact_email"]
     partners = config.get("partners") or []
     config["partners"] = partners
     config["main_partner"] = partners[0] if partners else None
