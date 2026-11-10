@@ -1,8 +1,12 @@
 {
-    "name": "Sportega BZL: Adamna Cup",
-    "expected_date": "2026-11-28",
-    "is_bzl": true,
-    "desc_short": "Formát závodu upřesníme",
+    "name": "Adamna Cup",
+    "date": "2026-11-29",
+    "is_bzl": false,
+    "desc_short": "Indoorový sprint",
+    "desc_long": [
+        "Adamna Cup je tradiční a inovativní závod ve sprintu. Vznikl v roce 2003 jako běžný sprint, v roce 2019 jsme přidali self-choice a v roce 2026 jsme zcela změnili jeho formát na indoorový sprint. Závodí se na třech tratích různých obtížností. Tak neváhejte a přijďte!",
+        "Zcela nový formát, nové kategorie a zcela nový terén. Tratě, které potrápí vaše mozkové závity však zůstávají. Adamna Cup 2026 přináší do Brna novinku inspirovanou světovým orienťákem, kde se postupně etabluje nová plnohodnotná disciplína. Venku je zima, a ty přesto běžíš orienťák jen v trenkách a tričku a řešíš složité postupy jako v těch nejspletitějších uličkách na jihu Evropy - to je INDOOR SPRINT. A neboj, jestli nechceš řešit až tak složité rébusy za běhu, máme i lehčí trať nebo i trať pro malé děti. U nás si to užije opravdu každý. Tak do toho pojďte s námi!"
+    ],
     "difficulty": "medium",
     "web": "https://cup.adamna.net/",
     "organizer": "KOS TJ Tesla Brno (Adamna)",
