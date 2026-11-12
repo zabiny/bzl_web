@@ -1,0 +1,13 @@
+{
+    "name": "Předsilvestrovský (mini)rogaining",
+    "date": "2026-12-29",
+    "oris_id": 10414,
+    "is_bzl": false,
+    "desc_short": "Mini Rogaining",
+    "desc_long": [
+        "Delší závod s volným pořadím kontrol."
+    ],
+    "difficulty": "hard",
+    "organizer": "Beta Ursus Rosice",
+    "organizer_logo": "bbm.png"
+}
